@@ -1,14 +1,14 @@
 extends layout
 
 block link
-  -var selected = 'Upload';
+  -var selected = 'העלאת קובץ';
 
 block content
-  h1 Listening Data
+  h1 נתוני האזנה
   form(role='form', action='/upload', method='post', encType="multipart/form-data")
     .form-group
-      label(for='fileUpload') Upload file
+      label(for='fileUpload') העלאת קובץ
       input.form-control-file(type='file', id='fileUpload', name='fileUpload')
-    button.btn.btn-primary(type='submit') Submit
+    button.btn.btn-primary(type='submit') שליחה
     &nbsp;
-    a.btn.btn-default(role='button', href='/') Cancel
+    a.btn.btn-default(role='button', href='/') ביטול

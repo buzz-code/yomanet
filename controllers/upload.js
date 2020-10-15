@@ -6,7 +6,7 @@ const parsing = require("../helpers/parsing");
 const files = require("../helpers/files");
 
 router.get("/upload", function (req, res) {
-    res.render("upload", { title: "Upload" });
+    res.render("upload", { title: "העלאת קובץ" });
 });
 
 router.post("/upload", async function (req, res) {

@@ -107,6 +107,7 @@ body {
   font-family: 'Georgia';
   background-color: #faf9f0;
   color: #444;
+  direction: rtl;
 }
 .navbar {
   background-color: #563d7c;

@@ -1,32 +1,33 @@
 extends layout
 
 block link
-  -var selected = 'Data';
+  -var selected = 'נתונים';
 
 block content
-  h1 Listening Data
+  h1 נתוני האזנה
   div
     form.form-inline.jumbotron.p-2(role='form', action='/data', method='get')
       .input-group.mx-sm-3.mb-2
-        label.m-1 Date Range
-        input.form-control(type="date" id="fromDate" name="fromDate" placeholder="From Date")
+        label.m-1 טווח תאריכים
+        input.form-control(type="date" id="fromDate" name="fromDate" placeholder="מתאריך")
+        label.m-1 עד
+        input.form-control(type="date" id="toDate" name="toDate" placeholder="עד תאריך")
+      .form-group.mx-sm-3.mb-2
+        label.m-1(for="klass") כיתה
+        input.form-control(type="text" id="klass" name="klass" placeholder="כיתה")
+      .form-group.mx-sm-3.mb-2
+        label.m-1(for="lesson") שיעור
+        input.form-control(type="text" id="lesson" name="lesson" placeholder="שיעור")
+      .form-group.mx-sm-3.mb-2
+        label.m-1(for="teacher") מורה
+        input.form-control(type="text" id="teacher" name="teacher" placeholder="מורה")
+      .form-group.mx-sm-3.mb-2
+        label.m-1(for="seconds") טווח שניות
+        input.form-control(type="number" id="fromSeconds" name="fromSeconds" placeholder="החל מ...")
         label.m-1 to
-        input.form-control(type="date" id="toDate" name="toDate" placeholder="To Date")
-      .form-group.mx-sm-3.mb-2
-        label.m-1(for="klass") Class
-        input.form-control(type="text" id="klass" name="klass" placeholder="Class")
-      .form-group.mx-sm-3.mb-2
-        label.m-1(for="lesson") Lesson
-        input.form-control(type="text" id="lesson" name="lesson" placeholder="Lesson")
-      .form-group.mx-sm-3.mb-2
-        label.m-1(for="teacher") Teacher
-        input.form-control(type="text" id="teacher" name="teacher" placeholder="Teacher")
-      .form-group.mx-sm-3.mb-2
-        label.m-1(for="seconds") Seconds Range
-        input.form-control(type="number" id="fromSeconds" name="fromSeconds" placeholder="From Seconds")
-        label.m-1 to
-        input.form-control(type="number" id="toSeconds" name="toSeconds" placeholder="To Seconds")
-      button.btn.btn-primary.mb-2(type="submit") Confirm identity
+        input.form-control(type="number" id="toSeconds" name="toSeconds" placeholder="עד")
+      button.btn.btn-primary.mb-2(type="submit") סנן נתונים
+
 
     table.table.table-striped.table-hover.table-sm
       thead

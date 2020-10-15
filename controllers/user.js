@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/login", function (req, res) {
-    res.render("login", { title: "Login" });
+    res.render("login", { title: "התחברות" });
 });
 
 router.post("/login", function (req, res) {
@@ -10,7 +10,7 @@ router.post("/login", function (req, res) {
     if (validation.login(username, password)) {
         res.redirect("data");
     } else {
-        res.render("login", { title: "Login" });
+        res.render("login", { title: "התחברות" });
     }
 });
 

@@ -1,20 +1,20 @@
 extends layout
 
 block link
-  -var selected = 'Login';
+  -var selected = 'התחברות';
 
 block content
  .container
-   h1 Login
+   h1 התחברות
    p.lead
-     | Sign in with your account.
+     | התחברות לחשבון.
      form(role='form', action='/login', method='post')
        .form-group
-         label(for='username') Username
-         input.form-control(type='text', id='user', name='username', placeholder='enter a username')
+         label(for='username') שם משתמש
+         input.form-control(type='text', id='user', name='username', placeholder='הכנס שם משתמש')
        .form-group
-         label(for='password') Password
-         input.form-control(type='password', id='password', name='password', placeholder='enter a password')
-       button.btn.btn-primary(type='submit') Submit
+         label(for='password') סיסמא
+         input.form-control(type='password', id='password', name='password', placeholder='הכנס סיסמא')
+       button.btn.btn-primary(type='submit') הכנס
        &nbsp;
-       a.btn.btn-default(role='button', href='/') Cancel
+       a.btn.btn-default(role='button', href='/') ביטול

@@ -17,7 +17,7 @@ router.get("/data", async function (req, res) {
         toSeconds
     );
     const data = {
-        title: "Data",
+        title: "נתוני האזנה",
         data: listeningData,
         headers: constants.listeningTableHeaders,
     };
