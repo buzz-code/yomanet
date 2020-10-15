@@ -20,6 +20,7 @@ router.get("/data", async function (req, res) {
         title: "נתוני האזנה",
         data: listeningData,
         headers: constants.listeningTableHeaders,
+        query: req.query,
     };
     res.render("data", data);
 });

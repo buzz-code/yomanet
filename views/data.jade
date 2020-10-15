@@ -9,24 +9,24 @@ block content
     form.form-inline.jumbotron.p-2(role='form', action='/data', method='get')
       .input-group.mx-sm-3.mb-2
         label.m-1 טווח תאריכים
-        input.form-control(type="date" id="fromDate" name="fromDate" placeholder="מתאריך")
+        input.form-control(type="date" id="fromDate" name="fromDate" placeholder="מתאריך" value="#{query.fromDate}")
         label.m-1 עד
-        input.form-control(type="date" id="toDate" name="toDate" placeholder="עד תאריך")
+        input.form-control(type="date" id="toDate" name="toDate" placeholder="עד תאריך" value="#{query.toDate}")
       .form-group.mx-sm-3.mb-2
         label.m-1(for="klass") כיתה
-        select.form-control(type="text" id="klass" name="klass" placeholder="כיתה")
+        select.form-control(type="text" id="klass" name="klass" placeholder="כיתה" value="#{query.klass}")
       .form-group.mx-sm-3.mb-2
         label.m-1(for="lesson") שיעור
-        select.form-control(type="text" id="lesson" name="lesson" placeholder="שיעור")
+        select.form-control(type="text" id="lesson" name="lesson" placeholder="שיעור" value="#{query.lesson}")
       //- .form-group.mx-sm-3.mb-2
       //-   label.m-1(for="teacher") מורה
       //-   input.form-control(type="text" id="teacher" name="teacher" placeholder="מורה")
       br
       .form-group.mx-sm-3.mb-2
         label.m-1(for="seconds") טווח שניות
-        input.form-control(type="number" id="fromSeconds" name="fromSeconds" placeholder="החל מ...")
+        input.form-control(type="number" id="fromSeconds" name="fromSeconds" placeholder="החל מ..." value="#{query.fromSeconds}")
         label.m-1 to
-        input.form-control(type="number" id="toSeconds" name="toSeconds" placeholder="עד")
+        input.form-control(type="number" id="toSeconds" name="toSeconds" placeholder="עד" value="#{query.toSeconds}")
       button.btn.btn-primary.mb-2(type="submit") סנן נתונים
 
 
@@ -40,5 +40,31 @@ block content
           tr
             each header in headers
               td= item[header.value]
+
+    nav(aria-label="Page navigation example")
+      ul.pagination.justify-content-center
+        li.page-item
+          a.page-link(href="#" aria-label="Previous")
+            span(aria-hidden="true") &laquo;
+        li.page-item
+          a.page-link(href="#") 1
+        li.page-item
+          a.page-link(href="#") 2
+        li.page-item
+          a.page-link(href="#") 3
+        li.page-item
+          a.page-link(href="#") 4
+        li.page-item
+          a.page-link(href="#") 5
+        li.page-item
+          a.page-link(href="#") 6
+        li.page-item
+          a.page-link(href="#") 7
+        li.page-item
+          a.page-link(href="#") 8
+        li.page-item
+          a.page-link(href="#" aria-label="Next")
+            span(aria-hidden="true") &raquo;
+
 
   script(src="/scripts/data.js")
