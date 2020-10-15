@@ -18,11 +18,15 @@ const parseListening = (htmlString) => {
         .forEach((item) => {
             row = {};
             item.querySelectorAll("td").forEach(
-                (item, index) => (row[constants.listeningTableHeaders[index].value] = item.text)
+                (item, index) =>
+                    (row[constants.listeningTableHeaders[index].value] = constants.listeningTableHeaders[index].format
+                        ? constants.listeningTableHeaders[index].format(item.text)
+                        : item.text)
             );
             data.push(row);
         });
 
+    console.log("parsing finished");
     return data;
 };
 

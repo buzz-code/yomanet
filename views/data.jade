@@ -7,23 +7,26 @@ block content
   h1 Listening Data
   div
     form.form-inline.jumbotron.p-2(role='form', action='/data', method='get')
+      .input-group.mx-sm-3.mb-2
+        label.m-1 Date Range
+        input.form-control(type="date" id="fromDate" name="fromDate" placeholder="From Date")
+        label.m-1 to
+        input.form-control(type="date" id="toDate" name="toDate" placeholder="To Date")
       .form-group.mx-sm-3.mb-2
-        label(for="dateRange") Date Range
-        input.form-control(type="text" id="dateRange" name="dateRange" placeholder="Date Range")
-      .form-group.mx-sm-3.mb-2
-        label(for="klass") Class
+        label.m-1(for="klass") Class
         input.form-control(type="text" id="klass" name="klass" placeholder="Class")
       .form-group.mx-sm-3.mb-2
-        label(for="lesson") Lesson
+        label.m-1(for="lesson") Lesson
         input.form-control(type="text" id="lesson" name="lesson" placeholder="Lesson")
       .form-group.mx-sm-3.mb-2
-        label(for="teacher") Teacher
+        label.m-1(for="teacher") Teacher
         input.form-control(type="text" id="teacher" name="teacher" placeholder="Teacher")
       .form-group.mx-sm-3.mb-2
-        label(for="seconds") Seconds Range
-        input.form-control(type="number" id="seconds" name="seconds" placeholder="Seconds")
+        label.m-1(for="seconds") Seconds Range
+        input.form-control(type="number" id="fromSeconds" name="fromSeconds" placeholder="From Seconds")
+        label.m-1 to
+        input.form-control(type="number" id="toSeconds" name="toSeconds" placeholder="To Seconds")
       button.btn.btn-primary.mb-2(type="submit") Confirm identity
-
 
     table.table.table-striped.table-hover.table-sm
       thead
@@ -35,3 +38,5 @@ block content
           tr
             each header in headers
               td= item[header.value]
+
+  script(src="/scripts/data.js")
