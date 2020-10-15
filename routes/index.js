@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const validation = require("./../helpers/validation");
+const db = require("./../helpers/db");
+const constants = require("../helpers/constants");
 
 router.get("/", function (req, res) {
     res.render("index", { title: "Home" });
@@ -13,10 +15,20 @@ router.get("/login", function (req, res) {
 router.post("/login", function (req, res) {
     const { username, password } = req.body;
     if (validation.login(username, password)) {
-        res.render("data", { title: "Data" });
+        res.redirect("data");
     } else {
         res.render("login", { title: "Login" });
     }
+});
+
+router.get("/data", async function (req, res) {
+    const listeningData = await db.getListeningData();
+    const data = {
+        title: "Data",
+        data: listeningData,
+        headers: constants.listeningTableHeaders,
+    };
+    res.render("data", data);
 });
 
 // router.use("/form", express.static(__dirname + "/index.html"));

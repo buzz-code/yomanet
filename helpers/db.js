@@ -1,6 +1,6 @@
-const { async } = require("q");
-
 const MongoClient = require("mongodb").MongoClient;
+const constants = require("./constants");
+
 const uri =
     "mongodb+srv://user:LTfJoXV9VX7JA7KX@vocal-center-stats.ymyj5.gcp.mongodb.net/vocal?retryWrites=true&w=majority";
 
@@ -27,8 +27,15 @@ const saveStudent = async (data) => {
     return "saved successfully";
 };
 
+const getListeningData = async () => {
+    const collection = await connect("listening");
+    const result = await collection.find().limit(constants.pageSize).toArray();
+    return result;
+};
+
 module.exports = {
     saveListening,
     saveLesson,
     saveStudent,
+    getListeningData,
 };

@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1 Listening Data
+  div
+    table
+      thead
+        tr
+          each item in headers
+            th= item
+      tbody
+        each item in data
+          tr
+            each header in headers
+              td= item[header]
