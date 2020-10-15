@@ -3,21 +3,23 @@ const XLSX = require("xlsx");
 const constants = require("./constants");
 
 const parseListening = (htmlString) => {
-    const keys = [];
+    // const keys = [];
     const data = [];
     const root = htmlParser.parse(htmlString);
     const table = root.querySelector("table");
 
-    table
-        .querySelector("thead")
-        .querySelectorAll("th")
-        .forEach((item) => keys.push(item.text));
+    // table
+    //     .querySelector("thead")
+    //     .querySelectorAll("th")
+    //     .forEach((item) => keys.push(item.text));
     table
         .querySelector("tbody")
         .querySelectorAll("tr")
         .forEach((item) => {
             row = {};
-            item.querySelectorAll("td").forEach((item, index) => (row[keys[index]] = item.text));
+            item.querySelectorAll("td").forEach(
+                (item, index) => (row[constants.listeningTableHeaders[index].value] = item.text)
+            );
             data.push(row);
         });
 
@@ -27,13 +29,15 @@ const parseListening = (htmlString) => {
 const parseLesson = (url) => {
     const wb = XLSX.readFile(url);
     const ws = wb.Sheets[wb.SheetNames[0]];
-    return XLSX.utils.sheet_to_json(ws, { header: constants.lessonXslxHeaders });
+    const header = constants.lessonHeaders.map((item) => item.value);
+    return XLSX.utils.sheet_to_json(ws, { header });
 };
 
 const parseStudent = (url) => {
     const wb = XLSX.readFile(url);
     const ws = wb.Sheets[wb.SheetNames[0]];
-    return XLSX.utils.sheet_to_json(ws, { header: constants.studentXslxHeaders });
+    const header = constants.studentHeaders.map((item) => item.value);
+    return XLSX.utils.sheet_to_json(ws, { header });
 };
 
 module.exports = {

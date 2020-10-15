@@ -6,13 +6,32 @@ block link
 block content
   h1 Listening Data
   div
+    form.form-inline.jumbotron.p-2(role='form', action='/data', method='get')
+      .form-group.mx-sm-3.mb-2
+        label(for="dateRange") Date Range
+        input.form-control(type="text" id="dateRange" name="dateRange" placeholder="Date Range")
+      .form-group.mx-sm-3.mb-2
+        label(for="klass") Class
+        input.form-control(type="text" id="klass" name="klass" placeholder="Class")
+      .form-group.mx-sm-3.mb-2
+        label(for="lesson") Lesson
+        input.form-control(type="text" id="lesson" name="lesson" placeholder="Lesson")
+      .form-group.mx-sm-3.mb-2
+        label(for="teacher") Teacher
+        input.form-control(type="text" id="teacher" name="teacher" placeholder="Teacher")
+      .form-group.mx-sm-3.mb-2
+        label(for="seconds") Seconds Range
+        input.form-control(type="number" id="seconds" name="seconds" placeholder="Seconds")
+      button.btn.btn-primary.mb-2(type="submit") Confirm identity
+
+
     table.table.table-striped.table-hover.table-sm
       thead
         tr
           each item in headers
-            th= item
+            th= item.label
       tbody
         each item in data
           tr
             each header in headers
-              td= item[header]
+              td= item[header.value]
