@@ -14,13 +14,14 @@ block content
         input.form-control(type="date" id="toDate" name="toDate" placeholder="עד תאריך")
       .form-group.mx-sm-3.mb-2
         label.m-1(for="klass") כיתה
-        input.form-control(type="text" id="klass" name="klass" placeholder="כיתה")
+        select.form-control(type="text" id="klass" name="klass" placeholder="כיתה")
       .form-group.mx-sm-3.mb-2
         label.m-1(for="lesson") שיעור
-        input.form-control(type="text" id="lesson" name="lesson" placeholder="שיעור")
-      .form-group.mx-sm-3.mb-2
-        label.m-1(for="teacher") מורה
-        input.form-control(type="text" id="teacher" name="teacher" placeholder="מורה")
+        select.form-control(type="text" id="lesson" name="lesson" placeholder="שיעור")
+      //- .form-group.mx-sm-3.mb-2
+      //-   label.m-1(for="teacher") מורה
+      //-   input.form-control(type="text" id="teacher" name="teacher" placeholder="מורה")
+      br
       .form-group.mx-sm-3.mb-2
         label.m-1(for="seconds") טווח שניות
         input.form-control(type="number" id="fromSeconds" name="fromSeconds" placeholder="החל מ...")

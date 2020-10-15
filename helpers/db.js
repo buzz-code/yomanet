@@ -34,13 +34,15 @@ const saveStudent = async (data) => {
 const getListeningData = async (page, fromDate, toDate, klass, lesson, teacher, fromSeconds, toSeconds) => {
     const connection = await connect();
     const collection = connection.collection("listening");
-   
+
     const query = {};
-    if (lesson) query.extension = lesson;
     if (fromDate) query.date = { $gte: moment(fromDate).toDate() };
     if (toDate) query.date = { ...query.date, $lte: moment(toDate).toDate() };
     if (fromSeconds) query.seconds = { $gte: Number(fromSeconds) };
     if (toSeconds) query.seconds = { ...query.seconds, $lte: Number(toSeconds) };
+    if (lesson) query.extension = Array.isArray(lesson) ? { $in: lesson } : lesson;
+    if (klass) query.name = new RegExp(`/^${klass}/`);
+    // if (teacher) query.extension = Array.isArray(teacher) ? { $in: teacher } : teacher;
     console.log(query);
 
     const result = await collection
@@ -51,9 +53,49 @@ const getListeningData = async (page, fromDate, toDate, klass, lesson, teacher, 
     return result;
 };
 
+const getLessonList = async (searchText) => {
+    const connection = await connect();
+    const collection = connection.collection("lesson");
+
+    const query = {};
+    if (searchText) query.messageName = new RegExp(searchText);
+    console.log(query);
+
+    const result = await collection.find(query).limit(10).toArray();
+    return result;
+};
+
+const getTeacherList = async (searchText) => {
+    const connection = await connect();
+    const collection = connection.collection("lesson");
+
+    const query = {};
+    if (searchText) query.messageName = new RegExp(searchText);
+    console.log(query);
+
+    const result = await collection.find(query).limit(10).toArray();
+    return result;
+};
+
+const getKlassList = async (searchText) => {
+    //todo:
+    const connection = await connect();
+    const collection = connection.collection("lesson");
+
+    const query = {};
+    if (searchText) query.messageName = new RegExp(searchText);
+    console.log(query);
+
+    const result = await collection.find(query).limit(10).toArray();
+    return result;
+};
+
 module.exports = {
     saveListening,
     saveLesson,
     saveStudent,
     getListeningData,
+    getLessonList,
+    getTeacherList,
+    getKlassList,
 };

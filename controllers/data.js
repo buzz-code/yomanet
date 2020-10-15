@@ -24,4 +24,25 @@ router.get("/data", async function (req, res) {
     res.render("data", data);
 });
 
+router.get("/getLessonList", async function (req, res) {
+    const { term } = req.query;
+    const data = await db.getLessonList(term);
+    const items = data.map((item) => ({ id: item.extension, text: item.messageName }));
+    res.send({ results: items });
+});
+
+router.get("/getTeacherList", async function (req, res) {
+    const { term } = req.query;
+    const data = await db.getTeacherList(term);
+    const items = data.map((item) => ({ id: item.extension, text: item.messageName }));
+    res.send({ results: items });
+});
+
+router.get("/getKlassList", async function (req, res) {
+    const { term } = req.query;
+    const data = await db.getKlassList(term);
+    const items = data.map((item) => ({ id: item.extension, text: item.messageName }));
+    res.send({ results: items });
+});
+
 module.exports = router;
