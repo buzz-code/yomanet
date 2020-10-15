@@ -1,5 +1,8 @@
 extends layout
 
+block link
+  -var selected = 'Upload';
+
 block content
   h1 Listening Data
   form(role='form', action='/upload', method='post', encType="multipart/form-data")
