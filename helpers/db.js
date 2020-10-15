@@ -33,10 +33,10 @@ const saveStudent = async (data) => {
 const getListeningData = async (page, dateRange, klass, lesson, teacher, seconds) => {
     const connection = await connect();
     const collection = connection.collection("listening");
-    const query = {
-        seconds: seconds,
-    };
-    console.log(query)
+    const query = {};
+    if (seconds) query.seconds = seconds;
+    console.log(query);
+   
     const result = await collection
         .find(query)
         .skip(constants.pageSize * (page - 1))
