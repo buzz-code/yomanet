@@ -55,7 +55,7 @@ function LoginPage(props) {
                     <p className="lead">התחברות לחשבון.</p>
                     <form role="form">
                         <div className="form-group">
-                            <label for="email">שם משתמש</label>
+                            <label htmlFor="email">שם משתמש</label>
                             <input
                                 type="text"
                                 id="user"
@@ -67,7 +67,7 @@ function LoginPage(props) {
                             />
                         </div>
                         <div className="form-group">
-                            <label for="password">סיסמא</label>
+                            <label htmlFor="password">סיסמא</label>
                             <input
                                 type="password"
                                 id="password"
@@ -101,7 +101,7 @@ function LoginPage(props) {
                                 value={rememberMe}
                                 onChange={(e) => setRememberMe(e.target.checked)}
                             />
-                            <label for="rememberMe">זכור אותי לפעמים הבאות</label>
+                            <label htmlFor="rememberMe">זכור אותי לפעמים הבאות</label>
                         </div>
                         <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
                             הכנס
@@ -111,10 +111,8 @@ function LoginPage(props) {
                             ביטול
                         </a>
                     </form>
-                    <p></p>
                 </div>
             </div>
-            <div className="sidebar"></div>
         </div>
     );
 }

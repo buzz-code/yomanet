@@ -1,4 +1,5 @@
 const express = require("express");
+const moment = require("moment");
 const router = express.Router();
 const db = require("../helpers/db");
 const constants = require("../helpers/constants");
@@ -16,7 +17,7 @@ router.post("/data/listening", async function (req, res) {
     if (fromSeconds) query.seconds = { $gte: Number(fromSeconds) };
     if (toSeconds) query.seconds = { ...query.seconds, $lte: Number(toSeconds) };
     if (lesson) query.extension = Array.isArray(lesson) ? { $in: lesson } : lesson;
-    if (klass) query.name = new RegExp(`/^${klass}/`);
+    if (klass) query.name = new RegExp(`^${klass}.*`);
     console.log(query);
 
     const results = await Listening.find(query, null, {
@@ -31,7 +32,7 @@ router.post("/data/listening", async function (req, res) {
         results,
         totalCount,
         headers: constants.listeningTableHeaders,
-        query: req.body,
+        params: req.body,
     };
     res.send(data);
 });
@@ -60,7 +61,7 @@ router.post("/data/lesson", async function (req, res) {
         results,
         totalCount,
         headers: constants.lessonHeaders,
-        query: req.body,
+        params: req.body,
     };
     res.send(data);
 });
@@ -89,7 +90,7 @@ router.post("/data/student", async function (req, res) {
         results,
         totalCount,
         headers: constants.studentHeaders,
-        query: req.body,
+        params: req.body,
     };
     res.send(data);
 });

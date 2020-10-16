@@ -21,7 +21,7 @@ function Upload({ uploadFile, ...props }) {
             <div className="main-content">
                 <form role="form">
                     <div className="form-group">
-                        <label for="fileUpload">העלאת קובץ</label>
+                        <label htmlFor="fileUpload">העלאת קובץ</label>
                         <input
                             type="file"
                             id="fileUpload"
