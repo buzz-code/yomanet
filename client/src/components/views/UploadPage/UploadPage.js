@@ -1,51 +1,33 @@
-import React, { useState } from "react";
-import moment from "moment";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { registerUser } from "../../../_actions/user_actions";
-import { useDispatch } from "react-redux";
-import { uploadFile } from "../../../_actions/data_actions";
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+import Auth from "../../../hoc/auth";
+import Lesson from "./Lesson";
+import Listening from "./Listening";
+import Student from "./Student";
+import Upload from "./Upload";
 
 function UploadPage(props) {
-    const dispatch = useDispatch();
-    const [file, setFile] = useState(null);
-
-    const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
-    };
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dispatch(uploadFile(file)).then((response) => {
-            props.history.push("/");
-        });
-    };
+    const routes = [
+        { label: "נתוני האזנה", value: "/upload/listening" },
+        { label: "נתוני השיעורים", value: "/upload/lesson" },
+        { label: "נתוני הבנות", value: "/upload/student" },
+    ];
 
     return (
-        <div className="container">
-            <div className="main-content">
-                <h1>נתוני האזנה</h1>
-                <form role="form">
-                    <div className="form-group">
-                        <label for="fileUpload">העלאת קובץ</label>
-                        <input
-                            type="file"
-                            id="fileUpload"
-                            name="fileUpload"
-                            className="form-control-file"
-                            onChange={handleFileChange}
-                        />
-                    </div>
-                    <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
-                        שליחה
-                    </button>
-                    &nbsp;
-                    <a role="button" href="/" className="btn btn-default">
-                        ביטול
+        <>
+            <div>
+                {routes.map((item) => (
+                    <a href={item.value} title={item.label} className="nav-link">
+                        {item.label}
                     </a>
-                </form>
+                ))}
             </div>
-        </div>
+            <Switch>
+                <Route exact path="/upload/listening" component={Auth(Listening, false)} />
+                <Route exact path="/upload/lesson" component={Auth(Lesson, false)} />
+                <Route exact path="/upload/student" component={Auth(Student, false)} />
+            </Switch>
+        </>
     );
 }
 

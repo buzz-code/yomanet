@@ -29,10 +29,32 @@ export function getStudentData(params) {
     };
 }
 
-export function uploadFile(file) {
+export function uploadListeningFile(file) {
     const formData = new FormData();
     formData.append("fileUpload", file, file);
-    const request = axios.post(`${DATA_SERVER}/upload`, formData).then((response) => response.data);
+    const request = axios.post(`${DATA_SERVER}/upload/listening`, formData).then((response) => response.data);
+
+    return {
+        type: UPLOAD_FILE,
+        payload: request,
+    };
+}
+
+export function uploadLessonFile(file) {
+    const formData = new FormData();
+    formData.append("fileUpload", file, file);
+    const request = axios.post(`${DATA_SERVER}/upload/lesson`, formData).then((response) => response.data);
+
+    return {
+        type: UPLOAD_FILE,
+        payload: request,
+    };
+}
+
+export function uploadStudentFile(file) {
+    const formData = new FormData();
+    formData.append("fileUpload", file, file);
+    const request = axios.post(`${DATA_SERVER}/upload/student`, formData).then((response) => response.data);
 
     return {
         type: UPLOAD_FILE,
