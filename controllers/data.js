@@ -2,23 +2,29 @@ const express = require("express");
 const router = express.Router();
 const db = require("../helpers/db");
 const constants = require("../helpers/constants");
+const { Listening } = require("../models/Listening");
 
 router.post("/data", async function (req, res) {
     console.log(req.body);
     const { page, fromDate, toDate, klass, lesson, teacher, fromSeconds, toSeconds } = req.body;
-    const listeningData = await db.getListeningData(
-        Number(page),
-        fromDate,
-        toDate,
-        klass,
-        lesson,
-        teacher,
-        fromSeconds,
-        toSeconds
-    );
+
+    const query = {};
+    if (fromDate) query.date = { $gte: moment(fromDate).toDate() };
+    if (toDate) query.date = { ...query.date, $lte: moment(toDate).toDate() };
+    if (fromSeconds) query.seconds = { $gte: Number(fromSeconds) };
+    if (toSeconds) query.seconds = { ...query.seconds, $lte: Number(toSeconds) };
+    if (lesson) query.extension = Array.isArray(lesson) ? { $in: lesson } : lesson;
+    if (klass) query.name = new RegExp(`/^${klass}/`);
+    console.log(query);
+
+    const listeningData = Listening.find(query)
+        .skip(constants.pageSize * (page - 1))
+        .limit(constants.pageSize)
+        .toArray();
+
     const data = {
         title: "נתוני האזנה",
-        listeningData,
+        results: listeningData,
         headers: constants.listeningTableHeaders,
         query: req.body,
     };

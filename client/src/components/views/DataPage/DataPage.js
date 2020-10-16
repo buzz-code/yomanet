@@ -29,7 +29,7 @@ function DataPage(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.listeningData.map((item) => (
+                                {data.results.map((item) => (
                                     <tr>
                                         {data.headers.map((header) => (
                                             <td>{item[header.value]}</td>
