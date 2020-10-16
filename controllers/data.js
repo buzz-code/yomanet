@@ -19,14 +19,17 @@ router.post("/data/listening", async function (req, res) {
     if (klass) query.name = new RegExp(`/^${klass}/`);
     console.log(query);
 
-    const listeningData = await Listening.find(query, null, {
+    const results = await Listening.find(query, null, {
         skip: constants.pageSize * (page - 1),
         limit: constants.pageSize,
     });
 
+    const totalCount = await Listening.count(query);
+
     const data = {
         title: "נתוני האזנה",
-        results: listeningData,
+        results,
+        totalCount,
         headers: constants.listeningTableHeaders,
         query: req.body,
     };
@@ -45,14 +48,17 @@ router.post("/data/lesson", async function (req, res) {
     // if (klass) query.name = new RegExp(`/^${klass}/`);
     // console.log(query);
 
-    const lessonData = await Lesson.find(query, null, {
+    const results = await Lesson.find(query, null, {
         skip: constants.pageSize * (page - 1),
         limit: constants.pageSize,
     });
 
+    const totalCount = await Lesson.count(query);
+
     const data = {
         title: "נתוני השיעורים",
-        results: lessonData,
+        results,
+        totalCount,
         headers: constants.lessonHeaders,
         query: req.body,
     };
@@ -71,14 +77,17 @@ router.post("/data/student", async function (req, res) {
     // if (klass) query.name = new RegExp(`/^${klass}/`);
     // console.log(query);
 
-    const studentData = await Student.find(query, null, {
+    const results = await Student.find(query, null, {
         skip: constants.pageSize * (page - 1),
         limit: constants.pageSize,
     });
 
+    const totalCount = await Student.count(query);
+
     const data = {
         title: "נתוני הבנות",
-        results: studentData,
+        results,
+        totalCount,
         headers: constants.studentHeaders,
         query: req.body,
     };
