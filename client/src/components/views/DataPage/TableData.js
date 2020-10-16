@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FilterTable from "./FilterTable";
 import PagingTable from "./PagingTable";
 
-function DataPage({ getData }) {
+function DataPage({ getData, type }) {
     const dispatch = useDispatch();
     let data = useSelector((state) => state.data.data);
 
@@ -18,7 +18,7 @@ function DataPage({ getData }) {
                     <>
                         <h1>{data.title}</h1>
                         <div>
-                            <FilterTable params={data.params} getData={getData} />
+                            <FilterTable type={type} params={data.params} getData={getData} />
                             <table className="table table-striped table-hover table-sm">
                                 <thead>
                                     <tr>

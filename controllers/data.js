@@ -38,16 +38,12 @@ router.post("/data/listening", async function (req, res) {
 });
 router.post("/data/lesson", async function (req, res) {
     console.log(req.body);
-    const { page, fromDate, toDate, klass, lesson, teacher, fromSeconds, toSeconds } = req.body;
+    const { page, extension, messageName } = req.body;
 
     const query = {};
-    // if (fromDate) query.date = { $gte: moment(fromDate).toDate() };
-    // if (toDate) query.date = { ...query.date, $lte: moment(toDate).toDate() };
-    // if (fromSeconds) query.seconds = { $gte: Number(fromSeconds) };
-    // if (toSeconds) query.seconds = { ...query.seconds, $lte: Number(toSeconds) };
-    // if (lesson) query.extension = Array.isArray(lesson) ? { $in: lesson } : lesson;
-    // if (klass) query.name = new RegExp(`/^${klass}/`);
-    // console.log(query);
+    if (extension) query.extension = new RegExp(`${extension}`);
+    if (messageName) query.messageName = new RegExp(`${messageName}`);
+    console.log(query);
 
     const results = await Lesson.find(query, null, {
         skip: constants.pageSize * (page - 1),
@@ -67,16 +63,14 @@ router.post("/data/lesson", async function (req, res) {
 });
 router.post("/data/student", async function (req, res) {
     console.log(req.body);
-    const { page, fromDate, toDate, klass, lesson, teacher, fromSeconds, toSeconds } = req.body;
+    const { page, identityNumber, name, grade, classNum } = req.body;
 
     const query = {};
-    // if (fromDate) query.date = { $gte: moment(fromDate).toDate() };
-    // if (toDate) query.date = { ...query.date, $lte: moment(toDate).toDate() };
-    // if (fromSeconds) query.seconds = { $gte: Number(fromSeconds) };
-    // if (toSeconds) query.seconds = { ...query.seconds, $lte: Number(toSeconds) };
-    // if (lesson) query.extension = Array.isArray(lesson) ? { $in: lesson } : lesson;
-    // if (klass) query.name = new RegExp(`/^${klass}/`);
-    // console.log(query);
+    if (identityNumber) query.identityNumber = new RegExp(`${identityNumber}`);
+    if (name) query.name = new RegExp(`${name}`);
+    if (grade) query.grade = new RegExp(`${grade}`);
+    if (classNum) query.classNum = new RegExp(`${classNum}`);
+    console.log(query);
 
     const results = await Student.find(query, null, {
         skip: constants.pageSize * (page - 1),
