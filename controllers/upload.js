@@ -5,11 +5,11 @@ const db = require("../helpers/db");
 const parsing = require("../helpers/parsing");
 const files = require("../helpers/files");
 
-router.get("/upload", function (req, res) {
-    res.render("upload", { title: "העלאת קובץ" });
-});
+// router.get("/upload", function (req, res) {
+//     res.render("upload", { title: "העלאת קובץ" });
+// });
 
-router.post("/upload", async function (req, res) {
+router.post("/data/upload", async function (req, res) {
     if (req.files && req.files.fileUpload) {
         const content = await files.readFile(req.files.fileUpload.tempFilePath);
         if (validation.fileIsUnique(content)) {

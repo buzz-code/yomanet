@@ -3,9 +3,9 @@ const router = express.Router();
 const db = require("../helpers/db");
 const constants = require("../helpers/constants");
 
-router.get("/data", async function (req, res) {
-    console.log(req.query);
-    const { page, fromDate, toDate, klass, lesson, teacher, fromSeconds, toSeconds } = req.query;
+router.post("/data", async function (req, res) {
+    console.log(req.body);
+    const { page, fromDate, toDate, klass, lesson, teacher, fromSeconds, toSeconds } = req.body;
     const listeningData = await db.getListeningData(
         Number(page),
         fromDate,
@@ -18,11 +18,11 @@ router.get("/data", async function (req, res) {
     );
     const data = {
         title: "נתוני האזנה",
-        data: listeningData,
+        listeningData,
         headers: constants.listeningTableHeaders,
-        query: req.query,
+        query: req.body,
     };
-    res.render("data", data);
+    res.send(data);
 });
 
 router.get("/getLessonList", async function (req, res) {
