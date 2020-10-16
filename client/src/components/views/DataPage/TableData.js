@@ -37,7 +37,7 @@ function DataPage({ getData, type }) {
                                     ))}
                                 </tbody>
                             </table>
-                            <PagingTable />
+                            <PagingTable params={data.params} totalCount={data.totalCount} getData={getData} />
                         </div>
                     </>
                 )}
