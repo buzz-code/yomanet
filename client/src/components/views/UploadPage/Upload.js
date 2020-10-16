@@ -19,6 +19,7 @@ function Upload({ uploadFile, ...props }) {
     return (
         <div className="container">
             <div className="main-content">
+                <h1>העלאת נתונים</h1>
                 <form role="form">
                     <div className="form-group">
                         <label htmlFor="fileUpload">העלאת קובץ</label>
