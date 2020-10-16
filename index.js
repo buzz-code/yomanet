@@ -12,14 +12,15 @@ const app = express();
 const config = require("./config/key");
 
 const mongoose = require("mongoose");
-const connect = mongoose.connect(config.mongoURI,
-  {
-    useNewUrlParser: true, useUnifiedTopology: true,
-    useCreateIndex: true, useFindAndModify: false
-  })
-  .then(() => console.log('MongoDB Connected...'))
-  .catch(err => console.log(err));
-
+const connect = mongoose
+    .connect(config.mongoURI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+    })
+    .then(() => console.log("MongoDB Connected..."))
+    .catch((err) => console.log(err));
 
 // function compile(str, path) {
 //     return stylus(str).set("filename", path).use(nib());
@@ -38,6 +39,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 
+app.use(express.static(path.join(__dirname, "client/build")));
+
 // app.use(stylus.middleware({ src: __dirname + "/public", compile: compile }));
 // app.use(express.static(__dirname + "/public"));
 app.use("/api", routes);
@@ -47,15 +50,18 @@ app.use("/api", routes);
 // });
 
 // if (process.env.NODE_ENV === "production") {
-    // Set static folder
-    // All the javascript and css files will be read and served from this folder
-    app.use(express.static("client/build"));
+// Set static folder
+// All the javascript and css files will be read and served from this folder
+// app.use(express.static("client/build"));
 
-    // index.html for all page routes    html or routing and naviagtion
-    app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
-    });
+// index.html for all page routes    html or routing and naviagtion
+// app.get("*", (req, res) => {
+//     res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
+// });
 // }
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, function () {
