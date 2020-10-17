@@ -1,10 +1,12 @@
 import React from "react";
 import "./Navbar.css";
+import { useSelector } from "react-redux";
 
 function NavBar() {
+    let userData = useSelector((state) => state.user.userData);
+
     const routes = [
         { label: "בית", value: "/" },
-        { label: "התחברות", value: "/login" },
         {
             label: "נתונים",
             value: "/data",
@@ -40,13 +42,12 @@ function NavBar() {
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div id="navbarNav" className="collapse navbar-collapse">
-                {/* todo: add loop here */}
-                <ul className="navbar-nav">
+                <ul className="navbar-nav mr-auto">
                     {routes.map((item) =>
                         item.children ? (
-                            <li class="nav-item dropdown">
+                            <li className="nav-item dropdown">
                                 <a
-                                    class="nav-link dropdown-toggle"
+                                    className="nav-link dropdown-toggle"
                                     href="#"
                                     id="navbarDropdownMenuLink"
                                     role="button"
@@ -55,7 +56,7 @@ function NavBar() {
                                     aria-expanded="false">
                                     {item.label}
                                 </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     {item.children.map((item) => (
                                         <a href={item.value} title={item.label} className="dropdown-item">
                                             {item.label}
@@ -70,6 +71,20 @@ function NavBar() {
                                 </a>
                             </li>
                         )
+                    )}
+                </ul>
+                <ul className="navbar-nav">
+                    <li className="nav-item">
+                        <a className="nav-link" href="/login">
+                            התחברות
+                        </a>
+                    </li>
+                    {userData && userData.isAdmin && (
+                        <li className="nav-item">
+                            <a className="nav-link" href="/register">
+                                הרשמה
+                            </a>
+                        </li>
                     )}
                 </ul>
             </div>

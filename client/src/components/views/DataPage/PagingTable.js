@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { useDispatch } from "react-redux";
 
-const pageSize = 15;
+const pageSize = 10;
 
 export default function PagingTable({ params, totalCount, getData }) {
     const dispatch = useDispatch();
@@ -41,6 +41,9 @@ export default function PagingTable({ params, totalCount, getData }) {
         }
         setPages(pages);
     }, [params, totalCount]);
+    useEffect(()=>console.log('params'),[params])
+    useEffect(()=>console.log('totalCount'),[totalCount])
+    useEffect(()=>console.log('getData'),[getData])
 
     const handlePageClick = (e, item) => {
         e.preventDefault();

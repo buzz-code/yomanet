@@ -5,8 +5,8 @@ router.get("/", function (req, res) {
     res.render("index", { title: "Home" });
 });
 
-const userController = require("../controllers/user");
-router.use(userController);
+const usersController = require("../controllers/users");
+router.use(usersController);
 
 const dataController = require("../controllers/data");
 router.use(dataController);

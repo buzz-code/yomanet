@@ -213,7 +213,7 @@ export default function FilterTable({ type, params, getData }) {
     }
 
     return (
-        <form role="form" className="form-inline p-2 jumbotron">
+        <form className="form-inline p-2 jumbotron">
             {fields}
             <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
                 סנן

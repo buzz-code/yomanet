@@ -27,5 +27,5 @@ module.exports = {
         { label: "מחזור", value: "grade" },
         { label: "מספר כיתה", value: "classNum" },
     ],
-    pageSize: 15,
+    pageSize: 10,
 };

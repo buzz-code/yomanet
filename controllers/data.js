@@ -6,8 +6,9 @@ const constants = require("../helpers/constants");
 const { Listening } = require("../models/Listening");
 const { Lesson } = require("../models/Lesson");
 const { Student } = require("../models/Student");
+const { auth } = require("../middleware/auth");
 
-router.post("/data/listening", async function (req, res) {
+router.post("/data/listening", auth, async function (req, res) {
     console.log(req.body);
     const { page, fromDate, toDate, klass, lesson, teacher, fromSeconds, toSeconds } = req.body;
 
@@ -36,7 +37,8 @@ router.post("/data/listening", async function (req, res) {
     };
     res.send(data);
 });
-router.post("/data/lesson", async function (req, res) {
+
+router.post("/data/lesson", auth, async function (req, res) {
     console.log(req.body);
     const { page, extension, messageName } = req.body;
 
@@ -61,7 +63,8 @@ router.post("/data/lesson", async function (req, res) {
     };
     res.send(data);
 });
-router.post("/data/student", async function (req, res) {
+
+router.post("/data/student", auth, async function (req, res) {
     console.log(req.body);
     const { page, identityNumber, name, grade, classNum } = req.body;
 

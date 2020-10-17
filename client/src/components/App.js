@@ -21,10 +21,10 @@ function App() {
             <NavBar />
             <Switch>
                 <Route exact path="/" component={Auth(LandingPage, null)} />
+                <Route path="/data" component={Auth(DataPage, true)} />
+                <Route path="/upload" component={Auth(UploadPage, true)} />
                 <Route exact path="/login" component={Auth(LoginPage, false)} />
-                <Route exact path="/register" component={Auth(RegisterPage, false)} />
-                <Route path="/data" component={Auth(DataPage, false)} />
-                <Route path="/upload" component={Auth(UploadPage, false)} />
+                <Route exact path="/register" component={Auth(RegisterPage, true, true)} />
             </Switch>
             {/* <Footer /> */}
         </Suspense>

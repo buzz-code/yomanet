@@ -53,7 +53,7 @@ function LoginPage(props) {
                 <div className="container">
                     <h1>התחברות</h1>
                     <p className="lead">התחברות לחשבון.</p>
-                    <form role="form">
+                    <form>
                         <div className="form-group">
                             <label htmlFor="email">שם משתמש</label>
                             <input
