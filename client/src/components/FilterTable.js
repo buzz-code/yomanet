@@ -54,35 +54,40 @@ export default function FilterTable({ type, params, getData }) {
         dispatch(getData(dataToSubmit));
     };
 
+    const dates = (
+        <>
+            <div className="form-group row">
+                <label className="m-1 col-sm-2">תאריכים</label>
+                <div className="col">
+                    <input
+                        type="date"
+                        id="user"
+                        name="fromDate"
+                        className="form-control"
+                        value={fromDate}
+                        onChange={(e) => setFromDate(e.target.value)}
+                    />
+                </div>
+                <label className="m-1 col-sm-1">עד</label>
+                <div className="col">
+                    <input
+                        type="date"
+                        id="user"
+                        name="toDate"
+                        className="form-control"
+                        value={toDate}
+                        onChange={(e) => setToDate(e.target.value)}
+                    />
+                </div>
+            </div>
+        </>
+    );
+
     let fields = null;
     switch (type) {
         case "listening":
             fields = (
                 <>
-                    <div className="form-group row">
-                        <label className="m-1 col-sm-2">תאריכים</label>
-                        <div className="col">
-                            <input
-                                type="date"
-                                id="user"
-                                name="fromDate"
-                                className="form-control"
-                                value={fromDate}
-                                onChange={(e) => setFromDate(e.target.value)}
-                            />
-                        </div>
-                        <label className="m-1 col-sm-1">עד</label>
-                        <div className="col">
-                            <input
-                                type="date"
-                                id="user"
-                                name="toDate"
-                                className="form-control"
-                                value={toDate}
-                                onChange={(e) => setToDate(e.target.value)}
-                            />
-                        </div>
-                    </div>
                     <div className="form-group row">
                         <label htmlFor="klass" className="col-sm-2">
                             כיתה
@@ -121,7 +126,7 @@ export default function FilterTable({ type, params, getData }) {
                                 id="fromSeconds"
                                 name="fromSeconds"
                                 placeholder="החל מ..."
-                                className="form-control"
+                                className="form-control col"
                                 value={fromSeconds}
                                 onChange={(e) => setFromSeconds(e.target.value)}
                             />
@@ -133,12 +138,13 @@ export default function FilterTable({ type, params, getData }) {
                                 id="toSeconds"
                                 name="toSeconds"
                                 placeholder="עד"
-                                className="form-control"
+                                className="form-control col"
                                 value={toSeconds}
                                 onChange={(e) => setToSeconds(e.target.value)}
                             />
                         </div>
                     </div>
+                    {dates}
                 </>
             );
             break;
@@ -266,6 +272,7 @@ export default function FilterTable({ type, params, getData }) {
                             />
                         </div>
                     </div>
+                    {dates}
                 </>
             );
             break;

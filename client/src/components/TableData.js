@@ -1,24 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FilterTable from "./FilterTable";
 import PagingTable from "./PagingTable";
 
-function TableData({ getData, type }) {
+function TableData({ getData, type, title }) {
     const dispatch = useDispatch();
-    let data = useSelector((state) => state.data.data);
+    const data = useSelector((state) => state.data.data);
+    const params = data ? data.params : {};
+
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        setIsLoading(true);
         dispatch(getData());
     }, [dispatch, getData]);
+
+    useEffect(() => {
+        if (data) {
+            setIsLoading(false);
+        }
+    }, [data]);
 
     return (
         <div className="container">
             <div className="main-content pt-3">
-                {data && (
-                    <>
-                        <h1>{data.title}</h1>
-                        <div>
-                            <FilterTable type={type} params={data.params} getData={getData} />
+                <h1>{title}</h1>
+                <div>
+                    <FilterTable type={type} params={params} getData={getData} />
+                    {isLoading && "טוען..."}
+                    {data && (
+                        <>
                             <table className="table table-striped table-hover table-sm">
                                 <thead>
                                     <tr>
@@ -37,10 +48,10 @@ function TableData({ getData, type }) {
                                     ))}
                                 </tbody>
                             </table>
-                            <PagingTable params={data.params} totalCount={data.totalCount} getData={getData} />
-                        </div>
-                    </>
-                )}
+                            <PagingTable params={params} pageCount={data.pageCount} getData={getData} />
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );

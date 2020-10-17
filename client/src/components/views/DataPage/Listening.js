@@ -3,7 +3,7 @@ import { getListeningData } from "../../../_actions/data_actions";
 import TableData from "../../TableData";
 
 function Listening() {
-    return <TableData getData={getListeningData} type="listening" />;
+    return <TableData getData={getListeningData} type="listening" title="נתוני האזנה" />;
 }
 
 export default Listening;

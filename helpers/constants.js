@@ -1,7 +1,7 @@
 const moment = require("moment");
 
 module.exports = {
-    listeningTableHeaders: [
+    listeningHeaders: [
         { label: "שלוחה", value: "extension" },
         { label: "השמעה", value: "listening" },
         { label: "טלפון", value: "phone" },

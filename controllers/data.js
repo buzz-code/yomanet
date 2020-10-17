@@ -6,6 +6,7 @@ const { Listening } = require("../models/Listening");
 const { Lesson } = require("../models/Lesson");
 const { Student } = require("../models/Student");
 const { auth } = require("../middleware/auth");
+const { getTableDataResponse } = require("../helpers/normalizer");
 
 router.post("/listening", auth, async function (req, res) {
     console.log(req.body);
@@ -27,14 +28,7 @@ router.post("/listening", auth, async function (req, res) {
 
     const totalCount = await Listening.count(query);
 
-    const data = {
-        title: "נתוני האזנה",
-        results,
-        totalCount,
-        headers: constants.listeningTableHeaders,
-        params: req.body,
-    };
-    res.send(data);
+    res.send(getTableDataResponse(results, totalCount, constants.listeningHeaders, req.body));
 });
 
 router.post("/lesson", auth, async function (req, res) {
@@ -53,14 +47,7 @@ router.post("/lesson", auth, async function (req, res) {
 
     const totalCount = await Lesson.count(query);
 
-    const data = {
-        title: "נתוני השיעורים",
-        results,
-        totalCount,
-        headers: constants.lessonHeaders,
-        params: req.body,
-    };
-    res.send(data);
+    res.send(getTableDataResponse(results, totalCount, constants.lessonHeaders, req.body));
 });
 
 router.post("/student", auth, async function (req, res) {
@@ -80,14 +67,7 @@ router.post("/student", auth, async function (req, res) {
 
     const totalCount = await Student.count(query);
 
-    const data = {
-        title: "נתוני הבנות",
-        results,
-        totalCount,
-        headers: constants.studentHeaders,
-        params: req.body,
-    };
-    res.send(data);
+    res.send(getTableDataResponse(results, totalCount, constants.studentHeaders, req.body));
 });
 
 module.exports = router;
