@@ -1,5 +1,5 @@
 import React from "react";
-import { uploadStudentFile } from "../../../_actions/data_actions";
+import { uploadStudentFile } from "../../../_actions/upload_actions";
 import Upload from "./Upload";
 
 function Student(props) {

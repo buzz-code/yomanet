@@ -8,7 +8,7 @@ const { Lesson } = require("../models/Lesson");
 const { Student } = require("../models/Student");
 const { auth } = require("../middleware/auth");
 
-router.post("/data/upload/listening", auth, async function (req, res) {
+router.post("/listening", auth, async function (req, res) {
     if (req.files && req.files.fileUpload) {
         const content = await files.readFile(req.files.fileUpload.tempFilePath);
         if (validation.fileIsUnique(content)) {
@@ -20,7 +20,7 @@ router.post("/data/upload/listening", auth, async function (req, res) {
     res.send({ success: true });
 });
 
-router.post("/data/upload/lesson", auth, async function (req, res) {
+router.post("/lesson", auth, async function (req, res) {
     if (req.files && req.files.fileUpload) {
         const parsed = parsing.parseLesson(req.files.fileUpload.tempFilePath);
         await Lesson.deleteMany();
@@ -30,7 +30,7 @@ router.post("/data/upload/lesson", auth, async function (req, res) {
     res.send({ success: true });
 });
 
-router.post("/data/upload/student", auth, async function (req, res) {
+router.post("/student", auth, async function (req, res) {
     if (req.files && req.files.fileUpload) {
         const parsed = parsing.parseStudent(req.files.fileUpload.tempFilePath);
         await Student.deleteMany();

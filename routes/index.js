@@ -6,12 +6,18 @@ router.get("/", function (req, res) {
 });
 
 const usersController = require("../controllers/users");
-router.use(usersController);
+router.use("/user", usersController);
 
 const dataController = require("../controllers/data");
-router.use(dataController);
+router.use("/data", dataController);
 
 const uploadController = require("../controllers/upload");
-router.use(uploadController);
+router.use("/upload", uploadController);
+
+const listController = require("../controllers/list");
+router.use("/list", listController);
+
+const reportController = require("../controllers/report");
+router.use("/report", reportController);
 
 module.exports = router;

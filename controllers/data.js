@@ -1,14 +1,13 @@
 const express = require("express");
 const moment = require("moment");
 const router = express.Router();
-const db = require("../helpers/db");
 const constants = require("../helpers/constants");
 const { Listening } = require("../models/Listening");
 const { Lesson } = require("../models/Lesson");
 const { Student } = require("../models/Student");
 const { auth } = require("../middleware/auth");
 
-router.post("/data/listening", auth, async function (req, res) {
+router.post("/listening", auth, async function (req, res) {
     console.log(req.body);
     const { page, fromDate, toDate, klass, lesson, teacher, fromSeconds, toSeconds } = req.body;
 
@@ -38,7 +37,7 @@ router.post("/data/listening", auth, async function (req, res) {
     res.send(data);
 });
 
-router.post("/data/lesson", auth, async function (req, res) {
+router.post("/lesson", auth, async function (req, res) {
     console.log(req.body);
     const { page, extension, messageName } = req.body;
 
@@ -64,7 +63,7 @@ router.post("/data/lesson", auth, async function (req, res) {
     res.send(data);
 });
 
-router.post("/data/student", auth, async function (req, res) {
+router.post("/student", auth, async function (req, res) {
     console.log(req.body);
     const { page, identityNumber, name, grade, classNum } = req.body;
 
@@ -90,27 +89,6 @@ router.post("/data/student", auth, async function (req, res) {
         params: req.body,
     };
     res.send(data);
-});
-
-router.get("/getLessonList", async function (req, res) {
-    const { term } = req.query;
-    const data = await db.getLessonList(term);
-    const items = data.map((item) => ({ id: item.extension, text: item.messageName }));
-    res.send({ results: items });
-});
-
-router.get("/getTeacherList", async function (req, res) {
-    const { term } = req.query;
-    const data = await db.getTeacherList(term);
-    const items = data.map((item) => ({ id: item.extension, text: item.messageName }));
-    res.send({ results: items });
-});
-
-router.get("/getKlassList", async function (req, res) {
-    const { term } = req.query;
-    const data = await db.getKlassList(term);
-    const items = data.map((item) => ({ id: item.extension, text: item.messageName }));
-    res.send({ results: items });
 });
 
 module.exports = router;
