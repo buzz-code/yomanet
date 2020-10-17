@@ -1,12 +1,14 @@
 import React from "react";
 import "./Navbar.css";
 import { useSelector } from "react-redux";
+import clsx from "clsx";
+import { useLocation } from "react-router-dom";
 
 function NavBar() {
-    let userData = useSelector((state) => state.user.userData);
+    const userData = useSelector((state) => state.user.userData);
+    const location = useLocation();
 
     const routes = [
-        { label: "בית", value: "/" },
         {
             label: "נתונים",
             value: "/data",
@@ -23,6 +25,15 @@ function NavBar() {
                 { label: "הוספת נתוני האזנה", value: "/upload/listening" },
                 { label: "עדכון נתוני שיעורים", value: "/upload/lesson" },
                 { label: "עדכון נתוני תלמידות", value: "/upload/student" },
+            ],
+        },
+        {
+            label: "דוחות",
+            value: "/report",
+            children: [
+                { label: "הוספת נתוני האזנה", value: "/report/listening" },
+                { label: "עדכון נתוני שיעורים", value: "/report/lesson" },
+                { label: "עדכון נתוני תלמידות", value: "/report/student" },
             ],
         },
     ];
@@ -43,9 +54,20 @@ function NavBar() {
             </button>
             <div id="navbarNav" className="collapse navbar-collapse">
                 <ul className="navbar-nav mr-auto">
+                    <li
+                        className={clsx("nav-item dropdown", {
+                            active: location.pathname == "/",
+                        })}>
+                        <a className="nav-link" href="/">
+                            בית
+                        </a>
+                    </li>
                     {routes.map((item) =>
                         item.children ? (
-                            <li className="nav-item dropdown">
+                            <li
+                                className={clsx("nav-item dropdown", {
+                                    active: location.pathname.startsWith(item.value),
+                                })}>
                                 <a
                                     className="nav-link dropdown-toggle"
                                     href="#"
@@ -65,7 +87,10 @@ function NavBar() {
                                 </div>
                             </li>
                         ) : (
-                            <li className="nav-item">
+                            <li
+                                className={clsx("nav-item", {
+                                    active: location.pathname.startsWith(item.value),
+                                })}>
                                 <a href={item.value} title={item.label} className="nav-link">
                                     {item.label}
                                 </a>
@@ -74,13 +99,19 @@ function NavBar() {
                     )}
                 </ul>
                 <ul className="navbar-nav">
-                    <li className="nav-item">
+                    <li
+                        className={clsx("nav-item dropdown", {
+                            active: location.pathname.startsWith("/login"),
+                        })}>
                         <a className="nav-link" href="/login">
                             התחברות
                         </a>
                     </li>
                     {userData && userData.isAdmin && (
-                        <li className="nav-item">
+                        <li
+                            className={clsx("nav-item dropdown", {
+                                active: location.pathname.startsWith("/register"),
+                            })}>
                             <a className="nav-link" href="/register">
                                 הרשמה
                             </a>

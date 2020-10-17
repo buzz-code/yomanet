@@ -7,6 +7,7 @@ import LoginPage from "./views/LoginPage/LoginPage.js";
 import RegisterPage from "./views/RegisterPage/RegisterPage.js";
 import UploadPage from "./views/UploadPage/UploadPage.js";
 import DataPage from "./views/DataPage/DataPage.js";
+import ReportPage from "./views/ReportPage/ReportPage.js";
 import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer";
 import Helmet from "./views/Helmet/Helmet";
@@ -23,10 +24,11 @@ function App() {
                 <Route exact path="/" component={Auth(LandingPage, null)} />
                 <Route path="/data" component={Auth(DataPage, true)} />
                 <Route path="/upload" component={Auth(UploadPage, true)} />
+                <Route path="/report" component={Auth(ReportPage, true)} />
                 <Route exact path="/login" component={Auth(LoginPage, false)} />
                 <Route exact path="/register" component={Auth(RegisterPage, true, true)} />
             </Switch>
-            {/* <Footer /> */}
+            <Footer />
         </Suspense>
     );
 }
