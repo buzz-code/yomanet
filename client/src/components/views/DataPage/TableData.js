@@ -13,7 +13,7 @@ function DataPage({ getData, type }) {
 
     return (
         <div className="container">
-            <div className="main-content">
+            <div className="main-content pt-3">
                 {data && (
                     <>
                         <h1>{data.title}</h1>

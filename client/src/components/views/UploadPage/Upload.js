@@ -18,7 +18,7 @@ function Upload({ uploadFile, ...props }) {
 
     return (
         <div className="container">
-            <div className="main-content">
+            <div className="main-content pt-3">
                 <h1>העלאת נתונים</h1>
                 <form>
                     <div className="form-group">

@@ -49,7 +49,7 @@ function LoginPage(props) {
 
     return (
         <div className="container">
-            <div className="main-content">
+            <div className="main-content pt-3">
                 <div className="container">
                     <h1>התחברות</h1>
                     <p className="lead">התחברות לחשבון.</p>
