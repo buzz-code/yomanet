@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { getLessonList, getKlassList } from "../../../_actions/list_actions";
+import TypeAhead from "./TypeAhead";
 
 export default function FilterTable({ type, params, getData }) {
     const dispatch = useDispatch();
@@ -57,71 +59,83 @@ export default function FilterTable({ type, params, getData }) {
         case "listening":
             fields = (
                 <>
-                    <div className="form-group">
-                        <label className="m-1">טווח תאריכים</label>
-                        <input
-                            type="date"
-                            id="user"
-                            name="fromDate"
-                            className="form-control"
-                            value={fromDate}
-                            onChange={(e) => setFromDate(e.target.value)}
-                        />
-                        <label className="m-1">עד</label>
-                        <input
-                            type="date"
-                            id="user"
-                            name="toDate"
-                            className="form-control"
-                            value={toDate}
-                            onChange={(e) => setToDate(e.target.value)}
-                        />
+                    <div className="form-group row">
+                        <label className="m-1 col-sm-2">תאריכים</label>
+                        <div className="col">
+                            <input
+                                type="date"
+                                id="user"
+                                name="fromDate"
+                                className="form-control"
+                                value={fromDate}
+                                onChange={(e) => setFromDate(e.target.value)}
+                            />
+                        </div>
+                        <label className="m-1 col-sm-1">עד</label>
+                        <div className="col">
+                            <input
+                                type="date"
+                                id="user"
+                                name="toDate"
+                                className="form-control"
+                                value={toDate}
+                                onChange={(e) => setToDate(e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="klass">כיתה</label>
-                        <input
-                            type="text"
-                            id="klass"
-                            name="klass"
-                            placeholder="הכנס כיתה"
-                            className="form-control"
-                            value={klass}
-                            onChange={(e) => setKlass(e.target.value)}
-                        />
+                    <div className="form-group row">
+                        <label htmlFor="klass" className="col-sm-2">
+                            כיתה
+                        </label>
+                        <div className="col">
+                            <TypeAhead
+                                id="klass"
+                                placeholder={"בחר כיתה..."}
+                                value={klass}
+                                setValue={setKlass}
+                                getOptions={getKlassList}
+                            />
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="lesson">שיעור</label>
-                        <input
-                            type="text"
-                            id="lesson"
-                            name="lesson"
-                            placeholder="הכנס שיעור"
-                            className="form-control"
-                            value={lesson}
-                            onChange={(e) => setLesson(e.target.value)}
-                        />
+                    <div className="form-group row">
+                        <label htmlFor="lesson" className="col-sm-2">
+                            שיעור
+                        </label>
+                        <div className="col">
+                            <TypeAhead
+                                id="lesson"
+                                placeholder={"בחר שיעור..."}
+                                value={lesson}
+                                setValue={setLesson}
+                                getOptions={getLessonList}
+                            />
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <label className="m-1">טווח שניות</label>
-                        <input
-                            type="number"
-                            id="fromSeconds"
-                            name="fromSeconds"
-                            placeholder="החל מ..."
-                            className="form-control"
-                            value={fromSeconds}
-                            onChange={(e) => setFromSeconds(e.target.value)}
-                        />
-                        <label className="m-1">עד</label>
-                        <input
-                            type="number"
-                            id="toSeconds"
-                            name="toSeconds"
-                            placeholder="עד"
-                            className="form-control"
-                            value={toSeconds}
-                            onChange={(e) => setToSeconds(e.target.value)}
-                        />
+                    <div className="form-group row">
+                        <label className="m-1 col-sm-2">טווח שניות</label>
+                        <div className="col">
+                            <input
+                                type="number"
+                                id="fromSeconds"
+                                name="fromSeconds"
+                                placeholder="החל מ..."
+                                className="form-control"
+                                value={fromSeconds}
+                                onChange={(e) => setFromSeconds(e.target.value)}
+                            />
+                        </div>
+                        <label className="m-1 col-sm-2">עד</label>
+                        <div className="col">
+                            <input
+                                type="number"
+                                id="toSeconds"
+                                name="toSeconds"
+                                placeholder="עד"
+                                className="form-control"
+                                value={toSeconds}
+                                onChange={(e) => setToSeconds(e.target.value)}
+                            />
+                        </div>
                     </div>
                 </>
             );
@@ -129,29 +143,37 @@ export default function FilterTable({ type, params, getData }) {
         case "lesson":
             fields = (
                 <>
-                    <div className="form-group">
-                        <label htmlFor="extension">שלוחה</label>
-                        <input
-                            type="text"
-                            id="extension"
-                            name="extension"
-                            placeholder="הכנס שלוחה"
-                            className="form-control"
-                            value={extension}
-                            onChange={(e) => setExtension(e.target.value)}
-                        />
+                    <div className="form-group row">
+                        <label htmlFor="extension" className="col-sm-2">
+                            שלוחה
+                        </label>
+                        <div className="col">
+                            <input
+                                type="text"
+                                id="extension"
+                                name="extension"
+                                placeholder="הכנס שלוחה"
+                                className="form-control"
+                                value={extension}
+                                onChange={(e) => setExtension(e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="messageName">שם הודעה</label>
-                        <input
-                            type="text"
-                            id="messageName"
-                            name="messageName"
-                            placeholder="הכנס שם הודעה"
-                            className="form-control"
-                            value={messageName}
-                            onChange={(e) => setMessageName(e.target.value)}
-                        />
+                    <div className="form-group row">
+                        <label htmlFor="messageName" className="col-sm-2">
+                            שם הודעה
+                        </label>
+                        <div className="col">
+                            <input
+                                type="text"
+                                id="messageName"
+                                name="messageName"
+                                placeholder="הכנס שם הודעה"
+                                className="form-control"
+                                value={messageName}
+                                onChange={(e) => setMessageName(e.target.value)}
+                            />
+                        </div>
                     </div>
                 </>
             );
@@ -159,53 +181,51 @@ export default function FilterTable({ type, params, getData }) {
         case "student":
             fields = (
                 <>
-                    <div className="form-group">
-                        <label htmlFor="identityNumber">מספר זהות</label>
-                        <input
-                            type="text"
-                            id="identityNumber"
-                            name="identityNumber"
-                            placeholder="הכנס מספר זהות"
-                            className="form-control"
-                            value={identityNumber}
-                            onChange={(e) => setIdentityNumber(e.target.value)}
-                        />
+                    <div className="form-group row">
+                        <label htmlFor="identityNumber" className="col-sm-2">
+                            מספר זהות
+                        </label>
+                        <div className="col">
+                            <input
+                                type="text"
+                                id="identityNumber"
+                                name="identityNumber"
+                                placeholder="הכנס מספר זהות"
+                                className="form-control"
+                                value={identityNumber}
+                                onChange={(e) => setIdentityNumber(e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="name">שם</label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            placeholder="הכנס שם"
-                            className="form-control"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
+                    <div className="form-group row">
+                        <label htmlFor="name" className="col-sm-2">
+                            שם
+                        </label>
+                        <div className="col">
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="הכנס שם"
+                                className="form-control"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="grade">שכבה</label>
-                        <input
-                            type="text"
-                            id="grade"
-                            name="grade"
-                            placeholder="הכנס שכבה"
-                            className="form-control"
-                            value={grade}
-                            onChange={(e) => setGrade(e.target.value)}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="classNum">מספר כיתה</label>
-                        <input
-                            type="text"
-                            id="classNum"
-                            name="classNum"
-                            placeholder="הכנס מספר כיתה"
-                            className="form-control"
-                            value={classNum}
-                            onChange={(e) => setClassNum(e.target.value)}
-                        />
+                    <div className="form-group row">
+                        <label htmlFor="klass" className="col-sm-2">
+                            כיתה
+                        </label>
+                        <div className="col">
+                            <TypeAhead
+                                id="klass"
+                                placeholder={"בחר כיתה..."}
+                                value={klass}
+                                setValue={setKlass}
+                                getOptions={getKlassList}
+                            />
+                        </div>
                     </div>
                 </>
             );
@@ -213,7 +233,7 @@ export default function FilterTable({ type, params, getData }) {
     }
 
     return (
-        <form className="form-inline p-2 jumbotron">
+        <form className="p-2 jumbotron container">
             {fields}
             <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
                 סנן

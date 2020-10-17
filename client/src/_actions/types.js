@@ -5,3 +5,4 @@ export const LOGOUT_USER = 'logout_user';
 
 export const FETCH_DATA = 'fetch_data';
 export const UPLOAD_FILE = 'upload_file';
+export const GET_LIST = 'get_list   ';

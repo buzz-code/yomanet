@@ -16,8 +16,8 @@ router.post("/listening", auth, async function (req, res) {
     if (toDate) query.date = { ...query.date, $lte: moment(toDate).toDate() };
     if (fromSeconds) query.seconds = { $gte: Number(fromSeconds) };
     if (toSeconds) query.seconds = { ...query.seconds, $lte: Number(toSeconds) };
-    if (lesson) query.extension = Array.isArray(lesson) ? { $in: lesson } : lesson;
-    if (klass) query.name = new RegExp(`^${klass}.*`);
+    if (lesson && lesson.length) query.extension = new RegExp(lesson.map((item) => item.value).join("|"));
+    if (klass && klass.length) query.name = new RegExp(`^${klass.map((item) => item.value).join("|")}.*`);
     console.log(query);
 
     const results = await Listening.find(query, null, {
@@ -65,13 +65,12 @@ router.post("/lesson", auth, async function (req, res) {
 
 router.post("/student", auth, async function (req, res) {
     console.log(req.body);
-    const { page, identityNumber, name, grade, classNum } = req.body;
+    const { page, identityNumber, name, klass } = req.body;
 
     const query = {};
     if (identityNumber) query.identityNumber = new RegExp(`${identityNumber}`);
     if (name) query.name = new RegExp(`${name}`);
-    if (grade) query.grade = new RegExp(`${grade}`);
-    if (classNum) query.classNum = new RegExp(`${classNum}`);
+    if (klass && klass.length) query.fullName = new RegExp(`^${klass.map((item) => item.value).join("|")}.*`);
     console.log(query);
 
     const results = await Student.find(query, null, {

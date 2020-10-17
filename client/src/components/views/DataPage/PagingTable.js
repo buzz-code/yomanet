@@ -41,9 +41,6 @@ export default function PagingTable({ params, totalCount, getData }) {
         }
         setPages(pages);
     }, [params, totalCount]);
-    useEffect(()=>console.log('params'),[params])
-    useEffect(()=>console.log('totalCount'),[totalCount])
-    useEffect(()=>console.log('getData'),[getData])
 
     const handlePageClick = (e, item) => {
         e.preventDefault();
