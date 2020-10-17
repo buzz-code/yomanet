@@ -31,9 +31,9 @@ function NavBar() {
             label: "דוחות",
             value: "/report",
             children: [
-                { label: "הוספת נתוני האזנה", value: "/report/listening" },
-                { label: "עדכון נתוני שיעורים", value: "/report/lesson" },
-                { label: "עדכון נתוני תלמידות", value: "/report/student" },
+                { label: "נתוני האזנה לפי כיתה ומקצוע", value: "/report/listeningByKlassAndLesson" },
+                // { label: "עדכון נתוני שיעורים", value: "/report/lesson" },
+                // { label: "עדכון נתוני תלמידות", value: "/report/student" },
             ],
         },
     ];

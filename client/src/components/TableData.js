@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import FilterTable from "./FilterTable";
 import PagingTable from "./PagingTable";
 
-function DataPage({ getData, type }) {
+function TableData({ getData, type }) {
     const dispatch = useDispatch();
     let data = useSelector((state) => state.data.data);
 
     useEffect(() => {
         dispatch(getData());
-    }, []);
+    }, [dispatch, getData]);
 
     return (
         <div className="container">
@@ -46,4 +46,4 @@ function DataPage({ getData, type }) {
     );
 }
 
-export default DataPage;
+export default TableData;

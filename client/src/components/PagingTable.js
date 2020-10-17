@@ -40,7 +40,7 @@ export default function PagingTable({ params, totalCount, getData }) {
             pages.push(lastPage);
         }
         setPages(pages);
-    }, [params, totalCount]);
+    }, [page, lastPage]);
 
     const handlePageClick = (e, item) => {
         e.preventDefault();

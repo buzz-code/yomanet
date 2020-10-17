@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getLessonList, getKlassList } from "../../../_actions/list_actions";
+import { getLessonList, getKlassList } from "../_actions/list_actions";
 import TypeAhead from "./TypeAhead";
 
 export default function FilterTable({ type, params, getData }) {
@@ -90,6 +90,7 @@ export default function FilterTable({ type, params, getData }) {
                         <div className="col">
                             <TypeAhead
                                 id="klass"
+                                multiple={true}
                                 placeholder={"בחר כיתה..."}
                                 value={klass}
                                 setValue={setKlass}
@@ -104,6 +105,7 @@ export default function FilterTable({ type, params, getData }) {
                         <div className="col">
                             <TypeAhead
                                 id="lesson"
+                                multiple={true}
                                 placeholder={"בחר שיעור..."}
                                 value={lesson}
                                 setValue={setLesson}
@@ -220,6 +222,7 @@ export default function FilterTable({ type, params, getData }) {
                         <div className="col">
                             <TypeAhead
                                 id="klass"
+                                multiple={true}
                                 placeholder={"בחר כיתה..."}
                                 value={klass}
                                 setValue={setKlass}
@@ -229,6 +232,44 @@ export default function FilterTable({ type, params, getData }) {
                     </div>
                 </>
             );
+            break;
+        case "listeningByKlassAndLesson":
+            fields = (
+                <>
+                    <div className="form-group row">
+                        <label htmlFor="klass" className="col-sm-2">
+                            כיתה
+                        </label>
+                        <div className="col">
+                            <TypeAhead
+                                multiple={false}
+                                id="klass"
+                                placeholder={"בחר כיתה..."}
+                                value={klass}
+                                setValue={setKlass}
+                                getOptions={getKlassList}
+                            />
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <label htmlFor="lesson" className="col-sm-2">
+                            שיעור
+                        </label>
+                        <div className="col">
+                            <TypeAhead
+                                id="lesson"
+                                multiple={true}
+                                placeholder={"בחר שיעור..."}
+                                value={lesson}
+                                setValue={setLesson}
+                                getOptions={getLessonList}
+                            />
+                        </div>
+                    </div>
+                </>
+            );
+            break;
+        default:
             break;
     }
 
