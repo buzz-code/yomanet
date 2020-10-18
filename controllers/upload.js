@@ -48,7 +48,7 @@ router.post("/lesson", auth, async function (req, res) {
     if (req.files && req.files.fileUpload) {
         const parsed = parsing.parseLesson(req.files.fileUpload.tempFilePath);
         parsed.forEach((item) => (item.user = req.user.name));
-        await Lesson.deleteMany();
+        await Lesson.deleteMany({ user: req.user.name });
         await Lesson.insertMany(parsed);
         console.log("saved");
     }
@@ -59,7 +59,7 @@ router.post("/student", auth, async function (req, res) {
     if (req.files && req.files.fileUpload) {
         const parsed = parsing.parseStudent(req.files.fileUpload.tempFilePath);
         parsed.forEach((item) => (item.user = req.user.name));
-        await Student.deleteMany();
+        await Student.deleteMany({ user: req.user.name });
         await Student.insertMany(parsed);
         console.log("saved");
     }

@@ -28,6 +28,9 @@ const userSchema = mongoose.Schema({
     },
     tokenExp :{
         type: Number
+    },
+    welcomeMessage :{
+        type: String
     }
 })
 

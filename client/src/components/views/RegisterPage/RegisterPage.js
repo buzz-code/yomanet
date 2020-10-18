@@ -42,6 +42,7 @@ function RegisterPage(props) {
                     initialValues={{
                         email: "",
                         name: "",
+                        welcomeMessage: "",
                         password: "",
                         confirmPassword: "",
                     }}
@@ -59,6 +60,7 @@ function RegisterPage(props) {
                         setTimeout(() => {
                             let dataToSubmit = {
                                 email: values.email,
+                                welcomeMessage: values.welcomeMessage,
                                 password: values.password,
                                 name: values.name,
                                 image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`,
@@ -103,6 +105,27 @@ function RegisterPage(props) {
                                         onBlur={handleBlur}
                                     />
                                     {errors.name && touched.name && <div className="input-feedback">{errors.name}</div>}
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="welcomeMessage">הודעת פתיחה</label>
+                                    <input
+                                        type="text"
+                                        id="welcomeMessage"
+                                        name="welcomeMessage"
+                                        required
+                                        placeholder="הכנס הודעת פתיחה"
+                                        className={
+                                            errors.welcomeMessage && touched.welcomeMessage
+                                                ? "form-control error"
+                                                : "form-control"
+                                        }
+                                        value={values.welcomeMessage}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    {errors.welcomeMessage && touched.welcomeMessage && (
+                                        <div className="input-feedback">{errors.welcomeMessage}</div>
+                                    )}
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="email">דוא"ל</label>
