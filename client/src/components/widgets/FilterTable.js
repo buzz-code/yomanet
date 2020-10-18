@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getLessonList, getKlassList } from "../_actions/list_actions";
+import { getLessonList, getKlassList } from "../../_actions/list_actions";
 import TypeAhead from "./TypeAhead";
 
 export default function FilterTable({ type, params, getData, isPdf }) {

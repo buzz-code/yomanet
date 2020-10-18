@@ -1,6 +1,6 @@
 import React from "react";
 import { getPDFListeningByKlassAndLesson } from "../../../_actions/report_actions";
-import TableData from "../../TableData";
+import TableData from "../../widgets/TableData";
 
 function ListeningByKlassAndLesson() {
     return (

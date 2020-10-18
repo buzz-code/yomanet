@@ -34,7 +34,9 @@ router.post("/listening", auth, async function (req, res) {
 
     const totalCount = await Listening.count(query);
 
-    const headers = constants.listeningHeaders.filter((item) => item.value !== "identityType");
+    const headers = constants.listeningHeaders
+        .filter((item) => item.value !== "identityType")
+        .sort((item1, item2) => item1.order - item2.order);
     res.send(getTableDataResponse(results, totalCount, headers, req.body));
 });
 

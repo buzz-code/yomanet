@@ -1,19 +1,23 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import Loader from "../../widgets/Loader";
 
 function Upload({ uploadFile, ...props }) {
     const dispatch = useDispatch();
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
     };
     const handleSubmit = (e) => {
+        setIsLoading(true);
         e.preventDefault();
         e.stopPropagation();
         dispatch(uploadFile(file)).then((response) => {
             setMessage("העלאת הנתונים הסתיימה בהצלחה");
+            setIsLoading(false);
             setTimeout(() => {
                 props.history.push("/");
             }, 3000);
@@ -56,7 +60,8 @@ function Upload({ uploadFile, ...props }) {
                             {message}
                         </p>
                     </div>
-                )}{" "}
+                )}
+                {isLoading && <Loader />}
             </div>
         </div>
     );

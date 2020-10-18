@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FilterTable from "./FilterTable";
+import Loader from "./Loader";
 import PagingTable from "./PagingTable";
 
 function TableData({ getData, type, title, isPdf }) {
@@ -29,7 +30,7 @@ function TableData({ getData, type, title, isPdf }) {
                 <h1>{title}</h1>
                 <div>
                     <FilterTable type={type} params={params} getData={getData} isPdf={isPdf} />
-                    {isLoading && "טוען..."}
+                    {isLoading && <Loader />}
                     {data && data.headers && (
                         <>
                             <table className="table table-striped table-hover table-sm">
