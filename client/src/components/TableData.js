@@ -11,7 +11,7 @@ function TableData({ getData, type, title, isPdf }) {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        if (isPdf == false) {
+        if (!isPdf) {
             setIsLoading(true);
             dispatch(getData());
         }
@@ -50,7 +50,7 @@ function TableData({ getData, type, title, isPdf }) {
                                     ))}
                                 </tbody>
                             </table>
-                            {isPdf && <PagingTable params={params} pageCount={data.pageCount} getData={getData} />}
+                            {!isPdf && <PagingTable params={params} pageCount={data.pageCount} getData={getData} />}
                         </>
                     )}
                 </div>

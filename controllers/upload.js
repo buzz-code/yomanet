@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const moment = require("moment");
+
 const validation = require("./../helpers/validation");
 const parsing = require("../helpers/parsing");
 const files = require("../helpers/files");
@@ -13,6 +15,10 @@ router.post("/listening", auth, async function (req, res) {
         const content = await files.readFile(req.files.fileUpload.tempFilePath);
         if (validation.fileIsUnique(content)) {
             const parsed = parsing.parseListening(content);
+            parsed.forEach((item) => {
+                item.date = moment(item.date, "dd/MM/yyyy").toDate();
+                item.seconds = Number(item.seconds);
+            });
             await Listening.insertMany(parsed);
             console.log("saved");
         }

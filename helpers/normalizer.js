@@ -1,5 +1,6 @@
 const constants = require("./constants");
 const puppeteer = require("puppeteer");
+const moment = require("moment");
 
 const normalizeListening = (data) => {
     return data;
@@ -28,6 +29,9 @@ const getTableCellValue = (item, header) => {
         }
         ret.push(secs);
         return ret.join("");
+    }
+    if (header.format === "date") {
+        return moment(item[header.value]).format("DD/MM/yyyy");
     }
     return item[header.value];
 };

@@ -13,8 +13,8 @@ router.post("/listening", auth, async function (req, res) {
     const { page, fromDate, toDate, klass, lesson, teacher, fromSeconds, toSeconds } = req.body;
 
     const query = {};
-    if (fromDate) query.date = { $gte: moment(fromDate).toDate() };
-    if (toDate) query.date = { ...query.date, $lte: moment(toDate).toDate() };
+    if (fromDate) query.date = { $gte: moment.utc(fromDate).toDate() };
+    if (toDate) query.date = { ...query.date, $lte: moment.utc(toDate).toDate() };
     if (fromSeconds) query.seconds = { $gte: Number(fromSeconds) };
     if (toSeconds) query.seconds = { ...query.seconds, $lte: Number(toSeconds) };
     if (lesson && lesson.length) query.extension = new RegExp(lesson.map((item) => item.value).join("|"));
@@ -24,7 +24,13 @@ router.post("/listening", auth, async function (req, res) {
     const results = await Listening.find(query, null, {
         skip: constants.pageSize * (page - 1),
         limit: constants.pageSize,
-    });
+    }).lean();
+    const extensions = new Set(results.map((item) => item.extension));
+
+    const lessons = await Lesson.find({ extension: { $in: [...extensions] } });
+    const lessonByExt = {};
+    lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
+    results.forEach((item) => (item.extension = lessonByExt[item.extension]));
 
     const totalCount = await Listening.count(query);
 
@@ -43,7 +49,7 @@ router.post("/lesson", auth, async function (req, res) {
     const results = await Lesson.find(query, null, {
         skip: constants.pageSize * (page - 1),
         limit: constants.pageSize,
-    });
+    }).lean();
 
     const totalCount = await Lesson.count(query);
 
@@ -63,7 +69,7 @@ router.post("/student", auth, async function (req, res) {
     const results = await Student.find(query, null, {
         skip: constants.pageSize * (page - 1),
         limit: constants.pageSize,
-    });
+    }).lean();
 
     const totalCount = await Student.count(query);
 

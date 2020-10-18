@@ -1,5 +1,3 @@
-const moment = require("moment");
-
 module.exports = {
     listeningHeaders: [
         { label: "שלוחה", value: "extension" },
@@ -9,12 +7,12 @@ module.exports = {
         { label: "מספר זיהוי", value: "identityNumber" },
         { label: "שם", value: "name" },
         { label: "עברי", value: "hebrew" },
-        { label: "תאריך", value: "date", format: (text) => moment(text, "dd/MM/yyyy").toDate() },
+        { label: "תאריך", value: "date", format: "date" },
         { label: "התחלה שעה", value: "startTime" },
         { label: "נקודת התחלה", value: "startPoint" },
         { label: "נקודת יציאה", value: "endPoint" },
         { label: "יציאה זמן", value: "endTime" },
-        { label: "סה''כ שניות", value: "seconds", format: (text) => Number(text) },
+        { label: "סה''כ דקות", value: "seconds", format: "sec2min" },
     ],
     lessonHeaders: [
         { label: "שלוחה", value: "extension" },

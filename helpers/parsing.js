@@ -18,10 +18,7 @@ const parseListening = (htmlString) => {
         .forEach((item) => {
             row = {};
             item.querySelectorAll("td").forEach(
-                (item, index) =>
-                    (row[constants.listeningHeaders[index].value] = constants.listeningHeaders[index].format
-                        ? constants.listeningHeaders[index].format(item.text)
-                        : item.text)
+                (item, index) => (row[constants.listeningHeaders[index].value] = item.text)
             );
             data.push(row);
         });

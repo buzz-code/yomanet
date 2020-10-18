@@ -16,7 +16,7 @@ function Upload({ uploadFile, ...props }) {
             setMessage("העלאת הנתונים הסתיימה בהצלחה");
             setTimeout(() => {
                 props.history.push("/");
-            }, 1500);
+            }, 3000);
         });
     };
 
@@ -42,21 +42,21 @@ function Upload({ uploadFile, ...props }) {
                     <a role="button" href="/" className="btn btn-default">
                         ביטול
                     </a>
-                    {message && (
-                        <label>
-                            <p
-                                style={{
-                                    color: "#28a745",
-                                    fontSize: "0.7rem",
-                                    border: "1px solid",
-                                    padding: "1rem",
-                                    borderRadius: "10px",
-                                }}>
-                                {message}
-                            </p>
-                        </label>
-                    )}
                 </form>
+                {message && (
+                    <div>
+                        <p
+                            style={{
+                                color: "#28a745",
+                                fontSize: "0.7rem",
+                                border: "1px solid",
+                                padding: "1rem",
+                                borderRadius: "10px",
+                            }}>
+                            {message}
+                        </p>
+                    </div>
+                )}{" "}
             </div>
         </div>
     );
