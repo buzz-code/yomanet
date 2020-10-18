@@ -36,6 +36,9 @@ const getTableCellValue = (item, header) => {
     if (header.format === "time") {
         return moment.utc(item[header.value]).format("HH:mm:ss");
     }
+    if (header.format === "nameWOKlass") {
+        return item[header.value].match(/\d(.*)$/)[1];
+    }
     return item[header.value];
 };
 
@@ -94,7 +97,9 @@ const createHtml = (title, data, headers) => `
             }
             table {
                 max-width: 100%;
+                width: 100%;
                 font-family: sans-serif;
+                table-layout: fixed;
             }
             thead tr {
                 background-color: #009879;
@@ -105,7 +110,13 @@ const createHtml = (title, data, headers) => `
                 border-bottom: 1px solid #dddddd;
             }
             th, td {
-                padding: 15px;
+                padding: 10px 5px;
+                text-align: center;
+                font-size: 0.75rem;
+                width: auto;
+            }
+            td:first-of-type, th:first-of-type {
+                width: 100px;
             }
             td[title='00:00'] {
                 color: white;

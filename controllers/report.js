@@ -106,7 +106,7 @@ router.get("/pdf/listeningByKlass", auth, async function (req, res) {
     lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
 
     const headers = [
-        { label: "שם התלמידה", value: "name" },
+        { label: "שם התלמידה", value: "name", format: "nameWOKlass" },
         ...[...keys]
             .filter((item) => item !== "name" && item !== "extension")
             .sort()
@@ -158,7 +158,7 @@ router.get("/pdf/confByKlass", auth, async function (req, res) {
     lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
 
     const headers = [
-        { label: "שם התלמידה", value: "name" },
+        { label: "שם התלמידה", value: "name", format: "nameWOKlass" },
         ...[...keys]
             .filter((item) => item !== "name")
             .sort()
