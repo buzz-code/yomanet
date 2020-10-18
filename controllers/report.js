@@ -41,7 +41,7 @@ router.get("/pdf/listeningByKlassAndLesson", auth, async function (req, res) {
     const lessons = await Lesson.find({ extension: { $in: [...extensions] } });
     const lessonByExt = {};
     lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
-    results.forEach((item) => (item.extension = lessonByExt[item.extension]));
+    results.forEach((item) => (item.extension = lessonByExt[item.extension] || item.extension));
 
     const keys = new Set();
     results.forEach((item) => {
