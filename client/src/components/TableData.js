@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FilterTable from "./FilterTable";
 import PagingTable from "./PagingTable";
 
-function TableData({ getData, type, title }) {
+function TableData({ getData, type, title, isPdf }) {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.data.data);
     const params = data ? data.params : {};
@@ -11,8 +11,10 @@ function TableData({ getData, type, title }) {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        setIsLoading(true);
-        dispatch(getData());
+        if (isPdf == false) {
+            setIsLoading(true);
+            dispatch(getData());
+        }
     }, [dispatch, getData]);
 
     useEffect(() => {
@@ -26,9 +28,9 @@ function TableData({ getData, type, title }) {
             <div className="main-content pt-3">
                 <h1>{title}</h1>
                 <div>
-                    <FilterTable type={type} params={params} getData={getData} />
+                    <FilterTable type={type} params={params} getData={getData} isPdf={isPdf} />
                     {isLoading && "טוען..."}
-                    {data && (
+                    {data && data.headers && (
                         <>
                             <table className="table table-striped table-hover table-sm">
                                 <thead>
@@ -48,7 +50,7 @@ function TableData({ getData, type, title }) {
                                     ))}
                                 </tbody>
                             </table>
-                            <PagingTable params={params} pageCount={data.pageCount} getData={getData} />
+                            {isPdf && <PagingTable params={params} pageCount={data.pageCount} getData={getData} />}
                         </>
                     )}
                 </div>

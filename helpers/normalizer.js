@@ -47,8 +47,77 @@ const getTableDataResponse = (results, totalCount, headers, params) => {
     return data;
 };
 
+const createHeader = (header) => `
+    <td>${header.label}</td>
+    `;
+
+const createCell = (item, header) => `
+    <td>${getTableCellValue(item, header)}</td>
+    `;
+
+const createRow = (item, headers) => `
+    <tr>
+      ${headers.map((header) => createCell(item, header)).join("")}
+    </tr>
+  `;
+
+const createTable = (rows, headers) => `
+      <table>
+        <thead>
+            <tr>
+                ${headers.map((item) => createHeader(item)).join("")}
+            </tr>
+        </thead>
+        <tbody>
+            ${rows}
+        </tbody>
+      </table>
+    `;
+
+const createHtml = (title, data, headers) => `
+      <html>
+        <head>
+          <style>
+            body {
+                direction: rtl;
+            }
+            h1 {
+                text-align: center;
+            }
+            table {
+                width: 100%;
+                font-family: sans-serif;
+                padding: 20px;
+            }
+            thead tr {
+                background-color: #009879;
+                color: #ffffff;
+                text-align: left;            
+            }
+            tbody tr {
+                border-bottom: 1px solid #dddddd;
+            }
+            th, td {
+                padding: 15px;
+            }
+            tbody tr:nth-of-type(even) {
+                background-color: #f3f3f3;
+            }
+            tbody tr:last-of-type {
+                border-bottom: 2px solid #009879;
+            }
+            </style>
+        </head>
+        <body>
+            <h1>${title}</h1>
+            ${createTable(data.map((item) => createRow(item, headers)).join(""), headers)}
+        </body>
+      </html>
+    `;
+
 module.exports = {
     normalizeListening,
     getTableCellValue,
     getTableDataResponse,
+    createHtml,
 };

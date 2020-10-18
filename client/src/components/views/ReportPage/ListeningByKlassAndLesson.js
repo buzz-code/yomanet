@@ -1,13 +1,14 @@
 import React from "react";
-import { getListeningByKlassAndLesson } from "../../../_actions/report_actions";
+import { getPDFListeningByKlassAndLesson } from "../../../_actions/report_actions";
 import TableData from "../../TableData";
 
 function ListeningByKlassAndLesson() {
     return (
         <TableData
             type="listeningByKlassAndLesson"
-            getData={getListeningByKlassAndLesson}
+            getData={getPDFListeningByKlassAndLesson}
             title="נתוני האזנה לפי כיתה ומקצוע"
+            isPdf={true}
         />
     );
 }

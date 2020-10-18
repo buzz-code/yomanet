@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { getLessonList, getKlassList } from "../_actions/list_actions";
 import TypeAhead from "./TypeAhead";
 
-export default function FilterTable({ type, params, getData }) {
+export default function FilterTable({ type, params, getData, isPdf }) {
     const dispatch = useDispatch();
 
     const [fromDate, setFromDate] = useState("");
@@ -18,6 +18,23 @@ export default function FilterTable({ type, params, getData }) {
     const [name, setName] = useState("");
     const [grade, setGrade] = useState("");
     const [classNum, setClassNum] = useState("");
+
+    const getDataToSubmit = () => {
+        return {
+            fromDate,
+            toDate,
+            klass,
+            lesson,
+            fromSeconds,
+            toSeconds,
+            extension,
+            messageName,
+            identityNumber,
+            name,
+            grade,
+            classNum,
+        };
+    };
 
     useEffect(() => {
         setFromDate(params.fromDate);
@@ -37,20 +54,7 @@ export default function FilterTable({ type, params, getData }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        const dataToSubmit = {
-            fromDate,
-            toDate,
-            klass,
-            lesson,
-            fromSeconds,
-            toSeconds,
-            extension,
-            messageName,
-            identityNumber,
-            name,
-            grade,
-            classNum,
-        };
+        const dataToSubmit = getDataToSubmit();
         dispatch(getData(dataToSubmit));
     };
 
@@ -281,15 +285,17 @@ export default function FilterTable({ type, params, getData }) {
     }
 
     return (
-        <form className="p-2 jumbotron container">
-            {fields}
-            <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
-                סנן
-            </button>
-            &nbsp;
-            <button type="clear" className="btn btn-default">
-                נקה סינון
-            </button>
-        </form>
+        <>
+            <form className="p-2 jumbotron container">{fields}</form>
+            <div className="container d-flex mb-4">
+                <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+                    {isPdf ? "יצר דוח" : "סנן נתונים"}
+                </button>
+                &nbsp;
+                <button type="clear" className="btn btn-default mr-auto">
+                    נקה סינון
+                </button>
+            </div>
+        </>
     );
 }
