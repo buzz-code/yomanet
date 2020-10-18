@@ -118,7 +118,7 @@ export default function FilterTable({ type, params, getData, isPdf }) {
                                 placeholder={"בחר שיעור..."}
                                 value={lesson}
                                 setValue={setLesson}
-                                getOptions={(query) => getLessonList(query, klass)}
+                                getOptions={(query) => getLessonList(query)}
                             />
                         </div>
                     </div>
@@ -272,7 +272,7 @@ export default function FilterTable({ type, params, getData, isPdf }) {
                                 placeholder={"בחר שיעור..."}
                                 value={lesson}
                                 setValue={setLesson}
-                                getOptions={(query) => getLessonList(query, klass)}
+                                getOptions={(query) => getLessonList(query)}
                             />
                         </div>
                     </div>
