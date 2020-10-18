@@ -6,12 +6,6 @@ const fileIsUnique = (fileContent) => {
     return md5(fileContent).length > 0;
 };
 
-const login = (username, password) => {
-    // todo:
-    return true;
-};
-
 module.exports = {
     fileIsUnique,
-    login,
 };
