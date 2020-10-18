@@ -31,7 +31,7 @@ const getTableCellValue = (item, header) => {
         return ret.join("");
     }
     if (header.format === "date") {
-        return moment(item[header.value]).format("DD/MM/yyyy");
+        return moment(item[header.value]).format("DD/MM/YYYY");
     }
     return item[header.value];
 };

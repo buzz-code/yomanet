@@ -17,7 +17,7 @@ router.post("/listening", auth, async function (req, res) {
         if (validation.fileIsUnique(content)) {
             const parsed = parsing.parseListening(content);
             parsed.forEach((item) => {
-                item.date = moment(item.date, "dd/MM/yyyy").toDate();
+                item.date = moment.utc(item.date, "DD/MM/YYYY").toDate();
                 item.seconds = Number(item.seconds);
                 item.user = req.user.name;
             });
@@ -34,7 +34,7 @@ router.post("/conf", auth, async function (req, res) {
         if (validation.fileIsUnique(content)) {
             const parsed = parsing.parseConf(content);
             parsed.forEach((item) => {
-                item.date = moment(item.date, "dd/MM/yyyy").toDate();
+                item.date = moment.utc(item.date, "DD/MM/YYYY").toDate();
                 item.user = req.user.name;
             });
             await Conf.insertMany(parsed);
