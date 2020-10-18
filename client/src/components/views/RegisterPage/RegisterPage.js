@@ -188,7 +188,7 @@ function RegisterPage(props) {
                                 </div>
                                 <Form.Item {...tailFormItemLayout}>
                                     <Button onClick={handleSubmit} type="primary" disabled={isSubmitting}>
-                                        Submit
+                                        אישור
                                     </Button>
                                 </Form.Item>
                             </Form>
