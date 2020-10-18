@@ -22,9 +22,9 @@ function App() {
             <NavBar />
             <Switch>
                 <Route exact path="/" component={Auth(LandingPage, null)} />
-                <Route path="/data" component={Auth(DataPage, true)} />
-                <Route path="/upload" component={Auth(UploadPage, true)} />
-                <Route path="/report" component={Auth(ReportPage, true)} />
+                <Route path="/data" component={DataPage} />
+                <Route path="/upload" component={UploadPage} />
+                <Route path="/report" component={ReportPage} />
                 <Route exact path="/login" component={Auth(LoginPage, false)} />
                 <Route exact path="/register" component={Auth(RegisterPage, true, true)} />
             </Switch>

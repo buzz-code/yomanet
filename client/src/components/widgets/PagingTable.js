@@ -52,7 +52,7 @@ export default function PagingTable({ params, pageCount, getData }) {
         dispatch(getData(params));
     };
 
-    return (
+    return !pageCount ? null : (
         <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
                 {pages.map((item) => (

@@ -2,9 +2,10 @@ import React from "react";
 import "./Navbar.css";
 import { useSelector } from "react-redux";
 import clsx from "clsx";
-import { useLocation } from "react-router-dom";
+import { useLocation, withRouter } from "react-router-dom";
+import { logoutUser } from "../../../_actions/user_actions";
 
-function NavBar() {
+function NavBar(props) {
     const userData = useSelector((state) => state.user.userData);
     const location = useLocation();
 
@@ -17,6 +18,7 @@ function NavBar() {
                 { label: "נתוני ועידה", value: "/data/conf" },
                 { label: "נתוני שיעורים", value: "/data/lesson" },
                 { label: "נתוני תלמידות", value: "/data/student" },
+                { label: "נתוני משתמשים", value: "/data/user", isAdmin: true },
             ],
         },
         {
@@ -38,6 +40,17 @@ function NavBar() {
             ],
         },
     ];
+
+    const logoutHandler = () => {
+        logoutUser().then((response) => {
+            if (response.status === 200) {
+                props.history.push("/login");
+            } else {
+                alert("Log Out Failed");
+            }
+        });
+    };
+
     return (
         <nav className="navbar navbar-expand-md navbar-dark">
             <a href="/" className="navbar-brand">
@@ -64,7 +77,7 @@ function NavBar() {
                         </a>
                     </li>
                     {routes.map((item) =>
-                        item.children ? (
+                        item.isAdmin && (!userData || !userData.isAdmin) ? null : item.children ? (
                             <li
                                 className={clsx("nav-item dropdown", {
                                     active: location.pathname.startsWith(item.value),
@@ -78,11 +91,13 @@ function NavBar() {
                                     {item.label}
                                 </button>
                                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    {item.children.map((item) => (
-                                        <a href={item.value} title={item.label} className="dropdown-item">
-                                            {item.label}
-                                        </a>
-                                    ))}
+                                    {item.children.map((item) =>
+                                        item.isAdmin && (!userData || !userData.isAdmin) ? null : (
+                                            <a href={item.value} title={item.label} className="dropdown-item">
+                                                {item.label}
+                                            </a>
+                                        )
+                                    )}
                                 </div>
                             </li>
                         ) : (
@@ -98,7 +113,16 @@ function NavBar() {
                     )}
                 </ul>
                 <ul className="navbar-nav">
-                    {!userData && (
+                    {userData && userData.isAuth ? (
+                        <li
+                            className={clsx("nav-item dropdown", {
+                                active: location.pathname.startsWith("/login"),
+                            })}>
+                            <a className="nav-link" onClick={logoutHandler}>
+                                התנתקות
+                            </a>
+                        </li>
+                    ) : (
                         <li
                             className={clsx("nav-item dropdown", {
                                 active: location.pathname.startsWith("/login"),
@@ -124,4 +148,4 @@ function NavBar() {
     );
 }
 
-export default NavBar;
+export default withRouter(NavBar);

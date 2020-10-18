@@ -37,3 +37,12 @@ export function getConfData(params) {
         payload: request,
     };
 }
+
+export function getUserData(params) {
+    const request = axios.post(`${DATA_SERVER}/user`, params).then((response) => response.data);
+
+    return {
+        type: FETCH_DATA,
+        payload: request,
+    };
+}

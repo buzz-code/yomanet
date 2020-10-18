@@ -6,6 +6,7 @@ const { Listening } = require("../models/Listening");
 const { Lesson } = require("../models/Lesson");
 const { Student } = require("../models/Student");
 const { Conf } = require("../models/Conf");
+const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
 const { getTableDataResponse } = require("../helpers/normalizer");
 
@@ -95,6 +96,29 @@ router.post("/conf", auth, async function (req, res) {
     const totalCount = await Conf.count(query);
 
     res.send(getTableDataResponse(results, totalCount, constants.confHeaders, req.body));
+});
+
+router.post("/user", auth, async function (req, res) {
+    console.log(req.body);
+
+    if (req.user.role === 0) {
+        res.send(getTableDataResponse([], 0, [], {}));
+    }
+
+    const results = await User.find().lean();
+    await Promise.all(
+        results.map(async (user) => {
+            const query = { user: user.name };
+
+            user.isAdmin = user.role !== 0 ? "כן" : "לא";
+            user.listening = await Listening.countDocuments(query);
+            user.conf = await Conf.countDocuments(query);
+            user.lesson = await Lesson.countDocuments(query);
+            user.student = await Student.countDocuments(query);
+        })
+    );
+
+    res.send(getTableDataResponse(results, 0, constants.userHeaders, req.body));
 });
 
 module.exports = router;

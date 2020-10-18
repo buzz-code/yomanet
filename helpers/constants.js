@@ -40,5 +40,14 @@ module.exports = {
         { label: "חדר ועידה", value: "confRoom" },
         { label: "סוג כניסה", value: "enterType" },
     ],
+    userHeaders: [
+        { value: "name", label: "שם משתמש" },
+        { value: "email", label: "דוא''ל" },
+        { value: "isAdmin", label: "מנהל" },
+        { value: "listening", label: "האזנה" },
+        { value: "conf", label: "ועידה" },
+        { value: "lesson", label: "שיעורים" },
+        { value: "student", label: "תלמידות" },
+    ],
     pageSize: 10,
 };

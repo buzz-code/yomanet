@@ -7,7 +7,7 @@ import PagingTable from "./PagingTable";
 function TableData({ getData, type, title, isPdf }) {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.data.data);
-    const params = data ? data.params : {};
+    const params = data && data.params ? data.params : {};
 
     const [isLoading, setIsLoading] = useState(false);
 
