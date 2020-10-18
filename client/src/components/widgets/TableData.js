@@ -33,7 +33,7 @@ function TableData({ getData, type, title, isPdf }) {
                     {isLoading && <Loader />}
                     {data && data.headers && (
                         <>
-                            <table className="table table-striped table-hover table-sm">
+                            <table className="table table-striped table-hover table-sm table-responsive">
                                 <thead>
                                     <tr>
                                         {data.headers.map((item) => (

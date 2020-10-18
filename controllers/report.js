@@ -37,9 +37,9 @@ router.get("/pdf/listeningByKlassAndLesson", auth, async function (req, res) {
         { $addFields: { "tmp.name": "$_id.name", "tmp.extension": "$_id.extension" } },
         { $replaceRoot: { newRoot: "$tmp" } },
     ]);
+    
     const extensions = new Set(results.map((item) => item.extension));
     extensions.add(lesson);
-
     const lessons = await Lesson.find({ extension: { $in: [...extensions] } });
     const lessonByExt = {};
     lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));

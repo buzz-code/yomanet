@@ -27,8 +27,8 @@ router.post("/listening", auth, async function (req, res) {
         skip: constants.pageSize * (page - 1),
         limit: constants.pageSize,
     }).lean();
-    const extensions = new Set(results.map((item) => item.extension));
 
+    const extensions = new Set(results.map((item) => item.extension));
     const lessons = await Lesson.find({ extension: { $in: [...extensions] } });
     const lessonByExt = {};
     lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
@@ -92,6 +92,12 @@ router.post("/conf", auth, async function (req, res) {
         skip: constants.pageSize * (page - 1),
         limit: constants.pageSize,
     }).lean();
+
+    const extensions = new Set(results.map((item) => item.extension));
+    const lessons = await Lesson.find({ extension: { $in: [...extensions] } });
+    const lessonByExt = {};
+    lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
+    results.forEach((item) => (item.extension = lessonByExt[item.extension]));
 
     const totalCount = await Conf.count(query);
 
