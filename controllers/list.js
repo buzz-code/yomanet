@@ -8,10 +8,18 @@ const { Student } = require("../models/Student");
 const { auth } = require("../middleware/auth");
 
 router.post("/lesson", auth, async function (req, res) {
-    const { term } = req.body;
+    const { term, klass } = req.body;
 
     const query = {};
     if (term) query.messageName = new RegExp(term);
+    if (klass) {
+        if (term) {
+            delete query.messageName;
+            query.$and = [{ messageName: new RegExp(term) }, { messageName: new RegExp(klass) }];
+        } else {
+            query.messageName = new RegExp(klass);
+        }
+    }
     console.log(query);
 
     const results = await Lesson.find(query, ["extension", "messageName"], { limit: 10 });

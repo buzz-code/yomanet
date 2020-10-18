@@ -2,8 +2,11 @@ import axios from "axios";
 import { GET_LIST } from "./types";
 import { LIST_SERVER } from "../components/Config.js";
 
-export function getLessonList(term) {
-    const request = axios.post(`${LIST_SERVER}/lesson`, { term }).then((response) => response.data);
+export function getLessonList(term, klass) {
+    if (klass && klass.length) {
+        klass = klass.map((item) => item.label).join("|");
+    }
+    const request = axios.post(`${LIST_SERVER}/lesson`, { term, klass }).then((response) => response.data);
 
     return {
         type: GET_LIST,

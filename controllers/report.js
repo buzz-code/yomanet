@@ -59,7 +59,7 @@ router.get("/pdf/listeningByKlassAndLesson", auth, async function (req, res) {
 
     let title = "נתונים";
     if (klass) title += ` לכיתה ${klass}`;
-    if (lesson) title += ` לשיעור ${lesson}`;
+    if (lesson) title += ` לשיעור ${lessonByExt[lesson]}`;
 
     createReport(res, title, results, headers);
 });
