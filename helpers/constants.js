@@ -33,7 +33,7 @@ module.exports = {
         { label: "מספר זיהוי", value: "identityNumber" },
         { label: "שם", value: "name" },
         { label: "תאריך עברי", value: "hebrew" },
-        { label: "תאריך", value: "date" },
+        { label: "תאריך", value: "date", format: "date" },
         { label: "שעת כניסה", value: "startTime" },
         { label: "שעת יציאה", value: "endTime" },
         { label: "סך הכל זמן", value: "totalTime" },
