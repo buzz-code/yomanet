@@ -106,7 +106,7 @@ router.get("/pdf/listeningByKlass", auth, async function (req, res) {
         { label: "שם התלמידה", value: "name" },
         ...[...keys]
             .filter((item) => item !== "name" && item !== "extension")
-            .map((item) => ({ value: item, label: lessonByExt[item], format: "sec2min" })),
+            .map((item) => ({ value: item, label: lessonByExt[item] || item, format: "sec2min" })),
     ];
 
     let title = "נתונים";

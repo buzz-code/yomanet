@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 function Upload({ uploadFile, ...props }) {
     const dispatch = useDispatch();
     const [file, setFile] = useState(null);
+    const [message, setMessage] = useState(null);
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -12,7 +13,10 @@ function Upload({ uploadFile, ...props }) {
         e.preventDefault();
         e.stopPropagation();
         dispatch(uploadFile(file)).then((response) => {
-            props.history.push("/");
+            setMessage("העלאת הנתונים הסתיימה בהצלחה");
+            setTimeout(() => {
+                props.history.push("/");
+            }, 1500);
         });
     };
 
@@ -38,6 +42,20 @@ function Upload({ uploadFile, ...props }) {
                     <a role="button" href="/" className="btn btn-default">
                         ביטול
                     </a>
+                    {message && (
+                        <label>
+                            <p
+                                style={{
+                                    color: "#28a745",
+                                    fontSize: "0.7rem",
+                                    border: "1px solid",
+                                    padding: "1rem",
+                                    borderRadius: "10px",
+                                }}>
+                                {message}
+                            </p>
+                        </label>
+                    )}
                 </form>
             </div>
         </div>
