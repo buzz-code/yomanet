@@ -28,3 +28,12 @@ export function getStudentData(params) {
         payload: request,
     };
 }
+
+export function getConfData(params) {
+    const request = axios.post(`${DATA_SERVER}/conf`, params).then((response) => response.data);
+
+    return {
+        type: FETCH_DATA,
+        payload: request,
+    };
+}

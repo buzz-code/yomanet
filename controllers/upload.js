@@ -8,6 +8,7 @@ const files = require("../helpers/files");
 const { Listening } = require("../models/Listening");
 const { Lesson } = require("../models/Lesson");
 const { Student } = require("../models/Student");
+const { Conf } = require("../models/Conf");
 const { auth } = require("../middleware/auth");
 
 router.post("/listening", auth, async function (req, res) {
@@ -21,6 +22,22 @@ router.post("/listening", auth, async function (req, res) {
                 item.user = req.user.name;
             });
             await Listening.insertMany(parsed);
+            console.log("saved");
+        }
+    }
+    res.send({ success: true });
+});
+
+router.post("/conf", auth, async function (req, res) {
+    if (req.files && req.files.fileUpload) {
+        const content = await files.readFile(req.files.fileUpload.tempFilePath);
+        if (validation.fileIsUnique(content)) {
+            const parsed = parsing.parseConf(content);
+            parsed.forEach((item) => {
+                item.date = moment(item.date, "dd/MM/yyyy").toDate();
+                item.user = req.user.name;
+            });
+            await Conf.insertMany(parsed);
             console.log("saved");
         }
     }

@@ -14,6 +14,7 @@ function NavBar() {
             value: "/data",
             children: [
                 { label: "נתוני האזנה", value: "/data/listening" },
+                { label: "נתוני ועידה", value: "/data/conf" },
                 { label: "נתוני שיעורים", value: "/data/lesson" },
                 { label: "נתוני תלמידות", value: "/data/student" },
             ],
@@ -23,6 +24,7 @@ function NavBar() {
             value: "/upload",
             children: [
                 { label: "הוספת נתוני האזנה", value: "/upload/listening" },
+                { label: "הוספת נתוני ועידה", value: "/upload/conf" },
                 { label: "עדכון נתוני שיעורים", value: "/upload/lesson" },
                 { label: "עדכון נתוני תלמידות", value: "/upload/student" },
             ],

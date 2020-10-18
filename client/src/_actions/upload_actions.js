@@ -13,6 +13,17 @@ export function uploadListeningFile(file) {
     };
 }
 
+export function uploadConfFile(file) {
+    const formData = new FormData();
+    formData.append("fileUpload", file, file);
+    const request = axios.post(`${UPLOAD_SERVER}/conf`, formData).then((response) => response.data);
+
+    return {
+        type: UPLOAD_FILE,
+        payload: request,
+    };
+}
+
 export function uploadLessonFile(file) {
     const formData = new FormData();
     formData.append("fileUpload", file, file);

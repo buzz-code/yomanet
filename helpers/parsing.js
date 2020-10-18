@@ -27,6 +27,31 @@ const parseListening = (htmlString) => {
     return data;
 };
 
+const parseConf = (htmlString) => {
+    // const keys = [];
+    const data = [];
+    const root = htmlParser.parse(htmlString);
+    const table = root.querySelector("table");
+
+    // table
+    //     .querySelector("thead")
+    //     .querySelectorAll("th")
+    //     .forEach((item) => keys.push(item.text));
+    table
+        .querySelector("tbody")
+        .querySelectorAll("tr")
+        .forEach((item) => {
+            row = {};
+            item.querySelectorAll("td").forEach(
+                (item, index) => (row[constants.confHeaders[index].value] = item.text)
+            );
+            data.push(row);
+        });
+
+    console.log("parsing finished");
+    return data;
+};
+
 const parseLesson = (url) => {
     const wb = XLSX.readFile(url);
     const ws = wb.Sheets[wb.SheetNames[0]];
@@ -45,4 +70,5 @@ module.exports = {
     parseListening,
     parseLesson,
     parseStudent,
+    parseConf,
 };

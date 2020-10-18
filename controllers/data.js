@@ -5,6 +5,7 @@ const constants = require("../helpers/constants");
 const { Listening } = require("../models/Listening");
 const { Lesson } = require("../models/Lesson");
 const { Student } = require("../models/Student");
+const { Conf } = require("../models/Conf");
 const { auth } = require("../middleware/auth");
 const { getTableDataResponse } = require("../helpers/normalizer");
 
@@ -77,6 +78,23 @@ router.post("/student", auth, async function (req, res) {
     const totalCount = await Student.count(query);
 
     res.send(getTableDataResponse(results, totalCount, constants.studentHeaders, req.body));
+});
+
+router.post("/conf", auth, async function (req, res) {
+    console.log(req.body);
+    const { page } = req.body;
+
+    const query = { user: req.user.name };
+    console.log(query);
+
+    const results = await Conf.find(query, null, {
+        skip: constants.pageSize * (page - 1),
+        limit: constants.pageSize,
+    }).lean();
+
+    const totalCount = await Conf.count(query);
+
+    res.send(getTableDataResponse(results, totalCount, constants.confHeaders, req.body));
 });
 
 module.exports = router;
