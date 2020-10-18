@@ -18,9 +18,9 @@ function Upload({ uploadFile, ...props }) {
         dispatch(uploadFile(file)).then((response) => {
             setMessage("העלאת הנתונים הסתיימה בהצלחה");
             setIsLoading(false);
-            setTimeout(() => {
-                props.history.push("/");
-            }, 3000);
+            // setTimeout(() => {
+            //     props.history.push("/");
+            // }, 3000);
         });
     };
 
