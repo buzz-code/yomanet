@@ -98,14 +98,16 @@ function NavBar() {
                     )}
                 </ul>
                 <ul className="navbar-nav">
-                    <li
-                        className={clsx("nav-item dropdown", {
-                            active: location.pathname.startsWith("/login"),
-                        })}>
-                        <a className="nav-link" href="/login">
-                            התחברות
-                        </a>
-                    </li>
+                    {!userData && (
+                        <li
+                            className={clsx("nav-item dropdown", {
+                                active: location.pathname.startsWith("/login"),
+                            })}>
+                            <a className="nav-link" href="/login">
+                                התחברות
+                            </a>
+                        </li>
+                    )}
                     {userData && userData.isAdmin && (
                         <li
                             className={clsx("nav-item dropdown", {
