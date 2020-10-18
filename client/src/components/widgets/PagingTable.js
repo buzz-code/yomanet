@@ -6,7 +6,8 @@ export default function PagingTable({ params, pageCount, getData }) {
     const dispatch = useDispatch();
 
     const [pages, setPages] = useState([]);
-    const page = params.page || 1;
+    const [customPage, setCustomPage] = useState([]);
+    const page = params.page ? Number(params.page) : 1;
 
     useEffect(() => {
         const pages = [];
@@ -43,7 +44,8 @@ export default function PagingTable({ params, pageCount, getData }) {
     const handlePageClick = (e, item) => {
         e.preventDefault();
         e.stopPropagation();
-        if (item == "..." || item == page) {
+        setCustomPage(null);
+        if (item == "..." || item == page || item > pageCount) {
             return;
         }
         params.page = item;
@@ -55,11 +57,23 @@ export default function PagingTable({ params, pageCount, getData }) {
             <ul className="pagination justify-content-center">
                 {pages.map((item) => (
                     <li className={clsx("page-item", { active: item == page, disabled: item == "..." })}>
-                        <a href="#" className="page-link" onClick={(e) => handlePageClick(e, item)}>
+                        <a href="#" className="page-link shadow-none" onClick={(e) => handlePageClick(e, item)}>
                             {item}
                         </a>
                     </li>
                 ))}
+                <li className="page-item">
+                    <input
+                        type="number"
+                        class="form-control"
+                        placeholder="עמוד..."
+                        value={customPage}
+                        onChange={(e) => setCustomPage(e.target.value)}
+                    />
+                    <button class="btn btn-outline-primary" onClick={(e) => handlePageClick(e, customPage)}>
+                        עבור
+                    </button>
+                </li>
             </ul>
         </nav>
     );

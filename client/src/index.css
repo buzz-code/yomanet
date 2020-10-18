@@ -45,3 +45,12 @@ input.error {
 .jumbotron {
     margin-bottom: 1rem !important;
 }
+
+.page-item .form-control {
+    width: 5rem;
+    display: inline-block;
+}
+
+.page-item .btn {
+    vertical-align: baseline;
+}
