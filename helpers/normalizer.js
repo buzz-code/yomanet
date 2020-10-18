@@ -121,7 +121,7 @@ const createHtml = (title, data, headers) => `
 
 const createReport = async (res, title, results, headers) => {
     const html = createHtml(title, results, headers);
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
     const pdf = await browser.newPage();
     await pdf.setContent(html);
     const buffer = await pdf.pdf({
