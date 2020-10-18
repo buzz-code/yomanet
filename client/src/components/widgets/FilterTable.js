@@ -281,6 +281,7 @@ export default function FilterTable({ type, params, getData, isPdf }) {
             );
             break;
         case "listeningByKlass":
+        case "confByKlass":
             fields = (
                 <>
                     <div className="form-group row">

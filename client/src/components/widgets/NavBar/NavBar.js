@@ -37,6 +37,7 @@ function NavBar(props) {
             children: [
                 { label: "נתוני האזנה לפי כיתה ומקצוע", value: "/report/listeningByKlassAndLesson" },
                 { label: "נתוני האזנה לפי כיתה", value: "/report/listeningByKlass" },
+                { label: "נתוני ועידה לפי כיתה", value: "/report/confByKlass" },
             ],
         },
     ];

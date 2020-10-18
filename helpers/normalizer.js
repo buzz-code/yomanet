@@ -31,7 +31,10 @@ const getTableCellValue = (item, header) => {
         return ret.join("");
     }
     if (header.format === "date") {
-        return moment(item[header.value]).format("DD/MM/YYYY");
+        return moment.utc(item[header.value]).format("DD/MM/YYYY");
+    }
+    if (header.format === "time") {
+        return moment.utc(item[header.value]).format("HH:mm:ss");
     }
     return item[header.value];
 };
@@ -57,7 +60,7 @@ const createHeader = (header) => `
     `;
 
 const createCell = (item, header) => `
-    <td>${getTableCellValue(item, header)}</td>
+    <td title='${getTableCellValue(item, header)}'>${getTableCellValue(item, header)}</td>
     `;
 
 const createRow = (item, headers) => `
@@ -86,7 +89,7 @@ const createHtml = (title, data, headers) => `
             body {
                 direction: rtl;
             }
-            h1 {
+            h1, h2 {
                 text-align: center;
             }
             table {
@@ -104,6 +107,12 @@ const createHtml = (title, data, headers) => `
             th, td {
                 padding: 15px;
             }
+            td[title='00:00'] {
+                color: white;
+            }
+            tbody tr:nth-of-type(even) td[title='00:00'] {
+                color: #f3f3f3;
+            }
             tbody tr:nth-of-type(even) {
                 background-color: #f3f3f3;
             }
@@ -114,14 +123,15 @@ const createHtml = (title, data, headers) => `
         </head>
         <body>
             <h1>${title}</h1>
-            ${createTable(data.map((item) => createRow(item, headers)).join(""), headers)}
+            ${data.length > 0 ? createTable(data.map((item) => createRow(item, headers)).join(""), headers) : ""}
+            <h2>${data.length == 0 ? "לא נמצאו נתונים" : ""}</h2>
         </body>
       </html>
     `;
 
 const createReport = async (res, title, results, headers) => {
     const html = createHtml(title, results, headers);
-    const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
+    const browser = await puppeteer.launch({ headless: true, args: ["--no-sandbox"] });
     const pdf = await browser.newPage();
     await pdf.setContent(html);
     const buffer = await pdf.pdf({
@@ -136,6 +146,7 @@ const createReport = async (res, title, results, headers) => {
         },
     });
     await browser.close();
+    res.attachment(title + ".pdf");
     res.end(buffer);
 };
 module.exports = {

@@ -12,7 +12,7 @@ const confSchema = mongoose.Schema({
     date: { type: Date },
     startTime: { type: String },
     endTime: { type: String },
-    totalTime: { type: String },
+    seconds: { type: Number },
     confRoom: { type: String },
     enterType: { type: String },
 });

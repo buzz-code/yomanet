@@ -31,3 +31,17 @@ export function getPDFListeningByKlass(params) {
         type: GET_REPORT_DATA,
     };
 }
+
+export function getPDFConfByKlass(params) {
+    params = {
+        ...params,
+        klass: params.klass && params.klass.length ? params.klass.map((item) => item.value).join("|") : undefined,
+    };
+
+    const url = `${REPORT_SERVER}/pdf/confByKlass?${queryString.stringify(params)}`;
+    window.open(url, "_blank");
+
+    return {
+        type: GET_REPORT_DATA,
+    };
+}

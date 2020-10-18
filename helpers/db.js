@@ -36,8 +36,8 @@ const getListeningData = async (page, fromDate, toDate, klass, lesson, teacher, 
     const collection = connection.collection("listening");
 
     const query = {};
-    if (fromDate) query.date = { $gte: moment(fromDate).toDate() };
-    if (toDate) query.date = { ...query.date, $lte: moment(toDate).toDate() };
+    if (fromDate) query.date = { $gte: moment.utc(fromDate).toDate() };
+    if (toDate) query.date = { ...query.date, $lte: moment.utc(toDate).toDate() };
     if (fromSeconds) query.seconds = { $gte: Number(fromSeconds) };
     if (toSeconds) query.seconds = { ...query.seconds, $lte: Number(toSeconds) };
     if (lesson) query.extension = Array.isArray(lesson) ? { $in: lesson } : lesson;
