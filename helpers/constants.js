@@ -1,17 +1,17 @@
 module.exports = {
     listeningHeaders: [
+        { label: "תאריך", value: "date", format: "date" },
+        { label: "עברי", value: "hebrew" },
+        { label: "מספר זיהוי", value: "identityNumber" },
+        { label: "שם", value: "name" },
         { label: "שלוחה", value: "extension" },
         { label: "השמעה", value: "listening" },
         { label: "טלפון", value: "phone" },
         { label: "סוג זיהוי", value: "identityType" },
-        { label: "מספר זיהוי", value: "identityNumber" },
-        { label: "שם", value: "name" },
-        { label: "עברי", value: "hebrew" },
-        { label: "תאריך", value: "date", format: "date" },
         { label: "התחלה שעה", value: "startTime" },
+        { label: "יציאה זמן", value: "endTime" },
         { label: "נקודת התחלה", value: "startPoint" },
         { label: "נקודת יציאה", value: "endPoint" },
-        { label: "יציאה זמן", value: "endTime" },
         { label: "סה''כ דקות", value: "seconds", format: "sec2min" },
     ],
     lessonHeaders: [

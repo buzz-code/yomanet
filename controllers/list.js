@@ -10,7 +10,7 @@ const { auth } = require("../middleware/auth");
 router.post("/lesson", auth, async function (req, res) {
     const { term, klass } = req.body;
 
-    const query = {};
+    const query = { user: req.user.name };
     if (term) query.messageName = new RegExp(term);
     if (klass) {
         if (term) {
@@ -32,10 +32,10 @@ router.post("/lesson", auth, async function (req, res) {
     res.send({ results: items });
 });
 
-router.post("/klass", async function (req, res) {
+router.post("/klass", auth, async function (req, res) {
     const { term } = req.body;
 
-    const query = {};
+    const query = { user: req.user.name };
     if (term) query.fullKlassName = new RegExp(term);
     console.log(query);
 
@@ -47,21 +47,6 @@ router.post("/klass", async function (req, res) {
     const items = results.map((item) => ({
         value: `${item.grade} - ${item.classNum}`,
         label: `${item.grade}${item.classNum}`,
-    }));
-    res.send({ results: items });
-});
-
-router.post("/getStudentList", async function (req, res) {
-    const { term } = req.body;
-    const query = {};
-    if (term) query.name = new RegExp(term);
-    console.log(query);
-
-    const results = await Student.find(query, ["identityNumber", "fullName"]);
-
-    const items = results.map((item) => ({
-        value: item.identityNumber,
-        label: item.fullName,
     }));
     res.send({ results: items });
 });

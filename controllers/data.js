@@ -12,7 +12,7 @@ router.post("/listening", auth, async function (req, res) {
     console.log(req.body);
     const { page, fromDate, toDate, klass, lesson, teacher, fromSeconds, toSeconds } = req.body;
 
-    const query = {};
+    const query = { user: req.user.name };
     if (fromDate) query.date = { $gte: moment.utc(fromDate).toDate() };
     if (toDate) query.date = { ...query.date, $lte: moment.utc(toDate).toDate() };
     if (fromSeconds) query.seconds = { $gte: Number(fromSeconds) };
@@ -34,14 +34,15 @@ router.post("/listening", auth, async function (req, res) {
 
     const totalCount = await Listening.count(query);
 
-    res.send(getTableDataResponse(results, totalCount, constants.listeningHeaders, req.body));
+    const headers = constants.listeningHeaders.filter((item) => item.value !== "identityType");
+    res.send(getTableDataResponse(results, totalCount, headers, req.body));
 });
 
 router.post("/lesson", auth, async function (req, res) {
     console.log(req.body);
     const { page, extension, messageName } = req.body;
 
-    const query = {};
+    const query = { user: req.user.name };
     if (extension) query.extension = new RegExp(`${extension}`);
     if (messageName) query.messageName = new RegExp(`${messageName}`);
     console.log(query);
@@ -60,7 +61,7 @@ router.post("/student", auth, async function (req, res) {
     console.log(req.body);
     const { page, identityNumber, name, klass } = req.body;
 
-    const query = {};
+    const query = { user: req.user.name };
     if (identityNumber) query.identityNumber = new RegExp(`${identityNumber}`);
     if (name) query.name = new RegExp(`${name}`);
     if (klass && klass.length) query.fullName = new RegExp(`^${klass.map((item) => item.value).join("|")}.*`);

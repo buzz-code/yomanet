@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const lessonSchema = mongoose.Schema({
+    user: { type: String },
     extension: { type: String },
     messageName: { type: String },
 });

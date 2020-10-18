@@ -12,14 +12,14 @@ router.get("/pdf/listeningByKlassAndLesson", auth, async function (req, res) {
     console.log(req.query);
     const { klass, lesson, fromDate, toDate } = req.query;
 
-    const query = {};
+    const query = { user: req.user.name };
     if (lesson) query.extension = new RegExp(lesson);
     if (klass) query.name = new RegExp(`^${klass}.*`);
-    if (fromDate) query.date = { $gte: moment(fromDate).toDate() };
-    if (toDate) query.date = { ...query.date, $lte: moment(toDate).toDate() };
+    if (fromDate) query.date = { $gte: moment.utc(fromDate).toDate() };
+    if (toDate) query.date = { ...query.date, $lte: moment.utc(toDate).toDate() };
     console.log(query);
 
-    if (JSON.stringify(query) == JSON.stringify({})) {
+    if (JSON.stringify(query) == JSON.stringify({ user: req.user.name })) {
         res.send("חובה לבצע סינון לנתונים");
         return;
     }
@@ -54,6 +54,7 @@ router.get("/pdf/listeningByKlassAndLesson", auth, async function (req, res) {
         { label: "שם השיעור", value: "extension" },
         ...[...keys]
             .filter((item) => item !== "name" && item !== "extension")
+            .sort()
             .map((item) => ({ value: item, label: item, format: "sec2min" })),
     ];
 
@@ -68,13 +69,13 @@ router.get("/pdf/listeningByKlass", auth, async function (req, res) {
     console.log(req.query);
     const { klass, fromDate, toDate } = req.query;
 
-    const query = {};
+    const query = { user: req.user.name };
     if (klass) query.name = new RegExp(`^${klass}.*`);
-    if (fromDate) query.date = { $gte: moment(fromDate).toDate() };
-    if (toDate) query.date = { ...query.date, $lte: moment(toDate).toDate() };
+    if (fromDate) query.date = { $gte: moment.utc(fromDate).toDate() };
+    if (toDate) query.date = { ...query.date, $lte: moment.utc(toDate).toDate() };
     console.log(query);
 
-    if (JSON.stringify(query) == JSON.stringify({})) {
+    if (JSON.stringify(query) == JSON.stringify({ user: req.user.name })) {
         res.send("חובה לבצע סינון לנתונים");
         return;
     }
@@ -106,6 +107,7 @@ router.get("/pdf/listeningByKlass", auth, async function (req, res) {
         { label: "שם התלמידה", value: "name" },
         ...[...keys]
             .filter((item) => item !== "name" && item !== "extension")
+            .sort()
             .map((item) => ({ value: item, label: lessonByExt[item] || item, format: "sec2min" })),
     ];
 

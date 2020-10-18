@@ -18,6 +18,7 @@ router.post("/listening", auth, async function (req, res) {
             parsed.forEach((item) => {
                 item.date = moment(item.date, "dd/MM/yyyy").toDate();
                 item.seconds = Number(item.seconds);
+                item.user = req.user.name;
             });
             await Listening.insertMany(parsed);
             console.log("saved");
@@ -29,6 +30,7 @@ router.post("/listening", auth, async function (req, res) {
 router.post("/lesson", auth, async function (req, res) {
     if (req.files && req.files.fileUpload) {
         const parsed = parsing.parseLesson(req.files.fileUpload.tempFilePath);
+        parsed.forEach((item) => (item.user = req.user.name));
         await Lesson.deleteMany();
         await Lesson.insertMany(parsed);
         console.log("saved");
@@ -39,6 +41,7 @@ router.post("/lesson", auth, async function (req, res) {
 router.post("/student", auth, async function (req, res) {
     if (req.files && req.files.fileUpload) {
         const parsed = parsing.parseStudent(req.files.fileUpload.tempFilePath);
+        parsed.forEach((item) => (item.user = req.user.name));
         await Student.deleteMany();
         await Student.insertMany(parsed);
         console.log("saved");

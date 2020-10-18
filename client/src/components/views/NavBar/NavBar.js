@@ -67,16 +67,14 @@ function NavBar() {
                                 className={clsx("nav-item dropdown", {
                                     active: location.pathname.startsWith(item.value),
                                 })}>
-                                <a
-                                    className="nav-link dropdown-toggle"
-                                    href="#"
+                                <button
+                                    className="btn shadow-none nav-link dropdown-toggle"
                                     id="navbarDropdownMenuLink"
-                                    role="button"
                                     data-toggle="dropdown"
                                     aria-haspopup="true"
                                     aria-expanded="false">
                                     {item.label}
-                                </a>
+                                </button>
                                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     {item.children.map((item) => (
                                         <a href={item.value} title={item.label} className="dropdown-item">

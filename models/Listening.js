@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const listeningSchema = mongoose.Schema({
+    user: { type: String },
     extension: { type: String },
     listening: { type: String },
     phone: { type: String },
