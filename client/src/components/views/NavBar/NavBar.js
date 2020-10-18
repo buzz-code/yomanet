@@ -32,8 +32,7 @@ function NavBar() {
             value: "/report",
             children: [
                 { label: "נתוני האזנה לפי כיתה ומקצוע", value: "/report/listeningByKlassAndLesson" },
-                // { label: "עדכון נתוני שיעורים", value: "/report/lesson" },
-                // { label: "עדכון נתוני תלמידות", value: "/report/student" },
+                { label: "נתוני האזנה לפי כיתה", value: "/report/listeningByKlass" },
             ],
         },
     ];

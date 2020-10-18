@@ -6,8 +6,7 @@ const { Listening } = require("../models/Listening");
 const { Lesson } = require("../models/Lesson");
 const { Student } = require("../models/Student");
 const { auth } = require("../middleware/auth");
-const { createHtml } = require("../helpers/normalizer");
-const puppeteer = require("puppeteer");
+const { createReport } = require("../helpers/normalizer");
 
 router.get("/pdf/listeningByKlassAndLesson", auth, async function (req, res) {
     console.log(req.query);
@@ -51,34 +50,69 @@ router.get("/pdf/listeningByKlassAndLesson", auth, async function (req, res) {
         }
     });
     const headers = [
-        { label: "שם התלמידה", value: "name", width: 125 },
-        { label: "שם השיעור", value: "extension", width: 125 },
+        { label: "שם התלמידה", value: "name" },
+        { label: "שם השיעור", value: "extension" },
         ...[...keys]
             .filter((item) => item !== "name" && item !== "extension")
-            .map((item) => ({ value: item, label: item, format: "sec2min", width: 40 })),
+            .map((item) => ({ value: item, label: item, format: "sec2min" })),
     ];
 
     let title = "נתונים";
     if (klass) title += ` לכיתה ${klass}`;
     if (lesson) title += ` לשיעור ${lesson}`;
 
-    const html = createHtml(title, results, headers);
-    const browser = await puppeteer.launch({ headless: true });
-    const pdf = await browser.newPage();
-    await pdf.setContent(html);
-    const buffer = await pdf.pdf({
-        format: "A4",
-        printBackground: true,
-        landscape: true,
-        margin: {
-            left: "0px",
-            top: "0px",
-            right: "0px",
-            bottom: "0px",
+    createReport(res, title, results, headers);
+});
+
+router.get("/pdf/listeningByKlass", auth, async function (req, res) {
+    console.log(req.query);
+    const { klass, fromDate, toDate } = req.query;
+
+    const query = {};
+    if (klass) query.name = new RegExp(`^${klass}.*`);
+    if (fromDate) query.date = { $gte: moment(fromDate).toDate() };
+    if (toDate) query.date = { ...query.date, $lte: moment(toDate).toDate() };
+    console.log(query);
+
+    if (JSON.stringify(query) == JSON.stringify({})) {
+        res.send("חובה לבצע סינון לנתונים");
+        return;
+    }
+
+    const results = await Listening.aggregate([
+        { $match: query },
+        {
+            $group: {
+                _id: { name: "$name" },
+                items: { $addToSet: { extension: "$extension", seconds: { $sum: "$seconds" } } },
+            },
         },
+        { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.extension", "$items.seconds"] } } } } },
+        { $addFields: { "tmp.name": "$_id.name" } },
+        { $replaceRoot: { newRoot: "$tmp" } },
+    ]);
+    const keys = new Set();
+    results.forEach((item) => {
+        for (const key in item) {
+            keys.add(key);
+        }
     });
-    await browser.close();
-    res.end(buffer);
+
+    const lessons = await Lesson.find({ extension: { $in: [...keys] } });
+    const lessonByExt = {};
+    lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
+
+    const headers = [
+        { label: "שם התלמידה", value: "name" },
+        ...[...keys]
+            .filter((item) => item !== "name" && item !== "extension")
+            .map((item) => ({ value: item, label: lessonByExt[item], format: "sec2min" })),
+    ];
+
+    let title = "נתונים";
+    if (klass) title += ` לכיתה ${klass}`;
+
+    createReport(res, title, results, headers);
 });
 
 module.exports = router;

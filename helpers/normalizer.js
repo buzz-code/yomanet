@@ -1,4 +1,5 @@
 const constants = require("./constants");
+const puppeteer = require("puppeteer");
 
 const normalizeListening = (data) => {
     return data;
@@ -85,9 +86,8 @@ const createHtml = (title, data, headers) => `
                 text-align: center;
             }
             table {
-                width: 100%;
+                max-width: 100%;
                 font-family: sans-serif;
-                padding: 20px;
             }
             thead tr {
                 background-color: #009879;
@@ -115,9 +115,28 @@ const createHtml = (title, data, headers) => `
       </html>
     `;
 
+const createReport = async (res, title, results, headers) => {
+    const html = createHtml(title, results, headers);
+    const browser = await puppeteer.launch({ headless: true });
+    const pdf = await browser.newPage();
+    await pdf.setContent(html);
+    const buffer = await pdf.pdf({
+        format: "A4",
+        printBackground: true,
+        landscape: true,
+        margin: {
+            left: "20px",
+            top: "20px",
+            right: "20px",
+            bottom: "20px",
+        },
+    });
+    await browser.close();
+    res.end(buffer);
+};
 module.exports = {
     normalizeListening,
     getTableCellValue,
     getTableDataResponse,
-    createHtml,
+    createReport,
 };

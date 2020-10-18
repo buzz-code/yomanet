@@ -280,6 +280,28 @@ export default function FilterTable({ type, params, getData, isPdf }) {
                 </>
             );
             break;
+        case "listeningByKlass":
+            fields = (
+                <>
+                    <div className="form-group row">
+                        <label htmlFor="klass" className="col-sm-2">
+                            כיתה
+                        </label>
+                        <div className="col">
+                            <TypeAhead
+                                multiple={false}
+                                id="klass"
+                                placeholder={"בחר כיתה..."}
+                                value={klass}
+                                setValue={setKlass}
+                                getOptions={getKlassList}
+                            />
+                        </div>
+                    </div>
+                    {dates}
+                </>
+            );
+            break;
         default:
             break;
     }
