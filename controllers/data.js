@@ -18,7 +18,7 @@ function registerHook(hook) {
         const count = await hook.count(query);
         const headers = await hook.headers(results, query, req.body);
 
-        res.send(getTableDataResponse(results, count, headers, req.body));
+        getTableDataResponse(res, results, count, headers, req.body);
     });
 }
 
