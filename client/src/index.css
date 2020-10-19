@@ -50,10 +50,13 @@ input.error {
 .page-item .form-control {
     width: 5rem;
     display: inline-block;
+    padding: 4px 12px;
+    height: 100%;
 }
 
 .page-item .btn {
     vertical-align: baseline;
+    padding: 4px 12px;
 }
 
 .dropdown-menu {
