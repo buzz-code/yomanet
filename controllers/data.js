@@ -12,11 +12,11 @@ const { getTableDataResponse, getPagingConfig } = require("../helpers/normalizer
 
 router.post("/listening", auth, async function (req, res) {
     const query = await getListeningQuery(req);
-    const results = await Listening.find(query, null, getPagingConfig(req.body.page));
+    const results = await Listening.find(query, null, getPagingConfig(req.body.page)).lean();
     const totalCount = await Listening.count(query);
 
     const extensions = new Set(results.map((item) => item.extension));
-    const lessons = await Lesson.find({ extension: { $in: [...extensions] } });
+    const lessons = await Lesson.find({ extension: { $in: [...extensions] } }).lean();
     const lessonByExt = {};
     lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
     results.forEach((item) => (item.extension = lessonByExt[item.extension] || item.extension));
@@ -45,7 +45,7 @@ async function getListeningQuery(req) {
 
 router.post("/lesson", auth, async function (req, res) {
     const query = await getLessonQuery(req);
-    const results = await Lesson.find(query, null, getPagingConfig(req.body.page));
+    const results = await Lesson.find(query, null, getPagingConfig(req.body.page)).lean();
     const totalCount = await Lesson.count(query);
 
     res.send(getTableDataResponse(results, totalCount, constants.lessonHeaders, req.body));
@@ -65,7 +65,7 @@ async function getLessonQuery(req) {
 
 router.post("/student", auth, async function (req, res) {
     const query = await getStudentQuery(req);
-    const results = await Student.find(query, null, getPagingConfig(req.body.page));
+    const results = await Student.find(query, null, getPagingConfig(req.body.page)).lean();
     const totalCount = await Student.count(query);
 
     res.send(getTableDataResponse(results, totalCount, constants.studentHeaders, req.body));
@@ -86,11 +86,11 @@ async function getStudentQuery(req) {
 
 router.post("/conf", auth, async function (req, res) {
     const query = await getConfQuery(req);
-    const results = await Conf.find(query, null, getPagingConfig(req.body.page));
+    const results = await Conf.find(query, null, getPagingConfig(req.body.page)).lean();
     const totalCount = await Conf.count(query);
 
     const extensions = new Set(results.map((item) => item.extension));
-    const lessons = await Lesson.find({ extension: { $in: [...extensions] } });
+    const lessons = await Lesson.find({ extension: { $in: [...extensions] } }).lean();
     const lessonByExt = {};
     lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
     results.forEach((item) => (item.extension = lessonByExt[item.extension] || item.extension));
@@ -113,7 +113,7 @@ router.post("/user", auth, async function (req, res) {
     }
 
     const query = await getUserQuery(req);
-    const results = await user.find(query);
+    const results = await User.find(query).lean();
     const totalCount = 0;
 
     const items = await Promise.all(
