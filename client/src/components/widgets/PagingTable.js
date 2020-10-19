@@ -45,7 +45,7 @@ export default function PagingTable({ params, pageCount, getData }) {
         e.preventDefault();
         e.stopPropagation();
         setCustomPage(null);
-        if (item == "..." || item == page || item > pageCount) {
+        if (item === "..." || item === page || item > pageCount) {
             return;
         }
         params.page = item;
@@ -56,7 +56,7 @@ export default function PagingTable({ params, pageCount, getData }) {
         <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
                 {pages.map((item) => (
-                    <li className={clsx("page-item", { active: item == page, disabled: item == "..." })}>
+                    <li className={clsx("page-item", { active: item === page, disabled: item === "..." })}>
                         <a href="#" className="page-link shadow-none" onClick={(e) => handlePageClick(e, item)}>
                             {item}
                         </a>

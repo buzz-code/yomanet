@@ -16,7 +16,7 @@ function TableData({ getData, type, title, isPdf }) {
             setIsLoading(true);
             dispatch(getData());
         }
-    }, [dispatch, getData]);
+    }, [dispatch, getData, isPdf]);
 
     useEffect(() => {
         if (data) {
