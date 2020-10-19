@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Loader from "../../widgets/Loader";
 
-function Upload({ uploadFile, ...props }) {
+function Upload({ uploadFile, title, ...props }) {
     const dispatch = useDispatch();
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState(null);
@@ -27,7 +27,7 @@ function Upload({ uploadFile, ...props }) {
     return (
         <div className="container">
             <div className="main-content pt-3">
-                <h1>העלאת נתונים</h1>
+                <h1>{title}</h1>
                 <form>
                     <div className="form-group">
                         <label htmlFor="fileUpload">העלאת קובץ</label>
