@@ -10,7 +10,6 @@ import DataPage from "./views/DataPage/DataPage.js";
 import ReportPage from "./views/ReportPage/ReportPage.js";
 import NavBar from "./widgets/NavBar/NavBar";
 import Footer from "./widgets/Footer/Footer";
-import Helmet from "./widgets/Helmet/Helmet";
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -18,7 +17,6 @@ import Helmet from "./widgets/Helmet/Helmet";
 function App() {
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            <Helmet />
             <NavBar />
             <Switch>
                 <Route exact path="/" component={Auth(LandingPage, null)} />

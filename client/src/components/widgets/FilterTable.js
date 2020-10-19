@@ -320,7 +320,7 @@ export default function FilterTable({ type, params, isPdf }) {
                     {isPdf ? "יצר דוח" : "סנן נתונים"}
                 </button>
                 &nbsp;
-                <button type="clear" className="btn btn-default mr-auto">
+                <button type="clear" className="btn btn-default ml-auto">
                     נקה סינון
                 </button>
                 {params && (

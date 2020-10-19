@@ -67,86 +67,84 @@ function NavBar(props) {
                 className="navbar-toggler">
                 <span className="navbar-toggler-icon"></span>
             </button>
-            {window.jQuery ? (
-                <div id="navbarNav" className="collapse navbar-collapse">
-                    <ul className="navbar-nav mr-auto">
-                        <li
-                            className={clsx("nav-item dropdown", {
-                                active: location.pathname === "/",
-                            })}>
-                            <a className="nav-link" href="/">
-                                בית
-                            </a>
-                        </li>
-                        {routes.map((item) =>
-                            item.isAdmin && (!userData || !userData.isAdmin) ? null : item.children ? (
-                                <li
-                                    className={clsx("nav-item dropdown", {
-                                        active: location.pathname.startsWith(item.value),
-                                    })}>
-                                    <button
-                                        className="btn shadow-none nav-link dropdown-toggle"
-                                        id="navbarDropdownMenuLink"
-                                        data-toggle="dropdown"
-                                        aria-haspopup="true"
-                                        aria-expanded="false">
-                                        {item.label}
-                                    </button>
-                                    <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        {item.children.map((item) =>
-                                            item.isAdmin && (!userData || !userData.isAdmin) ? null : (
-                                                <a href={item.value} title={item.label} className="dropdown-item">
-                                                    {item.label}
-                                                </a>
-                                            )
-                                        )}
-                                    </div>
-                                </li>
-                            ) : (
-                                <li
-                                    className={clsx("nav-item", {
-                                        active: location.pathname.startsWith(item.value),
-                                    })}>
-                                    <a href={item.value} title={item.label} className="nav-link">
-                                        {item.label}
-                                    </a>
-                                </li>
-                            )
-                        )}
-                    </ul>
-                    <ul className="navbar-nav">
-                        {userData && userData.isAuth ? (
+            <div id="navbarNav" className="collapse navbar-collapse">
+                <ul className="navbar-nav ml-auto pr-4">
+                    <li
+                        className={clsx("nav-item dropdown", {
+                            active: location.pathname === "/",
+                        })}>
+                        <a className="btn shadow-none nav-link" href="/">
+                            בית
+                        </a>
+                    </li>
+                    {routes.map((item) =>
+                        item.isAdmin && (!userData || !userData.isAdmin) ? null : item.children ? (
                             <li
                                 className={clsx("nav-item dropdown", {
-                                    active: location.pathname.startsWith("/login"),
+                                    active: location.pathname.startsWith(item.value),
                                 })}>
-                                <a className="nav-link" onClick={logoutHandler}>
-                                    התנתקות
-                                </a>
+                                <button
+                                    className="btn shadow-none nav-link dropdown-toggle"
+                                    id="navbarDropdownMenuLink"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false">
+                                    {item.label}
+                                </button>
+                                <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    {item.children.map((item) =>
+                                        item.isAdmin && (!userData || !userData.isAdmin) ? null : (
+                                            <a href={item.value} title={item.label} className="dropdown-item">
+                                                {item.label}
+                                            </a>
+                                        )
+                                    )}
+                                </div>
                             </li>
                         ) : (
                             <li
-                                className={clsx("nav-item dropdown", {
-                                    active: location.pathname.startsWith("/login"),
+                                className={clsx("nav-item", {
+                                    active: location.pathname.startsWith(item.value),
                                 })}>
-                                <a className="nav-link" href="/login">
-                                    התחברות
+                                <a href={item.value} title={item.label} className="btn shadow-none nav-link">
+                                    {item.label}
                                 </a>
                             </li>
-                        )}
-                        {userData && userData.isAdmin && (
-                            <li
-                                className={clsx("nav-item dropdown", {
-                                    active: location.pathname.startsWith("/register"),
-                                })}>
-                                <a className="nav-link" href="/register">
-                                    הרשמה
-                                </a>
-                            </li>
-                        )}
-                    </ul>
-                </div>
-            ) : null}
+                        )
+                    )}
+                </ul>
+                <ul className="navbar-nav">
+                    {userData && userData.isAuth ? (
+                        <li
+                            className={clsx("nav-item dropdown", {
+                                active: location.pathname.startsWith("/login"),
+                            })}>
+                            <a className="nav-link" onClick={logoutHandler}>
+                                התנתקות
+                            </a>
+                        </li>
+                    ) : (
+                        <li
+                            className={clsx("nav-item dropdown", {
+                                active: location.pathname.startsWith("/login"),
+                            })}>
+                            <a className="nav-link" href="/login">
+                                התחברות
+                            </a>
+                        </li>
+                    )}
+                    {userData && userData.isAdmin && (
+                        <li
+                            className={clsx("nav-item dropdown", {
+                                active: location.pathname.startsWith("/register"),
+                            })}>
+                            <a className="nav-link" href="/register">
+                                הרשמה
+                            </a>
+                        </li>
+                    )}
+                </ul>
+            </div>
         </nav>
     );
 }
