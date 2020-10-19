@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteData, getData } from "../../_actions/data_actions";
+import { getData } from "../../_actions/data_actions";
 import { getLessonList, getKlassList } from "../../_actions/list_actions";
 import TypeAhead from "./TypeAhead";
 
-export default function FilterTable({ type, params, isPdf, getPdfData }) {
+export default function FilterTable({ url, params, filterFields }) {
     const dispatch = useDispatch();
 
     const [fromDate, setFromDate] = useState("");
@@ -55,32 +55,24 @@ export default function FilterTable({ type, params, isPdf, getPdfData }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        
+
         const dataToSubmit = getDataToSubmit();
-        if (isPdf) {
-            dispatch(getPdfData(dataToSubmit));
-        } else {
-            dispatch(getData(type, dataToSubmit));
-        }
+        dispatch(getData(url, dataToSubmit));
     };
 
     const handleClear = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        if (isPdf) {
-            window.location.reload();
-        } else {
-            dispatch(getData(type));
-        }
+        dispatch(getData(url));
     };
 
-    const handleDelete = () => {
-        window.confirm("האם אתה בטוח שאתה רוצה למחוק?") && dispatch(deleteData(type, params));
-    };
+    // const handleDelete = () => {
+    //     window.confirm("האם אתה בטוח שאתה רוצה למחוק?") && dispatch(deleteData(url, params));
+    // };
 
-    const dates = (
-        <>
+    const fields = {
+        dateRange: (
             <div className="form-group row">
                 <label className="m-1 col-sm-2">תאריכים</label>
                 <div className="col">
@@ -105,251 +97,183 @@ export default function FilterTable({ type, params, isPdf, getPdfData }) {
                     />
                 </div>
             </div>
-        </>
-    );
-
-    let fields = null;
-    switch (type) {
-        case "listening":
-            fields = (
-                <>
-                    <div className="form-group row">
-                        <label htmlFor="klass" className="col-sm-2">
-                            כיתה
-                        </label>
-                        <div className="col">
-                            <TypeAhead
-                                id="klass"
-                                multiple={true}
-                                placeholder={"בחר כיתה..."}
-                                value={klass}
-                                setValue={setKlass}
-                                getOptions={getKlassList}
-                            />
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <label htmlFor="lesson" className="col-sm-2">
-                            שיעור
-                        </label>
-                        <div className="col">
-                            <TypeAhead
-                                id="lesson"
-                                multiple={true}
-                                placeholder={"בחר שיעור..."}
-                                value={lesson}
-                                setValue={setLesson}
-                                getOptions={(query) => getLessonList(query)}
-                            />
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <label htmlFor="name" className="col-sm-2">
-                            שם תלמידה
-                        </label>
-                        <div className="col">
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                placeholder="הכנס שם תלמידה"
-                                className="form-control"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                    {dates}
-                    <div className="form-group row">
-                        <label className="m-1 col-sm-2">טווח שניות</label>
-                        <div className="col">
-                            <input
-                                type="number"
-                                id="fromSeconds"
-                                name="fromSeconds"
-                                placeholder="החל מ..."
-                                className="form-control col"
-                                value={fromSeconds}
-                                onChange={(e) => setFromSeconds(e.target.value)}
-                            />
-                        </div>
-                        <label className="m-1 col-sm-2">עד</label>
-                        <div className="col">
-                            <input
-                                type="number"
-                                id="toSeconds"
-                                name="toSeconds"
-                                placeholder="עד"
-                                className="form-control col"
-                                value={toSeconds}
-                                onChange={(e) => setToSeconds(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                </>
-            );
-            break;
-        case "lesson":
-            fields = (
-                <>
-                    <div className="form-group row">
-                        <label htmlFor="extension" className="col-sm-2">
-                            שלוחה
-                        </label>
-                        <div className="col">
-                            <input
-                                type="text"
-                                id="extension"
-                                name="extension"
-                                placeholder="הכנס שלוחה"
-                                className="form-control"
-                                value={extension}
-                                onChange={(e) => setExtension(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <label htmlFor="messageName" className="col-sm-2">
-                            שם הודעה
-                        </label>
-                        <div className="col">
-                            <input
-                                type="text"
-                                id="messageName"
-                                name="messageName"
-                                placeholder="הכנס שם הודעה"
-                                className="form-control"
-                                value={messageName}
-                                onChange={(e) => setMessageName(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                </>
-            );
-            break;
-        case "student":
-            fields = (
-                <>
-                    <div className="form-group row">
-                        <label htmlFor="identityNumber" className="col-sm-2">
-                            מספר זהות
-                        </label>
-                        <div className="col">
-                            <input
-                                type="text"
-                                id="identityNumber"
-                                name="identityNumber"
-                                placeholder="הכנס מספר זהות"
-                                className="form-control"
-                                value={identityNumber}
-                                onChange={(e) => setIdentityNumber(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <label htmlFor="name" className="col-sm-2">
-                            שם
-                        </label>
-                        <div className="col">
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                placeholder="הכנס שם"
-                                className="form-control"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <label htmlFor="klass" className="col-sm-2">
-                            כיתה
-                        </label>
-                        <div className="col">
-                            <TypeAhead
-                                id="klass"
-                                multiple={true}
-                                placeholder={"בחר כיתה..."}
-                                value={klass}
-                                setValue={setKlass}
-                                getOptions={getKlassList}
-                            />
-                        </div>
-                    </div>
-                </>
-            );
-            break;
-        case "listeningByKlassAndLesson":
-            fields = (
-                <>
-                    <div className="form-group row">
-                        <label htmlFor="klass" className="col-sm-2">
-                            כיתה
-                        </label>
-                        <div className="col">
-                            <TypeAhead
-                                multiple={false}
-                                id="klass"
-                                placeholder={"בחר כיתה..."}
-                                value={klass}
-                                setValue={setKlass}
-                                getOptions={getKlassList}
-                            />
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <label htmlFor="lesson" className="col-sm-2">
-                            שיעור
-                        </label>
-                        <div className="col">
-                            <TypeAhead
-                                id="lesson"
-                                multiple={false}
-                                placeholder={"בחר שיעור..."}
-                                value={lesson}
-                                setValue={setLesson}
-                                getOptions={(query) => getLessonList(query)}
-                            />
-                        </div>
-                    </div>
-                    {dates}
-                </>
-            );
-            break;
-        case "listeningByKlass":
-        case "confByKlass":
-            fields = (
-                <>
-                    <div className="form-group row">
-                        <label htmlFor="klass" className="col-sm-2">
-                            כיתה
-                        </label>
-                        <div className="col">
-                            <TypeAhead
-                                multiple={false}
-                                id="klass"
-                                placeholder={"בחר כיתה..."}
-                                value={klass}
-                                setValue={setKlass}
-                                getOptions={getKlassList}
-                            />
-                        </div>
-                    </div>
-                    {dates}
-                </>
-            );
-            break;
-        default:
-            break;
-    }
+        ),
+        klass: (
+            <div className="form-group row">
+                <label htmlFor="klass" className="col-sm-2">
+                    כיתה
+                </label>
+                <div className="col">
+                    <TypeAhead
+                        id="klass"
+                        multiple={true}
+                        placeholder={"בחר כיתה..."}
+                        value={klass}
+                        setValue={setKlass}
+                        getOptions={getKlassList}
+                    />
+                </div>
+            </div>
+        ),
+        lesson: (
+            <div className="form-group row">
+                <label htmlFor="lesson" className="col-sm-2">
+                    שיעור
+                </label>
+                <div className="col">
+                    <TypeAhead
+                        id="lesson"
+                        multiple={true}
+                        placeholder={"בחר שיעור..."}
+                        value={lesson}
+                        setValue={setLesson}
+                        getOptions={(query) => getLessonList(query)}
+                    />
+                </div>
+            </div>
+        ),
+        name: (
+            <div className="form-group row">
+                <label htmlFor="name" className="col-sm-2">
+                    שם תלמידה
+                </label>
+                <div className="col">
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="הכנס שם תלמידה"
+                        className="form-control"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                </div>
+            </div>
+        ),
+        secondRange: (
+            <div className="form-group row">
+                <label className="m-1 col-sm-2">טווח שניות</label>
+                <div className="col">
+                    <input
+                        type="number"
+                        id="fromSeconds"
+                        name="fromSeconds"
+                        placeholder="החל מ..."
+                        className="form-control col"
+                        value={fromSeconds}
+                        onChange={(e) => setFromSeconds(e.target.value)}
+                    />
+                </div>
+                <label className="m-1 col-sm-2">עד</label>
+                <div className="col">
+                    <input
+                        type="number"
+                        id="toSeconds"
+                        name="toSeconds"
+                        placeholder="עד"
+                        className="form-control col"
+                        value={toSeconds}
+                        onChange={(e) => setToSeconds(e.target.value)}
+                    />
+                </div>
+            </div>
+        ),
+        extension: (
+            <div className="form-group row">
+                <label htmlFor="extension" className="col-sm-2">
+                    שלוחה
+                </label>
+                <div className="col">
+                    <input
+                        type="text"
+                        id="extension"
+                        name="extension"
+                        placeholder="הכנס שלוחה"
+                        className="form-control"
+                        value={extension}
+                        onChange={(e) => setExtension(e.target.value)}
+                    />
+                </div>
+            </div>
+        ),
+        messageName: (
+            <div className="form-group row">
+                <label htmlFor="messageName" className="col-sm-2">
+                    שם הודעה
+                </label>
+                <div className="col">
+                    <input
+                        type="text"
+                        id="messageName"
+                        name="messageName"
+                        placeholder="הכנס שם הודעה"
+                        className="form-control"
+                        value={messageName}
+                        onChange={(e) => setMessageName(e.target.value)}
+                    />
+                </div>
+            </div>
+        ),
+        identityNumber: (
+            <div className="form-group row">
+                <label htmlFor="identityNumber" className="col-sm-2">
+                    מספר זהות
+                </label>
+                <div className="col">
+                    <input
+                        type="text"
+                        id="identityNumber"
+                        name="identityNumber"
+                        placeholder="הכנס מספר זהות"
+                        className="form-control"
+                        value={identityNumber}
+                        onChange={(e) => setIdentityNumber(e.target.value)}
+                    />
+                </div>
+            </div>
+        ),
+        singleKlass: (
+            <div className="form-group row">
+                <label htmlFor="klass" className="col-sm-2">
+                    כיתה
+                </label>
+                <div className="col">
+                    <TypeAhead
+                        multiple={false}
+                        id="klass"
+                        placeholder={"בחר כיתה..."}
+                        value={klass}
+                        setValue={setKlass}
+                        getOptions={getKlassList}
+                    />
+                </div>
+            </div>
+        ),
+        singleLesson: (
+            <div className="form-group row">
+                <label htmlFor="lesson" className="col-sm-2">
+                    שיעור
+                </label>
+                <div className="col">
+                    <TypeAhead
+                        id="lesson"
+                        multiple={false}
+                        placeholder={"בחר שיעור..."}
+                        value={lesson}
+                        setValue={setLesson}
+                        getOptions={(query) => getLessonList(query)}
+                    />
+                </div>
+            </div>
+        ),
+    };
 
     return (
         <>
-            <form className="p-2 jumbotron container">{fields}</form>
+            <form className="p-2 jumbotron container">{filterFields.map((item) => fields[item])}</form>
             <div className="d-flex mb-4">
                 <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
-                    {isPdf ? "יצר דוח" : "סנן נתונים"}
+                    סנן נתונים
                 </button>
                 &nbsp;
                 <button type="clear" className="btn btn-default mr-auto" onClick={handleClear}>

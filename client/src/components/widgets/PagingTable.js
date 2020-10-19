@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { useDispatch } from "react-redux";
 import { getData } from "../../_actions/data_actions";
 
-export default function PagingTable({ type, params, pageCount }) {
+export default function PagingTable({ url, params, pageCount }) {
     const dispatch = useDispatch();
 
     const [pages, setPages] = useState([]);
@@ -50,7 +50,7 @@ export default function PagingTable({ type, params, pageCount }) {
             return;
         }
         params.page = item;
-        dispatch(getData(type, params));
+        dispatch(getData(url, params));
     };
 
     return !pageCount ? null : (

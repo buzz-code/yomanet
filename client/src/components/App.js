@@ -7,7 +7,6 @@ import LoginPage from "./views/LoginPage/LoginPage.js";
 import RegisterPage from "./views/RegisterPage/RegisterPage.js";
 import UploadPage from "./views/UploadPage/UploadPage.js";
 import DataPage from "./views/DataPage/DataPage.js";
-import ReportPage from "./views/ReportPage/ReportPage.js";
 import NavBar from "./widgets/NavBar/NavBar";
 import Footer from "./widgets/Footer/Footer";
 //null   Anyone Can go inside
@@ -22,7 +21,6 @@ function App() {
                 <Route exact path="/" component={Auth(LandingPage, null)} />
                 <Route path="/data" component={DataPage} />
                 <Route path="/upload" component={UploadPage} />
-                <Route path="/report" component={ReportPage} />
                 <Route exact path="/login" component={Auth(LoginPage, false)} />
                 <Route exact path="/register" component={Auth(RegisterPage, true, true)} />
             </Switch>

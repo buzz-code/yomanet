@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import clsx from "clsx";
 import { useLocation, withRouter } from "react-router-dom";
 import { logoutUser } from "../../../_actions/user_actions";
+import dataConfig from "../../../config/dataConfig";
 
 function NavBar(props) {
     const userData = useSelector((state) => state.user.userData);
@@ -13,13 +14,10 @@ function NavBar(props) {
         {
             label: "נתונים",
             value: "/data",
-            children: [
-                { label: "נתוני האזנה", value: "/data/listening" },
-                { label: "נתוני ועידה", value: "/data/conf" },
-                { label: "נתוני שיעורים", value: "/data/lesson" },
-                { label: "נתוני תלמידות", value: "/data/student" },
-                { label: "נתוני משתמשים", value: "/data/user", isAdmin: true },
-            ],
+            children: dataConfig.map((item) => ({
+                label: item.title,
+                value: `/data/${item.url}`,
+            })),
         },
         {
             label: "העלאת קובץ",

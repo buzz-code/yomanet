@@ -1,5 +1,5 @@
-const { request } = require("express");
 const constants = require("../../helpers/constants");
+const moment = require("moment");
 const { Conf } = require("../../models/Conf");
 const { Lesson } = require("../../models/Lesson");
 const { getPagingConfig } = require("../../helpers/normalizer");
@@ -11,6 +11,11 @@ module.exports = {
     },
     query: async function (body, user) {
         const query = [{ user: user.name }];
+        const { fromDate, toDate, name } = body;
+
+        if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
+        if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
+        if (name) query.push({ name: new RegExp(name) });
 
         return { $and: query };
     },

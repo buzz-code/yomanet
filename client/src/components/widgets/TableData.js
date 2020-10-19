@@ -5,7 +5,7 @@ import FilterTable from "./FilterTable";
 import Loader from "./Loader";
 import PagingTable from "./PagingTable";
 
-function TableData({ type, title, isPdf, getPdfData }) {
+function TableData({ url, title, filterFields }) {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.data.data);
     const params = data && data.params ? data.params : {};
@@ -13,15 +13,13 @@ function TableData({ type, title, isPdf, getPdfData }) {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        if (!isPdf) {
-            setIsLoading(true);
-            const defaultParams = {
-                fromDate: new Date().toISOString().substr(0, 10),
-                toDate: new Date().toISOString().substr(0, 10),
-            };
-            dispatch(getData(type, defaultParams));
-        }
-    }, [dispatch, isPdf]);
+        setIsLoading(true);
+        const defaultParams = {
+            fromDate: new Date().toISOString().substr(0, 10),
+            toDate: new Date().toISOString().substr(0, 10),
+        };
+        dispatch(getData(url, defaultParams));
+    }, [dispatch]);
 
     useEffect(() => {
         if (data) {
@@ -34,7 +32,7 @@ function TableData({ type, title, isPdf, getPdfData }) {
             <div className="main-content pt-3">
                 <h1>{title}</h1>
                 <div>
-                    <FilterTable type={type} params={params} isPdf={isPdf} getPdfData={getPdfData}/>
+                    <FilterTable url={url} params={params} filterFields={filterFields} />
                     {isLoading && <Loader />}
                     {data && data.headers && (
                         <>
@@ -57,7 +55,7 @@ function TableData({ type, title, isPdf, getPdfData }) {
                                 </tbody>
                             </table>
                             {data.results.length === 0 && <h4 className="text-center">לא נמצאו נתונים</h4>}
-                            {!isPdf && <PagingTable type={type} params={params} pageCount={data.pageCount} />}
+                            <PagingTable url={url} params={params} pageCount={data.pageCount} />
                         </>
                     )}
                 </div>
