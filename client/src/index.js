@@ -1,7 +1,7 @@
 import "react-app-polyfill/ie9";
 import "react-app-polyfill/ie11";
 import "core-js";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-v4-rtl/dist/css/bootstrap-rtl.min.css";
 import $ from "jquery";
 import Popper from "popper.js";
 import "bootstrap/dist/js/bootstrap.bundle.min";

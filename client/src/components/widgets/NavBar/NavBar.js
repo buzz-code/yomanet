@@ -68,7 +68,7 @@ function NavBar(props) {
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div id="navbarNav" className="collapse navbar-collapse">
-                <ul className="navbar-nav ml-auto pr-4">
+                <ul className="navbar-nav mr-auto">
                     {routes.map((item) =>
                         item.isAdmin && (!userData || !userData.isAdmin) ? null : item.children ? (
                             <li
