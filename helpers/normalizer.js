@@ -38,7 +38,10 @@ const getTableCellValue = (item, header) => {
             return moment.utc(item[header.value]).format("HH:mm:ss");
         }
         if (header.format === "nameWOKlass") {
-            return item[header.value].match(/\d(.*)$/)[1];
+            const regex = /\d(.*)$/;
+            if (regex.test(item[header.value])) {
+                return item[header.value].match(regex)[1];
+            }
         }
     } catch (e) {
         console.log(JSON.stringify(item[header.value]), header.format, e);
