@@ -37,7 +37,7 @@ router.get("/pdf/listeningByKlassAndLesson", auth, async function (req, res) {
         { $addFields: { "tmp.name": "$_id.name", "tmp.extension": "$_id.extension" } },
         { $replaceRoot: { newRoot: "$tmp" } },
     ]);
-    
+
     const extensions = new Set(results.map((item) => item.extension));
     extensions.add(lesson);
     const lessons = await Lesson.find({ extension: { $in: [...extensions] } });
@@ -52,7 +52,7 @@ router.get("/pdf/listeningByKlassAndLesson", auth, async function (req, res) {
         }
     });
     const headers = [
-        { label: "שם התלמידה", value: "name" },
+        { label: "שם התלמידה", value: "name", format: klass ? "nameWOKlass" : null },
         { label: "שם השיעור", value: "extension" },
         ...[...keys]
             .filter((item) => item !== "name" && item !== "extension")
