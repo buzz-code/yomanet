@@ -29,8 +29,14 @@ router.get("/pdf/listeningByKlassAndLesson", auth, async function (req, res) {
         { $match: query },
         {
             $group: {
-                _id: { name: "$name", extension: "$extension" },
-                items: { $addToSet: { listening: "$listening", seconds: { $sum: "$seconds" } } },
+                _id: { name: "$name", extension: "$extension", listening: "$listening" },
+                seconds: { $sum: "$seconds" },
+            },
+        },
+        {
+            $group: {
+                _id: { name: "$_id.name", extension: "$_id.extension" },
+                items: { $addToSet: { listening: "$_id.listening", seconds: { $sum: "$seconds" } } },
             },
         },
         { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.listening", "$items.seconds"] } } } } },
@@ -87,8 +93,14 @@ router.get("/pdf/listeningByKlass", auth, async function (req, res) {
         { $match: query },
         {
             $group: {
-                _id: { name: "$name" },
-                items: { $addToSet: { extension: "$extension", seconds: { $sum: "$seconds" } } },
+                _id: { name: "$name", extension: "$extension" },
+                seconds: { $sum: "$seconds" },
+            },
+        },
+        {
+            $group: {
+                _id: { name: "$_id.name" },
+                items: { $addToSet: { extension: "$_id.extension", seconds: { $sum: "$seconds" } } },
             },
         },
         { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.extension", "$items.seconds"] } } } } },
@@ -140,8 +152,14 @@ router.get("/pdf/confByKlass", auth, async function (req, res) {
         { $match: query },
         {
             $group: {
-                _id: { name: "$name" },
-                items: { $addToSet: { extension: "$extension", seconds: { $sum: "$seconds" } } },
+                _id: { name: "$name", extension: "$extension" },
+                seconds: { $sum: "$seconds" },
+            },
+        },
+        {
+            $group: {
+                _id: { name: "$_id.name" },
+                items: { $addToSet: { extension: "$_id.extension", seconds: { $sum: "$seconds" } } },
             },
         },
         { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.extension", "$items.seconds"] } } } } },
