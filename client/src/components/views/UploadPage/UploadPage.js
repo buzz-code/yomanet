@@ -12,8 +12,8 @@ function UploadPage(props) {
             <Switch>
                 <Route exact path="/upload/listening" component={Auth(Listening, true)} />
                 <Route exact path="/upload/conf" component={Auth(Conf, true)} />
-                <Route exact path="/upload/lesson" component={Auth(Lesson, true, true)} />
-                <Route exact path="/upload/student" component={Auth(Student, true, true)} />
+                <Route exact path="/upload/lesson" component={Auth(Lesson, true)} />
+                <Route exact path="/upload/student" component={Auth(Student, true)} />
             </Switch>
         </>
     );
