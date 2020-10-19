@@ -40,7 +40,8 @@ const getTableCellValue = (item, header) => {
         if (header.format === "nameWOKlass") {
             return item[header.value].match(/\d(.*)$/)[1];
         }
-    } catch {
+    } catch (e) {
+        console.log(item[header.value], typeof item[header.value], header.format, e);
         return item[header.value];
     }
     return item[header.value];
