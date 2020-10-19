@@ -1,3 +1,5 @@
+const moment = require("moment");
+
 const getTableCellValue = (item, header) => {
     try {
         if (header.format === "sec2min") {

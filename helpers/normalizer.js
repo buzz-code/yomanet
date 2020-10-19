@@ -46,6 +46,13 @@ const createReport = async (res, title, results, headers) => {
 };
 
 function getPagingConfig(page) {
+    if (page === -1) {
+        return {
+            skip: 0,
+            limit: Number.MAX_VALUE,
+        };
+    }
+    
     return {
         skip: constants.pageSize * (page - 1),
         limit: constants.pageSize,
