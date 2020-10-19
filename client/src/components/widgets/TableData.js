@@ -15,7 +15,11 @@ function TableData({ type, title, isPdf }) {
     useEffect(() => {
         if (!isPdf) {
             setIsLoading(true);
-            dispatch(getData(type));
+            const defaultParams = {
+                fromDate: new Date().toISOString().substr(0, 10),
+                toDate: new Date().toISOString().substr(0, 10),
+            };
+            dispatch(getData(type, defaultParams));
         }
     }, [dispatch, isPdf]);
 
@@ -52,6 +56,7 @@ function TableData({ type, title, isPdf }) {
                                     ))}
                                 </tbody>
                             </table>
+                            {data.results.length === 0 && <h4 className="text-center">לא נמצאו נתונים</h4>}
                             {!isPdf && <PagingTable type={type} params={params} pageCount={data.pageCount} />}
                         </>
                     )}
