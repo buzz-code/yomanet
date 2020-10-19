@@ -329,14 +329,14 @@ export default function FilterTable({ type, params, isPdf }) {
                 <button type="clear" className="btn btn-default ml-auto" onClick={handleClear}>
                     נקה סינון
                 </button>
-                {params && (
+                {/* {params && (
                     <button
                         className="btn btn-outline-dark"
                         onClick={handleDelete}
                         title="מחק את כל הנתונים שתואמים את החיפוש">
                         <i className="fa fa-trash"></i>
                     </button>
-                )}
+                )} */}
             </div>
         </>
     );
