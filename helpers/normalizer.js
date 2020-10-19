@@ -41,7 +41,7 @@ const getTableCellValue = (item, header) => {
             return item[header.value].match(/\d(.*)$/)[1];
         }
     } catch (e) {
-        console.log(item[header.value], typeof item[header.value], header.format, e);
+        console.log(JSON.stringify(item[header.value]), header.format, e);
         return item[header.value];
     }
     return item[header.value];
