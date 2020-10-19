@@ -27,8 +27,8 @@ function NavBar(props) {
             children: [
                 { label: "הוספת נתוני האזנה", value: "/upload/listening" },
                 { label: "הוספת נתוני ועידה", value: "/upload/conf" },
-                { label: "עדכון נתוני שיעורים", value: "/upload/lesson", isAdmin: true },
-                { label: "עדכון נתוני תלמידות", value: "/upload/student", isAdmin: true },
+                { label: "עדכון נתוני שיעורים", value: "/upload/lesson" },
+                { label: "עדכון נתוני תלמידות", value: "/upload/student" },
             ],
         },
         {
