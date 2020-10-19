@@ -13,20 +13,20 @@ router.get("/pdf/listeningByKlassAndLesson", auth, async function (req, res) {
     console.log(req.query);
     const { klass, lesson, fromDate, toDate } = req.query;
 
-    const query = { user: req.user.name };
-    if (lesson) query.extension = new RegExp(lesson);
-    if (klass) query.name = new RegExp(`^${klass}.*`);
-    if (fromDate) query.date = { $gte: moment.utc(fromDate).toDate() };
-    if (toDate) query.date = { ...query.date, $lte: moment.utc(toDate).toDate() };
+    const query = [{ user: req.user.name }];
+    if (lesson) query.push({ extension: new RegExp(lesson) });
+    if (klass) query.push({ name: new RegExp(`^${klass}.*`) });
+    if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
+    if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
     console.log(query);
 
-    if (JSON.stringify(query) == JSON.stringify({ user: req.user.name })) {
+    if (query.length === 1) {
         res.send("חובה לבצע סינון לנתונים");
         return;
     }
 
     const results = await Listening.aggregate([
-        { $match: query },
+        { $match: { $and: query } },
         {
             $group: {
                 _id: { name: "$name", extension: "$extension", listening: "$listening" },
@@ -78,19 +78,19 @@ router.get("/pdf/listeningByKlass", auth, async function (req, res) {
     console.log(req.query);
     const { klass, fromDate, toDate } = req.query;
 
-    const query = { user: req.user.name };
-    if (klass) query.name = new RegExp(`^${klass}.*`);
-    if (fromDate) query.date = { $gte: moment.utc(fromDate).toDate() };
-    if (toDate) query.date = { ...query.date, $lte: moment.utc(toDate).toDate() };
+    const query = [{ user: req.user.name }];
+    if (klass) query.push({ name: new RegExp(`^${klass}.*`) });
+    if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
+    if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
     console.log(query);
 
-    if (JSON.stringify(query) == JSON.stringify({ user: req.user.name })) {
+    if (query.length === 1) {
         res.send("חובה לבצע סינון לנתונים");
         return;
     }
 
     const results = await Listening.aggregate([
-        { $match: query },
+        { $match: { $and: query } },
         {
             $group: {
                 _id: { name: "$name", extension: "$extension" },
@@ -137,19 +137,19 @@ router.get("/pdf/confByKlass", auth, async function (req, res) {
     console.log(req.query);
     const { klass, fromDate, toDate } = req.query;
 
-    const query = { user: req.user.name };
-    if (klass) query.name = new RegExp(`^${klass}.*`);
-    if (fromDate) query.date = { $gte: moment.utc(fromDate).toDate() };
-    if (toDate) query.date = { ...query.date, $lte: moment.utc(toDate).toDate() };
+    const query = [{ user: req.user.name }];
+    if (klass) query.push({ name: new RegExp(`^${klass}.*`) });
+    if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
+    if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
     console.log(query);
 
-    if (JSON.stringify(query) == JSON.stringify({ user: req.user.name })) {
+    if (query.length === 1) {
         res.send("חובה לבצע סינון לנתונים");
         return;
     }
 
     const results = await Conf.aggregate([
-        { $match: query },
+        { $match: { $and: query } },
         {
             $group: {
                 _id: { name: "$name", extension: "$extension" },

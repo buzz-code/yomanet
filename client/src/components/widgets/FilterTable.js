@@ -144,6 +144,23 @@ export default function FilterTable({ type, params, isPdf, getPdfData }) {
                         </div>
                     </div>
                     <div className="form-group row">
+                        <label htmlFor="name" className="col-sm-2">
+                            שם תלמידה
+                        </label>
+                        <div className="col">
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="הכנס שם תלמידה"
+                                className="form-control"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    {dates}
+                    <div className="form-group row">
                         <label className="m-1 col-sm-2">טווח שניות</label>
                         <div className="col">
                             <input
@@ -169,7 +186,6 @@ export default function FilterTable({ type, params, isPdf, getPdfData }) {
                             />
                         </div>
                     </div>
-                    {dates}
                 </>
             );
             break;

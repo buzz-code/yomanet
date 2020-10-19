@@ -29,18 +29,19 @@ router.post("/listening", auth, async function (req, res) {
 
 async function getListeningQuery(req) {
     console.log(req.body);
-    const { fromDate, toDate, klass, lesson, teacher, fromSeconds, toSeconds } = req.body;
+    const { fromDate, toDate, klass, lesson, name, fromSeconds, toSeconds } = req.body;
 
-    const query = { user: req.user.name };
-    if (fromDate) query.date = { $gte: moment.utc(fromDate).toDate() };
-    if (toDate) query.date = { ...query.date, $lte: moment.utc(toDate).toDate() };
-    if (fromSeconds) query.seconds = { $gte: Number(fromSeconds) };
-    if (toSeconds) query.seconds = { ...query.seconds, $lte: Number(toSeconds) };
-    if (lesson && lesson.length) query.extension = new RegExp(lesson.map((item) => item.value).join("|"));
-    if (klass && klass.length) query.name = new RegExp(`^${klass.map((item) => item.value).join("|")}.*`);
+    const query = [{ user: req.user.name }];
+    if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
+    if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
+    if (fromSeconds) query.push({ seconds: { $gte: Number(fromSeconds) } });
+    if (toSeconds) query.push({ seconds: { ...query.seconds, $lte: Number(toSeconds) } });
+    if (lesson && lesson.length) query.push({ extension: new RegExp(lesson.map((item) => item.value).join("|")) });
+    if (klass && klass.length) query.push({ name: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+    if (name) query.push({ name: new RegExp(name) });
     console.log(query);
 
-    return query;
+    return { $and: query };
 }
 
 router.post("/lesson", auth, async function (req, res) {
@@ -55,12 +56,12 @@ async function getLessonQuery(req) {
     console.log(req.body);
     const { extension, messageName } = req.body;
 
-    const query = { user: req.user.name };
-    if (extension) query.extension = new RegExp(`${extension}`);
-    if (messageName) query.messageName = new RegExp(`${messageName}`);
+    const query = [{ user: req.user.name }];
+    if (extension) query.push({ extension: new RegExp(extension) });
+    if (messageName) query.push({ messageName: new RegExp(messageName) });
     console.log(query);
 
-    return query;
+    return { $and: query };
 }
 
 router.post("/student", auth, async function (req, res) {
@@ -75,13 +76,14 @@ async function getStudentQuery(req) {
     console.log(req.body);
     const { identityNumber, name, klass } = req.body;
 
-    const query = { user: req.user.name };
-    if (identityNumber) query.identityNumber = new RegExp(`${identityNumber}`);
-    if (name) query.name = new RegExp(`${name}`);
-    if (klass && klass.length) query.fullName = new RegExp(`^${klass.map((item) => item.value).join("|")}.*`);
+    const query = [{ user: req.user.name }];
+    if (identityNumber) query.push({ identityNumber: new RegExp(identityNumber) });
+    if (name) query.push({ name: new RegExp(name) });
+    if (klass && klass.length)
+        query.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
     console.log(query);
 
-    return query;
+    return { $and: query };
 }
 
 router.post("/conf", auth, async function (req, res) {
@@ -101,10 +103,10 @@ router.post("/conf", auth, async function (req, res) {
 async function getConfQuery(req) {
     console.log(req.body);
 
-    const query = { user: req.user.name };
+    const query = [{ user: req.user.name }];
     console.log(query);
 
-    return query;
+    return { $and: query };
 }
 
 router.post("/user", auth, async function (req, res) {
