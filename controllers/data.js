@@ -16,7 +16,7 @@ function registerHook(hook) {
 
         const results = await hook.data(query, req.body.page);
         const count = await hook.count(query);
-        const headers = await hook.headers(results);
+        const headers = await hook.headers(results, query, req.body);
 
         res.send(getTableDataResponse(results, count, headers, req.body));
     });
@@ -27,5 +27,8 @@ registerHook(require("./data/lesson"));
 registerHook(require("./data/student"));
 registerHook(require("./data/conf"));
 registerHook(require("./data/user"));
+registerHook(require("./data/listeningByKlass"));
+registerHook(require("./data/listeningByKlassAndLesson"));
+registerHook(require("./data/confByKlass"));
 
 module.exports = router;
