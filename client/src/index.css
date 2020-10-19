@@ -55,3 +55,7 @@ input.error {
 .page-item .btn {
     vertical-align: baseline;
 }
+
+.dropdown-menu {
+    text-align: right;
+}
