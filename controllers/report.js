@@ -36,6 +36,7 @@ router.get("/pdf/listeningByKlassAndLesson", auth, async function (req, res) {
         { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.listening", "$items.seconds"] } } } } },
         { $addFields: { "tmp.name": "$_id.name", "tmp.extension": "$_id.extension" } },
         { $replaceRoot: { newRoot: "$tmp" } },
+        { $sort: { name: 1 } },
     ]);
 
     const extensions = new Set(results.map((item) => item.extension));
@@ -93,6 +94,7 @@ router.get("/pdf/listeningByKlass", auth, async function (req, res) {
         { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.extension", "$items.seconds"] } } } } },
         { $addFields: { "tmp.name": "$_id.name" } },
         { $replaceRoot: { newRoot: "$tmp" } },
+        { $sort: { name: 1 } },
     ]);
     const keys = new Set();
     results.forEach((item) => {
@@ -145,6 +147,7 @@ router.get("/pdf/confByKlass", auth, async function (req, res) {
         { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.extension", "$items.seconds"] } } } } },
         { $addFields: { "tmp.name": "$_id.name" } },
         { $replaceRoot: { newRoot: "$tmp" } },
+        { $sort: { name: 1 } },
     ]);
     const keys = new Set();
     results.forEach((item) => {
