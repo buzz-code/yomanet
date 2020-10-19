@@ -6,7 +6,7 @@ function ConfByKlass() {
     return (
         <TableData
             type="confByKlass"
-            getData={getPDFConfByKlass}
+            getPdfData={getPDFConfByKlass}
             title="נתוני ועידה לפי כיתה"
             isPdf={true}
         />

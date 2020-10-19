@@ -4,7 +4,7 @@ import { deleteData, getData } from "../../_actions/data_actions";
 import { getLessonList, getKlassList } from "../../_actions/list_actions";
 import TypeAhead from "./TypeAhead";
 
-export default function FilterTable({ type, params, isPdf }) {
+export default function FilterTable({ type, params, isPdf, getPdfData }) {
     const dispatch = useDispatch();
 
     const [fromDate, setFromDate] = useState("");
@@ -55,14 +55,24 @@ export default function FilterTable({ type, params, isPdf }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         e.stopPropagation();
+        
         const dataToSubmit = getDataToSubmit();
-        dispatch(getData(type, dataToSubmit));
+        if (isPdf) {
+            dispatch(getPdfData(dataToSubmit));
+        } else {
+            dispatch(getData(type, dataToSubmit));
+        }
     };
 
     const handleClear = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        dispatch(getData(type));
+
+        if (isPdf) {
+            window.location.reload();
+        } else {
+            dispatch(getData(type));
+        }
     };
 
     const handleDelete = () => {

@@ -5,7 +5,7 @@ import FilterTable from "./FilterTable";
 import Loader from "./Loader";
 import PagingTable from "./PagingTable";
 
-function TableData({ type, title, isPdf }) {
+function TableData({ type, title, isPdf, getPdfData }) {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.data.data);
     const params = data && data.params ? data.params : {};
@@ -34,7 +34,7 @@ function TableData({ type, title, isPdf }) {
             <div className="main-content pt-3">
                 <h1>{title}</h1>
                 <div>
-                    <FilterTable type={type} params={params} isPdf={isPdf} />
+                    <FilterTable type={type} params={params} isPdf={isPdf} getPdfData={getPdfData}/>
                     {isLoading && <Loader />}
                     {data && data.headers && (
                         <>

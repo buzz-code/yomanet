@@ -6,7 +6,7 @@ function ListeningByKlassAndLesson() {
     return (
         <TableData
             type="listeningByKlassAndLesson"
-            getData={getPDFListeningByKlassAndLesson}
+            getPdfData={getPDFListeningByKlassAndLesson}
             title="נתוני האזנה לפי כיתה ומקצוע"
             isPdf={true}
         />

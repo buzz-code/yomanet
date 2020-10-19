@@ -10,7 +10,10 @@ export function getPDFListeningByKlassAndLesson(params) {
         lesson: params.lesson && params.lesson.length ? params.lesson.map((item) => item.value).join("|") : undefined,
     };
 
-    const url = `${REPORT_SERVER}/pdf/listeningByKlassAndLesson?${queryString.stringify(params)}`;
+    const url = `${REPORT_SERVER}/pdf/listeningByKlassAndLesson?${queryString.stringify(params, {
+        skipEmptyString: true,
+        skipNull: true,
+    })}`;
     window.open(url, "_blank");
 
     return {
@@ -24,7 +27,10 @@ export function getPDFListeningByKlass(params) {
         klass: params.klass && params.klass.length ? params.klass.map((item) => item.value).join("|") : undefined,
     };
 
-    const url = `${REPORT_SERVER}/pdf/listeningByKlass?${queryString.stringify(params)}`;
+    const url = `${REPORT_SERVER}/pdf/listeningByKlass?${queryString.stringify(params, {
+        skipEmptyString: true,
+        skipNull: true,
+    })}`;
     window.open(url, "_blank");
 
     return {
@@ -38,7 +44,10 @@ export function getPDFConfByKlass(params) {
         klass: params.klass && params.klass.length ? params.klass.map((item) => item.value).join("|") : undefined,
     };
 
-    const url = `${REPORT_SERVER}/pdf/confByKlass?${queryString.stringify(params)}`;
+    const url = `${REPORT_SERVER}/pdf/confByKlass?${queryString.stringify(params, {
+        skipEmptyString: true,
+        skipNull: true,
+    })}`;
     window.open(url, "_blank");
 
     return {
