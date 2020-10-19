@@ -96,8 +96,7 @@ const createHtml = (title, data, headers) => `
                 text-align: center;
             }
             table {
-                max-width: 100%;
-                width: 100%;
+                min-width: 100%;
                 font-family: sans-serif;
                 table-layout: fixed;
             }
@@ -114,6 +113,7 @@ const createHtml = (title, data, headers) => `
                 text-align: center;
                 font-size: 0.75rem;
                 width: auto;
+                min-width: 40px;
             }
             td:first-of-type, th:first-of-type {
                 width: 100px;
