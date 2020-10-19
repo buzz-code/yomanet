@@ -13,7 +13,8 @@ module.exports = {
         const { klass, fromDate, toDate } = body;
 
         const query = [{ user: user.name }];
-        if (klass) query.push({ name: new RegExp(`^${klass}.*`) });
+        if (klass && klass.length)
+            query.push({ name: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
         if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
         if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
 
