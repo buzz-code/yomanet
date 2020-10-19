@@ -9,8 +9,8 @@ export default function FilterTable({ type, params, isPdf }) {
 
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
-    const [klass, setKlass] = useState("");
-    const [lesson, setLesson] = useState("");
+    const [klass, setKlass] = useState([]);
+    const [lesson, setLesson] = useState([]);
     const [fromSeconds, setFromSeconds] = useState("");
     const [toSeconds, setToSeconds] = useState("");
     const [extension, setExtension] = useState("");
@@ -38,18 +38,18 @@ export default function FilterTable({ type, params, isPdf }) {
     };
 
     useEffect(() => {
-        setFromDate(params.fromDate);
-        setToDate(params.toDate);
-        setKlass(params.klass);
-        setLesson(params.lesson);
-        setFromSeconds(params.fromSeconds);
-        setToSeconds(params.toSeconds);
-        setExtension(params.extension);
-        setMessageName(params.messageName);
-        setIdentityNumber(params.identityNumber);
-        setName(params.name);
-        setGrade(params.grade);
-        setClassNum(params.classNum);
+        setFromDate(params.fromDate || "");
+        setToDate(params.toDate || "");
+        setKlass(params.klass || []);
+        setLesson(params.lesson || []);
+        setFromSeconds(params.fromSeconds || "");
+        setToSeconds(params.toSeconds || "");
+        setExtension(params.extension || "");
+        setMessageName(params.messageName || "");
+        setIdentityNumber(params.identityNumber || "");
+        setName(params.name || "");
+        setGrade(params.grade || "");
+        setClassNum(params.classNum || "");
     }, [params]);
 
     const handleSubmit = (e) => {
@@ -57,6 +57,12 @@ export default function FilterTable({ type, params, isPdf }) {
         e.stopPropagation();
         const dataToSubmit = getDataToSubmit();
         dispatch(getData(type, dataToSubmit));
+    };
+
+    const handleClear = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dispatch(getData(type));
     };
 
     const handleDelete = () => {
@@ -320,7 +326,7 @@ export default function FilterTable({ type, params, isPdf }) {
                     {isPdf ? "יצר דוח" : "סנן נתונים"}
                 </button>
                 &nbsp;
-                <button type="clear" className="btn btn-default ml-auto">
+                <button type="clear" className="btn btn-default ml-auto" onClick={handleClear}>
                     נקה סינון
                 </button>
                 {params && (

@@ -55,7 +55,7 @@ function NavBar(props) {
     return (
         <nav className="navbar navbar-expand-md navbar-dark">
             <a href="/" className="navbar-brand">
-                Vocal
+                נתוני האזנה
             </a>
             <button
                 type="button"
@@ -69,14 +69,6 @@ function NavBar(props) {
             </button>
             <div id="navbarNav" className="collapse navbar-collapse">
                 <ul className="navbar-nav ml-auto pr-4">
-                    <li
-                        className={clsx("nav-item dropdown", {
-                            active: location.pathname === "/",
-                        })}>
-                        <a className="btn shadow-none nav-link" href="/">
-                            בית
-                        </a>
-                    </li>
                     {routes.map((item) =>
                         item.isAdmin && (!userData || !userData.isAdmin) ? null : item.children ? (
                             <li
