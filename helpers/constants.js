@@ -21,7 +21,6 @@ module.exports = {
     studentHeaders: [
         { label: "תעודת זהות", value: "identityNumber" },
         { label: "שם", value: "name" },
-        { label: "", value: "" },
         { label: "מחזור", value: "grade" },
         { label: "מספר כיתה", value: "classNum" },
     ],
