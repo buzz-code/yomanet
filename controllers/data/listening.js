@@ -6,7 +6,9 @@ const { getPagingConfig } = require("../../helpers/normalizer");
 
 module.exports = {
     url: "/listening",
-    title: "נתוני האזנה",
+    title: function () {
+        return "נתוני האזנה";
+    },
     query: async function (body, user) {
         const { fromDate, toDate, klass, lesson, name, fromSeconds, toSeconds } = body;
 
@@ -27,7 +29,7 @@ module.exports = {
     },
     data: async function (query, page) {
         const results = await Listening.find(query, null, getPagingConfig(page)).lean();
-        
+
         const extensions = new Set(results.map((item) => item.extension));
         const lessons = await Lesson.find({ extension: { $in: [...extensions] } }).lean();
         const lessonByExt = {};

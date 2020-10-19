@@ -8,7 +8,9 @@ const { getPagingConfig } = require("../../helpers/normalizer");
 
 module.exports = {
     url: "/user",
-    title: "נתוני משתמשים",
+    title: function () {
+        "נתוני משתמשים";
+    },
     query: async function (body, user) {
         return {};
     },

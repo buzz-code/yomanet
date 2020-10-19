@@ -6,7 +6,9 @@ const { getPagingConfig } = require("../../helpers/normalizer");
 
 module.exports = {
     url: "/listeningByKlassAndLesson",
-    title: "נתוני האזנה לפי כיתה ומקצוע",
+    title: function () {
+        return "נתוני האזנה לפי כיתה ומקצוע";
+    },
     query: async function (body, user) {
         const { klass, lesson, fromDate, toDate } = body;
 

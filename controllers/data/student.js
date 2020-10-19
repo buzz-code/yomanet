@@ -4,7 +4,9 @@ const { getPagingConfig } = require("../../helpers/normalizer");
 
 module.exports = {
     url: "/student",
-    title: "נתוני תלמידים",
+    title: function () {
+        return "נתוני תלמידים";
+    },
     query: async function (body, user) {
         const { identityNumber, name, klass } = body;
 

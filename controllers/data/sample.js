@@ -3,7 +3,9 @@ const { getPagingConfig } = require("../../helpers/normalizer");
 
 module.exports = {
     url: "/sample",
-    title: "sample",
+    title: function () {
+        return "sample";
+    },
     query: async function (body, user) {
         return {};
     },
