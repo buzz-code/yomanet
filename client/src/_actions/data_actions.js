@@ -2,8 +2,8 @@ import axios from "axios";
 import { FETCH_DATA } from "./types";
 import { DATA_SERVER } from "../components/Config.js";
 
-export function getListeningData(params) {
-    const request = axios.post(`${DATA_SERVER}/listening`, params).then((response) => response.data);
+export function getData(type, params) {
+    const request = axios.post(getUrlPerType(type), params).then((response) => response.data);
 
     return {
         type: FETCH_DATA,
@@ -11,8 +11,8 @@ export function getListeningData(params) {
     };
 }
 
-export function getLessonData(params) {
-    const request = axios.post(`${DATA_SERVER}/lesson`, params).then((response) => response.data);
+export function deleteData(type, params) {
+    const request = axios.delete(getUrlPerType(type), params).then((response) => response.data);
 
     return {
         type: FETCH_DATA,
@@ -20,29 +20,13 @@ export function getLessonData(params) {
     };
 }
 
-export function getStudentData(params) {
-    const request = axios.post(`${DATA_SERVER}/student`, params).then((response) => response.data);
-
-    return {
-        type: FETCH_DATA,
-        payload: request,
+function getUrlPerType(type) {
+    const config = {
+        listening: `${DATA_SERVER}/listening`,
+        lesson: `${DATA_SERVER}/lesson`,
+        student: `${DATA_SERVER}/student`,
+        conf: `${DATA_SERVER}/conf`,
+        user: `${DATA_SERVER}/user`,
     };
-}
-
-export function getConfData(params) {
-    const request = axios.post(`${DATA_SERVER}/conf`, params).then((response) => response.data);
-
-    return {
-        type: FETCH_DATA,
-        payload: request,
-    };
-}
-
-export function getUserData(params) {
-    const request = axios.post(`${DATA_SERVER}/user`, params).then((response) => response.data);
-
-    return {
-        type: FETCH_DATA,
-        payload: request,
-    };
+    return config[type];
 }

@@ -11,6 +11,21 @@ const { auth } = require("../middleware/auth");
 const { getTableDataResponse } = require("../helpers/normalizer");
 
 router.post("/listening", auth, async function (req, res) {
+    const { results, totalCount } = await getListeningData(req);
+
+    const extensions = new Set(results.map((item) => item.extension));
+    const lessons = await Lesson.find({ extension: { $in: [...extensions] } });
+    const lessonByExt = {};
+    lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
+    results.forEach((item) => (item.extension = lessonByExt[item.extension]));
+
+    const headers = constants.listeningHeaders
+        .filter((item) => item.value !== "identityType")
+        .sort((item1, item2) => item1.order - item2.order);
+    res.send(getTableDataResponse(results, totalCount, headers, req.body));
+});
+
+async function getListeningData(req) {
     console.log(req.body);
     const { page, fromDate, toDate, klass, lesson, teacher, fromSeconds, toSeconds } = req.body;
 
@@ -26,23 +41,22 @@ router.post("/listening", auth, async function (req, res) {
     const results = await Listening.find(query, null, {
         skip: constants.pageSize * (page - 1),
         limit: constants.pageSize,
-    }).lean();
-
-    const extensions = new Set(results.map((item) => item.extension));
-    const lessons = await Lesson.find({ extension: { $in: [...extensions] } });
-    const lessonByExt = {};
-    lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
-    results.forEach((item) => (item.extension = lessonByExt[item.extension]));
-
+    });
     const totalCount = await Listening.count(query);
 
-    const headers = constants.listeningHeaders
-        .filter((item) => item.value !== "identityType")
-        .sort((item1, item2) => item1.order - item2.order);
-    res.send(getTableDataResponse(results, totalCount, headers, req.body));
-});
+    return {
+        results,
+        totalCount,
+    };
+}
 
 router.post("/lesson", auth, async function (req, res) {
+    const { results, totalCount } = await getLessonData(req);
+
+    res.send(getTableDataResponse(results, totalCount, constants.lessonHeaders, req.body));
+});
+
+async function getLessonData(req) {
     console.log(req.body);
     const { page, extension, messageName } = req.body;
 
@@ -54,14 +68,22 @@ router.post("/lesson", auth, async function (req, res) {
     const results = await Lesson.find(query, null, {
         skip: constants.pageSize * (page - 1),
         limit: constants.pageSize,
-    }).lean();
-
+    });
     const totalCount = await Lesson.count(query);
 
-    res.send(getTableDataResponse(results, totalCount, constants.lessonHeaders, req.body));
-});
+    return {
+        results,
+        totalCount,
+    };
+}
 
 router.post("/student", auth, async function (req, res) {
+    const { results, totalCount } = await getStudentData(req);
+
+    res.send(getTableDataResponse(results, totalCount, constants.studentHeaders, req.body));
+});
+
+async function getStudentData(req) {
     console.log(req.body);
     const { page, identityNumber, name, klass } = req.body;
 
@@ -74,14 +96,25 @@ router.post("/student", auth, async function (req, res) {
     const results = await Student.find(query, null, {
         skip: constants.pageSize * (page - 1),
         limit: constants.pageSize,
-    }).lean();
-
+    });
     const totalCount = await Student.count(query);
 
-    res.send(getTableDataResponse(results, totalCount, constants.studentHeaders, req.body));
-});
+    return { results, totalCount };
+}
 
 router.post("/conf", auth, async function (req, res) {
+    const { results, totalCount } = await getConfData(req);
+
+    const extensions = new Set(results.map((item) => item.extension));
+    const lessons = await Lesson.find({ extension: { $in: [...extensions] } });
+    const lessonByExt = {};
+    lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
+    results.forEach((item) => (item.extension = lessonByExt[item.extension]));
+
+    res.send(getTableDataResponse(results, totalCount, constants.confHeaders, req.body));
+});
+
+async function getConfData(req) {
     console.log(req.body);
     const { page } = req.body;
 
@@ -91,28 +124,24 @@ router.post("/conf", auth, async function (req, res) {
     const results = await Conf.find(query, null, {
         skip: constants.pageSize * (page - 1),
         limit: constants.pageSize,
-    }).lean();
-
-    const extensions = new Set(results.map((item) => item.extension));
-    const lessons = await Lesson.find({ extension: { $in: [...extensions] } });
-    const lessonByExt = {};
-    lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
-    results.forEach((item) => (item.extension = lessonByExt[item.extension]));
+    });
 
     const totalCount = await Conf.count(query);
 
-    res.send(getTableDataResponse(results, totalCount, constants.confHeaders, req.body));
-});
+    return {
+        results,
+        totalCount,
+    };
+}
 
 router.post("/user", auth, async function (req, res) {
-    console.log(req.body);
-
     if (req.user.role === 0) {
         res.send(getTableDataResponse([], 0, [], {}));
     }
 
-    const results = await User.find().lean();
-    await Promise.all(
+    const { results, totalCount } = await getUserData(req);
+
+    const items = await Promise.all(
         results.map(async (user) => {
             const query = { user: user.name };
 
@@ -121,10 +150,23 @@ router.post("/user", auth, async function (req, res) {
             user.conf = await Conf.countDocuments(query);
             user.lesson = await Lesson.countDocuments(query);
             user.student = await Student.countDocuments(query);
+            return { ...user, name: user.name, email: user.email };
         })
     );
 
-    res.send(getTableDataResponse(results, 0, constants.userHeaders, req.body));
+    res.send(getTableDataResponse(items, totalCount, constants.userHeaders, req.body));
 });
+
+async function getUserData(req) {
+    console.log(req.body);
+
+    const results = await User.find();
+    const totalCount = 0;
+
+    return {
+        results,
+        totalCount,
+    };
+}
 
 module.exports = router;

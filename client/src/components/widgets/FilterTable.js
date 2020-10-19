@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { deleteData, getData } from "../../_actions/data_actions";
 import { getLessonList, getKlassList } from "../../_actions/list_actions";
 import TypeAhead from "./TypeAhead";
 
-export default function FilterTable({ type, params, getData, isPdf }) {
+export default function FilterTable({ type, params, isPdf }) {
     const dispatch = useDispatch();
 
     const [fromDate, setFromDate] = useState("");
@@ -55,7 +56,11 @@ export default function FilterTable({ type, params, getData, isPdf }) {
         e.preventDefault();
         e.stopPropagation();
         const dataToSubmit = getDataToSubmit();
-        dispatch(getData(dataToSubmit));
+        dispatch(getData(type, dataToSubmit));
+    };
+
+    const handleDelete = () => {
+        window.confirm("האם אתה בטוח שאתה רוצה למחוק?") && dispatch(deleteData(type, params));
     };
 
     const dates = (
@@ -65,7 +70,7 @@ export default function FilterTable({ type, params, getData, isPdf }) {
                 <div className="col">
                     <input
                         type="date"
-                        id="user"
+                        id="fromDate"
                         name="fromDate"
                         className="form-control"
                         value={fromDate}
@@ -76,7 +81,7 @@ export default function FilterTable({ type, params, getData, isPdf }) {
                 <div className="col">
                     <input
                         type="date"
-                        id="user"
+                        id="toDate"
                         name="toDate"
                         className="form-control"
                         value={toDate}
@@ -310,7 +315,7 @@ export default function FilterTable({ type, params, getData, isPdf }) {
     return (
         <>
             <form className="p-2 jumbotron container">{fields}</form>
-            <div className="container d-flex mb-4">
+            <div className="d-flex mb-4">
                 <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
                     {isPdf ? "יצר דוח" : "סנן נתונים"}
                 </button>
@@ -318,6 +323,14 @@ export default function FilterTable({ type, params, getData, isPdf }) {
                 <button type="clear" className="btn btn-default mr-auto">
                     נקה סינון
                 </button>
+                {params && (
+                    <button
+                        className="btn btn-outline-dark"
+                        onClick={handleDelete}
+                        title="מחק את כל הנתונים שתואמים את החיפוש">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                )}
             </div>
         </>
     );

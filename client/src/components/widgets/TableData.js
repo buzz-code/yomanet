@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { getData } from "../../_actions/data_actions";
 import FilterTable from "./FilterTable";
 import Loader from "./Loader";
 import PagingTable from "./PagingTable";
 
-function TableData({ getData, type, title, isPdf }) {
+function TableData({ type, title, isPdf }) {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.data.data);
     const params = data && data.params ? data.params : {};
@@ -14,9 +15,9 @@ function TableData({ getData, type, title, isPdf }) {
     useEffect(() => {
         if (!isPdf) {
             setIsLoading(true);
-            dispatch(getData());
+            dispatch(getData(type));
         }
-    }, [dispatch, getData, isPdf]);
+    }, [dispatch, isPdf]);
 
     useEffect(() => {
         if (data) {
@@ -29,7 +30,7 @@ function TableData({ getData, type, title, isPdf }) {
             <div className="main-content pt-3">
                 <h1>{title}</h1>
                 <div>
-                    <FilterTable type={type} params={params} getData={getData} isPdf={isPdf} />
+                    <FilterTable type={type} params={params} isPdf={isPdf} />
                     {isLoading && <Loader />}
                     {data && data.headers && (
                         <>
