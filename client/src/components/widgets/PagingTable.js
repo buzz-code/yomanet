@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { useDispatch } from "react-redux";
+import { getData } from "../../_actions/data_actions";
 
-export default function PagingTable({ params, pageCount, getData }) {
+export default function PagingTable({ type, params, pageCount }) {
     const dispatch = useDispatch();
 
     const [pages, setPages] = useState([]);
@@ -49,7 +50,7 @@ export default function PagingTable({ params, pageCount, getData }) {
             return;
         }
         params.page = item;
-        dispatch(getData(params));
+        dispatch(getData(type, params));
     };
 
     return !pageCount ? null : (
@@ -65,12 +66,12 @@ export default function PagingTable({ params, pageCount, getData }) {
                 <li className="page-item">
                     <input
                         type="number"
-                        class="form-control"
+                        className="form-control"
                         placeholder="עמוד..."
                         value={customPage}
                         onChange={(e) => setCustomPage(e.target.value)}
                     />
-                    <button class="btn btn-outline-primary" onClick={(e) => handlePageClick(e, customPage)}>
+                    <button className="btn btn-outline-primary" onClick={(e) => handlePageClick(e, customPage)}>
                         עבור
                     </button>
                 </li>

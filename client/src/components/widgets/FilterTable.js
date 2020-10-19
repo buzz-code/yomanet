@@ -328,7 +328,7 @@ export default function FilterTable({ type, params, isPdf }) {
                         className="btn btn-outline-dark"
                         onClick={handleDelete}
                         title="מחק את כל הנתונים שתואמים את החיפוש">
-                        <i class="fa fa-trash"></i>
+                        <i className="fa fa-trash"></i>
                     </button>
                 )}
             </div>

@@ -52,7 +52,7 @@ function TableData({ type, title, isPdf }) {
                                     ))}
                                 </tbody>
                             </table>
-                            {!isPdf && <PagingTable params={params} pageCount={data.pageCount} getData={getData} />}
+                            {!isPdf && <PagingTable type={type} params={params} pageCount={data.pageCount} />}
                         </>
                     )}
                 </div>
