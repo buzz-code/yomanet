@@ -17,7 +17,4 @@ router.use("/upload", uploadController);
 const listController = require("../controllers/list");
 router.use("/list", listController);
 
-const reportController = require("../controllers/report");
-router.use("/report", reportController);
-
 module.exports = router;

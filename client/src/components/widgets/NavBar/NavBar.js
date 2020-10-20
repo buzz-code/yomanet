@@ -30,15 +30,6 @@ function NavBar(props) {
                 { label: "עדכון נתוני תלמידות", value: "/upload/student" },
             ],
         },
-        {
-            label: "דוחות",
-            value: "/report",
-            children: [
-                { label: "נתוני האזנה לפי כיתה ומקצוע", value: "/report/listeningByKlassAndLesson" },
-                { label: "נתוני האזנה לפי כיתה", value: "/report/listeningByKlass" },
-                { label: "נתוני ועידה לפי כיתה", value: "/report/confByKlass" },
-            ],
-        },
     ];
 
     const logoutHandler = () => {
