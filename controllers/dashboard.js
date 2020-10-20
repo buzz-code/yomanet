@@ -29,8 +29,9 @@ const listeningByDays = {
                 {
                     data: days
                         .map((day) => data.find((item) => day.isSame(item._id)))
-                        .map((item) => (item ? item.count : 0)),
-                    label: "האזנות יומיות למערכת",
+                        .map((item) => (item ? item.count : 0))
+                        .map((item) => Math.floor(item / 60)),
+                    label: "חיוגים יומיות למערכת",
                     borderColor: "#563d7cd1",
                     fill: false,
                 },
@@ -53,7 +54,7 @@ const listeningByLessons = {
         const data = await Listening.aggregate()
             .match(user)
             .match({ date: dateFilter })
-            .group({ _id: "$extension", count: { $sum: 1 } })
+            .group({ _id: "$extension", count: { $sum: "$seconds" } })
             .sort({ count: -1 })
             .limit(10);
 
@@ -64,7 +65,7 @@ const listeningByLessons = {
         return {
             datasets: [
                 {
-                    data: data.map((item) => item.count),
+                    data: data.map((item) => item.count).map((item) => Math.floor(item / 60)),
                     label: "השיעורים הכי פופולריים",
                     backgroundColor: "#563d7caa",
                 },
@@ -87,7 +88,7 @@ const listeningByStudent = {
         const data = await Listening.aggregate()
             .match(user)
             .match({ date: dateFilter })
-            .group({ _id: "$identityNumber", count: { $sum: 1 } })
+            .group({ _id: "$identityNumber", count: { $sum: "$seconds" } })
             .sort({ count: -1 })
             .limit(10);
 
@@ -98,7 +99,7 @@ const listeningByStudent = {
         return {
             datasets: [
                 {
-                    data: data.map((item) => item.count),
+                    data: data.map((item) => item.count).map((item) => Math.floor(item / 60)),
                     label: "התלמידות החרוצות ביותר",
                     lineTension: 0.1,
                     backgroundColor: "rgba(75,192,192,0.4)",
@@ -128,7 +129,7 @@ router.get("/", function (req, res) {
     User.findByToken(token, async (err, user) => {
         if (err) throw err;
         const userName = user ? user.name : undefined;
-        const dashboardData = await getDashboardData({ user: userName });
+        const dashboardData = await getDashboardData(userName);
         res.send(dashboardData);
     });
 });
@@ -137,7 +138,7 @@ function getDashboardData(user) {
     console.log(user);
     return Promise.all(
         charts.map(async (item) => {
-            const data = await item.getData(user);
+            const data = await item.getData(user ? { user } : {});
             return {
                 ...item,
                 data,
