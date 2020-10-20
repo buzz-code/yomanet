@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { uploadFile } from "../../../_actions/upload_actions";
 import Loader from "../../widgets/Loader";
 
-function Upload({ uploadFile, title, ...props }) {
+function Upload({ url, title, ...props }) {
     const dispatch = useDispatch();
     const [file, setFile] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -18,7 +19,7 @@ function Upload({ uploadFile, title, ...props }) {
         setIsLoading(true);
         e.preventDefault();
         e.stopPropagation();
-        dispatch(uploadFile(file)).then((response) => {
+        dispatch(uploadFile(url, file)).then((response) => {
             console.log(response);
             if (response.payload.error) {
                 setErrorMessage(response.payload.errorMessage);
