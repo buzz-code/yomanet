@@ -17,6 +17,7 @@ function NavBar(props) {
             children: dataConfig.map((item) => ({
                 label: item.title,
                 value: `/data/${item.url}`,
+                isAdmin: item.isAdmin,
             })),
         },
         {
