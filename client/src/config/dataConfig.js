@@ -38,7 +38,7 @@ export default [
     {
         url: "listeningByKlass",
         title: "נתוני האזנה לפי כיתה",
-        filterFields: ["singleKlass", "singleLesson", "dateRange"],
+        filterFields: ["singleKlass", "dateRange"],
         isAdmin: false,
     },
     {

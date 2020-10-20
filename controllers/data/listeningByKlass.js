@@ -18,15 +18,7 @@ module.exports = {
         if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
         if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
 
-        return query;
-    },
-    validate: async function (query, user) {
-        return query.length > 1;
-    },
-    data: async function (query, page) {
-        const pagingConfig = getPagingConfig(page);
-
-        const results = await Listening.aggregate([
+        const aggregate = [
             { $match: { $and: query } },
             {
                 $group: {
@@ -44,9 +36,18 @@ module.exports = {
             { $addFields: { "tmp.name": "$_id.name" } },
             { $replaceRoot: { newRoot: "$tmp" } },
             { $sort: { name: 1 } },
-            { $skip: pagingConfig.skip },
-            { $limit: pagingConfig.limit },
-        ]);
+        ];
+
+        return aggregate;
+    },
+    validate: async function (query, user) {
+        return query.length > 1;
+    },
+    data: async function (query, page) {
+        const { skip, limit } = getPagingConfig(page);
+        const pagingConfig = [{ $skip: skip }, { $limit: limit }];
+
+        const results = await Listening.aggregate([...query, ...pagingConfig]);
 
         return results;
     },
@@ -73,6 +74,8 @@ module.exports = {
         return headers;
     },
     count: async function (query) {
-        return 0;
+        return await Listening.aggregate(query)
+            .count("totalCount")
+            .then((res) => res && res.length && res[0].totalCount);
     },
 };

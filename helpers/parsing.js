@@ -2,10 +2,10 @@ const htmlParser = require("node-html-parser");
 const XLSX = require("xlsx");
 const constants = require("./constants");
 
-const parseListening = (htmlString) => {
+const parseListening = (content) => {
     // const keys = [];
     const data = [];
-    const root = htmlParser.parse(htmlString);
+    const root = htmlParser.parse(content.toString());
     const table = root.querySelector("table");
 
     // table
@@ -27,10 +27,10 @@ const parseListening = (htmlString) => {
     return data;
 };
 
-const parseConf = (htmlString) => {
+const parseConf = (content) => {
     // const keys = [];
     const data = [];
-    const root = htmlParser.parse(htmlString);
+    const root = htmlParser.parse(content.toString());
     const table = root.querySelector("table");
 
     // table

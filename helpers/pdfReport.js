@@ -1,4 +1,5 @@
 const { getTableCellValue } = require("./data");
+const puppeteer = require("puppeteer");
 
 const createHeader = (header) => `
     <td>${header.label}</td>

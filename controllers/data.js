@@ -28,7 +28,7 @@ function registerHook(hook) {
 
         const isValid = await hook.validate(query, req.user);
         if (!isValid) {
-            res.send({ error: true });
+            res.send({ error: true, errorMessage: "invalid filter" });
             return;
         }
 
