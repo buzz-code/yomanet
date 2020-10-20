@@ -5,22 +5,29 @@ import Loader from "../../widgets/Loader";
 function Upload({ uploadFile, title, ...props }) {
     const dispatch = useDispatch();
     const [file, setFile] = useState(null);
-    const [message, setMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
+        setErrorMessage(null);
+        setSuccessMessage(null);
     };
     const handleSubmit = (e) => {
         setIsLoading(true);
         e.preventDefault();
         e.stopPropagation();
         dispatch(uploadFile(file)).then((response) => {
-            setMessage("העלאת הנתונים הסתיימה בהצלחה");
+            console.log(response);
+            if (response.payload.error) {
+                setErrorMessage(response.payload.errorMessage);
+                setSuccessMessage(null);
+            } else {
+                setSuccessMessage("העלאת הנתונים הסתיימה בהצלחה");
+                setErrorMessage(null);
+            }
             setIsLoading(false);
-            // setTimeout(() => {
-            //     props.history.push("/");
-            // }, 3000);
         });
     };
 
@@ -47,7 +54,21 @@ function Upload({ uploadFile, title, ...props }) {
                         ביטול
                     </a>
                 </form>
-                {message && (
+                {errorMessage && (
+                    <label>
+                        <p
+                            style={{
+                                color: "#ff0000bf",
+                                fontSize: "0.7rem",
+                                border: "1px solid",
+                                padding: "1rem",
+                                borderRadius: "10px",
+                            }}>
+                            {errorMessage}
+                        </p>
+                    </label>
+                )}
+                {successMessage && (
                     <div>
                         <p
                             style={{
@@ -57,7 +78,7 @@ function Upload({ uploadFile, title, ...props }) {
                                 padding: "1rem",
                                 borderRadius: "10px",
                             }}>
-                            {message}
+                            {successMessage}
                         </p>
                     </div>
                 )}
