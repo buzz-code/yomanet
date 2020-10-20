@@ -9,11 +9,12 @@ function DataPage(props) {
         <>
             <Switch>
                 {dataConfig.map((item) => {
-                    const Component = Auth(TableData, true, item.isAdmin);
                     return (
-                        <Route exact path={`/data/${item.url}`}>
-                            <Component {...item} />
-                        </Route>
+                        <Route
+                            exact
+                            path={`/data/${item.url}`}
+                            component={Auth(TableData, true, item.isAdmin, { ...item })}
+                        />
                     );
                 })}
             </Switch>
