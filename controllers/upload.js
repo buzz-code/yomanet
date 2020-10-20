@@ -9,65 +9,78 @@ const { Listening } = require("../models/Listening");
 const { Lesson } = require("../models/Lesson");
 const { Student } = require("../models/Student");
 const { Conf } = require("../models/Conf");
+const { File } = require("../models/File");
 const { auth } = require("../middleware/auth");
 
-router.post("/listening", auth, async function (req, res) {
-    if (req.files && req.files.fileUpload) {
-        const content = await files.readFile(req.files.fileUpload.tempFilePath);
-        if (validation.fileIsUnique(content)) {
-            const parsed = parsing.parseListening(content);
-            parsed.forEach((item) => {
-                item.date = moment.utc(item.date, "DD/MM/YYYY").toDate();
-                item.seconds = Number(item.seconds);
-                item.user = req.user.name;
-            });
-            await Listening.insertMany(parsed);
-            console.log("saved");
+function registerHook(url, callback) {
+    router.post(url, auth, async function (req, res) {
+        try {
+            if (req.files && req.files.fileUpload) {
+                const content = await files.readFile(req.files.fileUpload.tempFilePath);
+                const { isValid, md5 } = await validation.fileIsUnique(req.user, content);
+                if (isValid) {
+                    await callback(content, req.user);
+                    console.log("saved", url);
+                    await File.create({
+                        user: req.user.name,
+                        fileName: req.files.fileUpload.name,
+                        md5,
+                    });
+                    res.send({ success: true });
+                    return;
+                } else {
+                    res.send({ error: true, errorMessage: "הקובץ כבר הועלה באתר" });
+                    return;
+                }
+            }
+        } catch (e) {
+            console.log(e);
         }
-    }
-    res.send({ success: true });
-});
+        res.send({ error: true, errorMessage: "ארעה שגיאה, נסה שנית" });
+    });
+}
 
-router.post("/conf", auth, async function (req, res) {
-    if (req.files && req.files.fileUpload) {
-        const content = await files.readFile(req.files.fileUpload.tempFilePath);
-        if (validation.fileIsUnique(content)) {
-            const parsed = parsing.parseConf(content);
-            parsed.forEach((item) => {
-                const date = item.date;
-                item.date = moment.utc(item.date, "DD/MM/YYYY").toDate();
-                item.startTime = moment(date + " " + item.startTime, "DD/MM/YYYY HH:mm:ss").toDate();
-                item.endTime = moment(date + " " + item.endTime, "DD/MM/YYYY HH:mm:ss").toDate();
-                item.seconds = (item.endTime - item.startTime) / 1000;
-                item.user = req.user.name;
-            });
-            await Conf.insertMany(parsed);
-            console.log("saved");
-        }
-    }
-    res.send({ success: true });
-});
+registerHook("/listening", uploadListening);
+registerHook("/conf", uploadConf);
+registerHook("/lesson", uploadLesson);
+registerHook("/student", uploadStudent);
 
-router.post("/lesson", auth, async function (req, res) {
-    if (req.files && req.files.fileUpload) {
-        const parsed = parsing.parseLesson(req.files.fileUpload.tempFilePath);
-        parsed.forEach((item) => (item.user = req.user.name));
-        await Lesson.deleteMany({ user: req.user.name });
-        await Lesson.insertMany(parsed);
-        console.log("saved");
-    }
-    res.send({ success: true });
-});
-
-router.post("/student", auth, async function (req, res) {
-    if (req.files && req.files.fileUpload) {
-        const parsed = parsing.parseStudent(req.files.fileUpload.tempFilePath);
-        parsed.forEach((item) => (item.user = req.user.name));
-        await Student.deleteMany({ user: req.user.name });
-        await Student.insertMany(parsed);
-        console.log("saved");
-    }
-    res.send({ success: true });
-});
+async function uploadListening(buffer, user) {
+    const parsed = parsing.parseListening(buffer);
+    parsed.forEach((item) => {
+        item.date = moment.utc(item.date, "DD/MM/YYYY").toDate();
+        item.seconds = Number(item.seconds);
+        item.user = user.name;
+    });
+    await Listening.insertMany(parsed);
+}
+async function uploadConf(buffer, user) {
+    const parsed = parsing.parseConf(buffer);
+    parsed.forEach((item) => {
+        const date = item.date;
+        item.date = moment.utc(item.date, "DD/MM/YYYY").toDate();
+        item.startTime = moment(date + " " + item.startTime, "DD/MM/YYYY HH:mm:ss").toDate();
+        item.endTime = moment(date + " " + item.endTime, "DD/MM/YYYY HH:mm:ss").toDate();
+        item.seconds = (item.endTime - item.startTime) / 1000;
+        item.user = user.name;
+    });
+    await Conf.insertMany(parsed);
+}
+async function uploadLesson(buffer, user) {
+    const parsed = parsing.parseLesson(buffer);
+    parsed.forEach((item) => {
+        item.user = user.name;
+    });
+    await Lesson.deleteMany({ user: user.name });
+    await Lesson.insertMany(parsed);
+}
+async function uploadStudent(buffer, user) {
+    const parsed = parsing.parseStudent(buffer);
+    parsed.forEach((item) => {
+        item.user = user.name;
+    });
+    await Student.deleteMany({ user: user.name });
+    await Student.insertMany(parsed);
+}
 
 module.exports = router;

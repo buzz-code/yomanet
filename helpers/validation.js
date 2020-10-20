@@ -1,9 +1,14 @@
 const md5 = require("md5");
+const { File } = require("../models/File");
 
-const fileIsUnique = (fileContent) => {
-    // todo: check that the file is unique
+const fileIsUnique = async (user, fileContent) => {
     // todo: validate file format
-    return md5(fileContent).length > 0;
+    const md5OfContent = md5(fileContent);
+    const isExisting = await File.exists({ user: user.name, md5: md5OfContent });
+    return {
+        isValid: !isExisting,
+        md5: md5OfContent,
+    };
 };
 
 module.exports = {

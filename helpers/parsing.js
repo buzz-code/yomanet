@@ -42,9 +42,9 @@ const parseConf = (htmlString) => {
         .querySelectorAll("tr")
         .forEach((item) => {
             row = {};
-            item.querySelectorAll("td").forEach(
-                (item, index) => (row[constants.confHeaders[index].value] = item.text)
-            );
+            item.querySelectorAll("td").forEach((item, index) => {
+                row[constants.confHeaders[index].value] = item.text;
+            });
             data.push(row);
         });
 
@@ -52,15 +52,15 @@ const parseConf = (htmlString) => {
     return data;
 };
 
-const parseLesson = (url) => {
-    const wb = XLSX.readFile(url);
+const parseLesson = (content) => {
+    const wb = XLSX.read(content, { type: "buffer" });
     const ws = wb.Sheets[wb.SheetNames[0]];
     const header = constants.lessonHeaders.map((item) => item.value);
     return XLSX.utils.sheet_to_json(ws, { header });
 };
 
-const parseStudent = (url) => {
-    const wb = XLSX.readFile(url);
+const parseStudent = (content) => {
+    const wb = XLSX.read(content, { type: "buffer" });
     const ws = wb.Sheets[wb.SheetNames[0]];
     const header = constants.studentHeaders.map((item) => item.value);
     return XLSX.utils.sheet_to_json(ws, { header });
