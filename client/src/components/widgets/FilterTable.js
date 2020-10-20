@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getData } from "../../_actions/data_actions";
+import { getData, reportData } from "../../_actions/data_actions";
 import { getLessonList, getKlassList } from "../../_actions/list_actions";
 import TypeAhead from "./TypeAhead";
 
@@ -65,6 +65,20 @@ export default function FilterTable({ url, params, filterFields }) {
         e.stopPropagation();
 
         dispatch(getData(url));
+    };
+
+    const handlePdfReport = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        dispatch(reportData(url, { ...params, format: "PDF" }));
+    };
+
+    const handleExcelReport = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        dispatch(reportData(url, { ...params, format: "EXCEL" }));
     };
 
     // const handleDelete = () => {
@@ -278,6 +292,12 @@ export default function FilterTable({ url, params, filterFields }) {
                 &nbsp;
                 <button type="clear" className="btn btn-default mr-auto" onClick={handleClear}>
                     נקה סינון
+                </button>
+                <button className="btn btn-outline-dark mr-2" onClick={handlePdfReport} title="יצא את הנתונים לPDF">
+                    <i className="fa fa-file-pdf"></i>
+                </button>
+                <button className="btn btn-outline-dark" onClick={handleExcelReport} title="יצא את הנתונים לאקסל">
+                    <i className="fa fa-file-excel"></i>
                 </button>
                 {/* {params && (
                     <button

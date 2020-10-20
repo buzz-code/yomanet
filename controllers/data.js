@@ -37,7 +37,7 @@ function registerHook(hook) {
         //todo: make title more correct
         const title = hook.title();
 
-        return createReport(res, title, results, headers);
+        createReport(res, filter.format, title, results, headers);
     });
 }
 

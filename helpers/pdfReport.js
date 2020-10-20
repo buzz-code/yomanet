@@ -85,6 +85,27 @@ const createHtml = (title, data, headers) => `
       </html>
     `;
 
+const createPdfReport = async (res, title, results, headers) => {
+    const html = createHtml(title, results, headers);
+    const browser = await puppeteer.launch({ headless: true, args: ["--no-sandbox"] });
+    const pdf = await browser.newPage();
+    await pdf.setContent(html);
+    const buffer = await pdf.pdf({
+        format: "A4",
+        printBackground: true,
+        landscape: true,
+        margin: {
+            left: "20px",
+            top: "20px",
+            right: "20px",
+            bottom: "20px",
+        },
+    });
+    await browser.close();
+    res.attachment(title + ".pdf");
+    res.end(buffer);
+};
+
 module.exports = {
-    createHtml,
+    createPdfReport,
 };
