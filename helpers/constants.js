@@ -49,4 +49,5 @@ module.exports = {
         { value: "student", label: "תלמידות" },
     ],
     pageSize: 10,
+    dashboardNumberOfDays: 14,
 };

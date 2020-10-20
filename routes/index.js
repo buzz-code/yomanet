@@ -17,4 +17,7 @@ router.use("/upload", uploadController);
 const listController = require("../controllers/list");
 router.use("/list", listController);
 
+const dashboardController = require("../controllers/dashboard");
+router.use("/dashboard", dashboardController);
+
 module.exports = router;

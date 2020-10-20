@@ -1,7 +1,7 @@
 import React from "react";
-import Loader from "react-loader-spinner";
+import { default as CustomLoader } from "react-loader-spinner";
 
-export default function CustomLoader() {
+export default function Loader() {
     return (
         <div
             style={{
@@ -11,7 +11,7 @@ export default function CustomLoader() {
                 justifyContent: "center",
                 alignItems: "center",
             }}>
-            <Loader type="ThreeDots" color="#563d7c" height="100" width="100" />
+            <CustomLoader type="ThreeDots" color="#563d7c" height="100" width="100" />
         </div>
     );
 }
