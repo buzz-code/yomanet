@@ -17,7 +17,8 @@ function LandingPage() {
         <div className="app">
             <div className="container">
                 <h2 className="text-center pt-3">
-                    {(user && user.userData && user.userData.welcomeMessage) || "ברוכים הבאים!"}
+                    {(user && user.userData && user.userData.welcomeMessage) ||
+                        "ברוכים הבאים ליומנט - היומן של בית הספר במרחב הקולי"}
                 </h2>
                 <div className="row">
                     {charts &&

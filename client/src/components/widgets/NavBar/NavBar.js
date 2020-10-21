@@ -45,7 +45,7 @@ function NavBar(props) {
     return (
         <nav className="navbar navbar-expand-md navbar-dark">
             <a href="/" className="navbar-brand">
-                נתוני האזנה
+                יומן Net
             </a>
             <button
                 type="button"
