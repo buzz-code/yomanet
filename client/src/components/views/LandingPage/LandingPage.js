@@ -7,7 +7,7 @@ import Loader from "../../widgets/Loader";
 function LandingPage() {
     const dispatch = useDispatch();
     const charts = useSelector((state) => state.dashboard.charts);
-    const user = useSelector((state) => state.user.userData);
+    const user = useSelector((state) => state.user);
 
     useEffect(() => {
         dispatch(getDashboardData());
