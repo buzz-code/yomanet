@@ -14,11 +14,13 @@ function NavBar(props) {
         {
             label: "נתונים",
             value: "/data",
-            children: dataConfig.map((item) => ({
-                label: item.title,
-                value: `/data/${item.url}`,
-                isAdmin: item.isAdmin,
-            })),
+            children: dataConfig
+                .filter((item) => !item.isReport)
+                .map((item) => ({
+                    label: item.title,
+                    value: `/data/${item.url}`,
+                    isAdmin: item.isAdmin,
+                })),
         },
         {
             label: "העלאת קובץ",
@@ -29,6 +31,21 @@ function NavBar(props) {
                 { label: "עדכון נתוני שיעורים", value: "/upload/lesson" },
                 { label: "עדכון נתוני תלמידות", value: "/upload/student" },
             ],
+        },
+        {
+            label: "דוחות",
+            value: "/report",
+            children: dataConfig
+                .filter((item) => item.isReport)
+                .map((item) => ({
+                    label: item.title,
+                    value: `/report/${item.url}`,
+                    isAdmin: item.isAdmin,
+                })),
+        },
+        {
+            label: "גרפים",
+            value: "/",
         },
     ];
 
@@ -88,7 +105,9 @@ function NavBar(props) {
                         ) : (
                             <li
                                 className={clsx("nav-item", {
-                                    active: location.pathname.startsWith(item.value),
+                                    active:
+                                        location.pathname.startsWith(item.value) &&
+                                        (item.value !== "/" || location.pathname === "/"),
                                 })}>
                                 <a href={item.value} title={item.label} className="btn shadow-none nav-link">
                                     {item.label}

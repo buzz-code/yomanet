@@ -4,17 +4,17 @@ import Auth from "../../../hoc/auth";
 import dataConfig from "../../../config/dataConfig";
 import TableData from "../../widgets/TableData";
 
-function DataPage(props) {
+function ReportPage(props) {
     return (
         <>
             <Switch>
                 {dataConfig
-                    .filter((item) => !item.isReport)
+                    .filter((item) => item.isReport)
                     .map((item) => {
                         return (
                             <Route
                                 exact
-                                path={`/data/${item.url}`}
+                                path={`/report/${item.url}`}
                                 component={Auth(TableData, true, item.isAdmin, { ...item })}
                             />
                         );
@@ -24,4 +24,4 @@ function DataPage(props) {
     );
 }
 
-export default DataPage;
+export default ReportPage;
