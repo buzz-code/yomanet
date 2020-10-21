@@ -45,7 +45,9 @@ function NavBar(props) {
     return (
         <nav className="navbar navbar-expand-md navbar-dark">
             <a href="/" className="navbar-brand">
-                יומן Net
+                {/* יומן Net */}
+                <img style={{ height: "42px" }} src="1.jpg" />
+                {/* <img style={{ height: "42px" }} src="2.jpg" /> */}
             </a>
             <button
                 type="button"
