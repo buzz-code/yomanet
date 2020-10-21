@@ -10,13 +10,14 @@ module.exports = {
         return "נתוני האזנה לפי כיתה";
     },
     query: async function (body, user) {
-        const { klass, fromDate, toDate } = body;
+        const { klass, lesson, fromDate, toDate } = body;
 
         const query = [{ user: user.name }];
         if (klass && klass.length)
             query.push({ name: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
         if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
         if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
+        if (lesson && lesson.length) query.push({ extension: new RegExp(lesson.map((item) => item.value).join("|")) });
 
         const aggregate = [
             { $match: { $and: query } },
