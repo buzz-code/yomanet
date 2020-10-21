@@ -14,7 +14,7 @@ function Footer() {
                 backgroundColor: "#f5f5f5",
             }}>
             <div className="container">
-                <span className="text-muted">למידע ופרטים נוספים 050-4105475.</span>
+                <span className="text-muted">למידע ופרטים נוספים 050-4105475 או hadasa.schechter@gmail.com</span>
             </div>
         </footer>
     );
