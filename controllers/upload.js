@@ -12,26 +12,30 @@ const { Conf } = require("../models/Conf");
 const { File } = require("../models/File");
 const { auth } = require("../middleware/auth");
 
-function registerHook(url, callback) {
+function registerHook(url, customValidator, callback) {
     router.post(url, auth, async function (req, res) {
         try {
             if (req.files && req.files.fileUpload) {
                 const content = await files.readFile(req.files.fileUpload.tempFilePath);
                 const { isValid, md5 } = await validation.fileIsUnique(req.user, content);
-                if (isValid) {
-                    await callback(content, req.user);
-                    console.log("saved", url);
-                    await File.create({
-                        user: req.user.name,
-                        fileName: req.files.fileUpload.name,
-                        md5,
-                    });
-                    res.send({ success: true });
-                    return;
-                } else {
+                if (!isValid) {
                     res.send({ error: true, errorMessage: "הקובץ כבר הועלה באתר" });
                     return;
                 }
+                const validateResponse = await (customValidator || noValidator)(req.user);
+                if (!validateResponse.isValid) {
+                    res.send({ error: true, errorMessage: validateResponse.errorMessage });
+                    return;
+                }
+                await callback(content, req.user);
+                console.log("saved", url);
+                await File.create({
+                    user: req.user.name,
+                    fileName: req.files.fileUpload.name,
+                    md5,
+                });
+                res.send({ success: true });
+                return;
             }
         } catch (e) {
             console.log(e);
@@ -39,11 +43,20 @@ function registerHook(url, callback) {
         res.send({ error: true, errorMessage: "ארעה שגיאה, נסה שנית" });
     });
 }
+function noValidator(user) {
+    if (user.name === "דוגמא") {
+        return {
+            isValid: false,
+            errorMessage: "לא ניתן להעלות קבצים למערכת ההדגמה, היא נועדה לקריאה בלבד",
+        };
+    }
+    return { isValid: true, errorMessage: "" };
+}
 
-registerHook("/listening", uploadListening);
-registerHook("/conf", uploadConf);
-registerHook("/lesson", uploadLesson);
-registerHook("/student", uploadStudent);
+registerHook("/listening", null, uploadListening);
+registerHook("/conf", null, uploadConf);
+registerHook("/lesson", null, uploadLesson);
+registerHook("/student", null, uploadStudent);
 
 async function uploadListening(buffer, user) {
     const parsed = parsing.parseListening(buffer);
