@@ -1,6 +1,6 @@
 const ExcelJS = require("exceljs");
 const contentDisposition = require("content-disposition");
-const { getTableCellValue } = require("./data");
+const { getTableCellValue } = require("./format");
 
 const createExcelReport = async (res, title, results, headers) => {
     res.writeHead(200, {

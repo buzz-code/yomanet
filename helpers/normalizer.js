@@ -1,7 +1,7 @@
 const constants = require("./constants");
 const puppeteer = require("puppeteer");
 const moment = require("moment");
-const { getTableCellValue } = require("./data");
+const { getTableCellValue } = require("./format");
 const { createPdfReport } = require("./pdfReport");
 const { createExcelReport } = require("./excelReport");
 

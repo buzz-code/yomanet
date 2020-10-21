@@ -9,7 +9,7 @@ function registerHook(hook) {
         const query = await hook.query(filter, req.user);
         console.log(filter, query);
 
-        const isValid = await hook.validate(query, req.user);
+        const isValid = await hook.validate(query, req.user, filter);
         if (!isValid) {
             res.send({ error: true });
             return;
@@ -26,7 +26,7 @@ function registerHook(hook) {
         const query = await hook.query(filter, req.user);
         console.log(filter, query);
 
-        const isValid = await hook.validate(query, req.user);
+        const isValid = await hook.validate(query, req.user, filter);
         if (!isValid) {
             res.send({ error: true, errorMessage: "invalid filter" });
             return;
@@ -34,8 +34,7 @@ function registerHook(hook) {
 
         const results = await hook.data(query, -1);
         const headers = await hook.headers(results, query, filter);
-        //todo: make title more correct
-        const title = hook.title();
+        const title = hook.title(filter);
 
         createReport(res, filter.format, title, results, headers);
     });

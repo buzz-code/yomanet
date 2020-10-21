@@ -6,8 +6,12 @@ const { getPagingConfig } = require("../../helpers/normalizer");
 
 module.exports = {
     url: "/listeningByKlassAndLesson",
-    title: function () {
-        return "נתוני האזנה לפי כיתה ומקצוע";
+    title: function (filter) {
+        const { klass, lesson } = filter;
+        let title = "נתוני האזנה לכיתה ";
+        title += klass.map((item) => item.label).join("");
+        if (lesson && lesson.length) title += " לשיעור " + lesson.map((item) => item.label).join("");
+        return title;
     },
     query: async function (body, user) {
         const { klass, lesson, fromDate, toDate } = body;
@@ -41,8 +45,8 @@ module.exports = {
 
         return aggregate;
     },
-    validate: async function (query, user) {
-        return query.length > 1;
+    validate: async function (query, user, filter) {
+        return filter.klass && filter.klass.length && filter.lesson && filter.lesson.length;
     },
     data: async function (query, page) {
         const { skip, limit } = getPagingConfig(page);

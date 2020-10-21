@@ -1,4 +1,4 @@
-const { getTableCellValue } = require("./data");
+const { getTableCellValue } = require("./format");
 const puppeteer = require("puppeteer");
 
 const createHeader = (header) => `
