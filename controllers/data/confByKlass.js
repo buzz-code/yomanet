@@ -76,6 +76,6 @@ module.exports = {
     count: async function (query) {
         return await Conf.aggregate(query)
             .count("totalCount")
-            .then((res) => res[0].totalCount);
+            .then((res) => (res && res.length && res[0].totalCount) || 0);
     },
 };
