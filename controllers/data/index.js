@@ -15,7 +15,7 @@ function registerHook(hook) {
             return;
         }
 
-        const results = await hook.data(query, filter.page);
+        const results = await hook.data(query, filter.page, filter);
         const count = await hook.count(query);
         const headers = await hook.headers(results, query, filter);
 
@@ -32,7 +32,7 @@ function registerHook(hook) {
             return;
         }
 
-        const results = await hook.data(query, -1);
+        const results = await hook.data(query, -1, filter);
         const headers = await hook.headers(results, query, filter);
         const title = hook.title(filter);
 
@@ -48,5 +48,6 @@ registerHook(require("./user"));
 registerHook(require("./listeningByKlass"));
 registerHook(require("./listeningByKlassAndLesson"));
 registerHook(require("./confByKlass"));
+registerHook(require("./listeningByKlassPerStudent"));
 
 module.exports = router;
