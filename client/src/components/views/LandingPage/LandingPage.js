@@ -18,7 +18,11 @@ function LandingPage() {
             <div className="container">
                 <h2 className="text-center pt-3">
                     {(user && user.userData && user.userData.welcomeMessage) ||
-                        "ברוכים הבאים ליומנט - היומן של בית הספר במרחב הקולי"}
+                        <>
+                            <div>ברוכים הבאים ליומנט - היומן של בית הספר במרחב הקולי</div>
+                            <h5>פרטי משתמש לדוגמא- שם משתמש: a0527609942@gmail.com סיסמא: 123456</h5>
+                        </>
+                    }
                 </h2>
                 <div class="alert alert-info text-center">
                     <strong>שימו לב!</strong>
