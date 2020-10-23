@@ -11,7 +11,7 @@ function registerHook(hook) {
         try {
             if (req.files && req.files.fileUpload) {
                 const content = await files.readFile(req.files.fileUpload.tempFilePath);
-                const { isValid, md5 } = await validation.fileIsUnique(req.user, content);
+                const isValid = await validation.fileIsUnique(req.user, req.files.fileUpload.md5);
                 if (!isValid) {
                     res.send({ error: true, errorMessage: "הקובץ כבר הועלה באתר" });
                     return;
@@ -26,7 +26,7 @@ function registerHook(hook) {
                 await File.create({
                     user: req.user.name,
                     fileName: req.files.fileUpload.name,
-                    md5,
+                    md5: req.files.fileUpload.md5,
                 });
                 res.send({ success: true });
                 return;
