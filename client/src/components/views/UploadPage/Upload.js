@@ -35,7 +35,7 @@ function Upload({ url, title, ...props }) {
     return (
         <div className="container">
             <div className="main-content pt-3">
-                <h1>{title}</h1>
+                <h2>{title}</h2>
                 <form>
                     <div className="form-group">
                         <label htmlFor="fileUpload">העלאת קובץ</label>

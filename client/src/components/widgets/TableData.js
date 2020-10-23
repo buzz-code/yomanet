@@ -30,7 +30,7 @@ function TableData({ url, title, filterFields }) {
     return (
         <div className="container">
             <div className="main-content pt-3">
-                <h1>{title}</h1>
+                <h2>{title}</h2>
                 <div>
                     <FilterTable url={url} params={params} filterFields={filterFields} />
                     {isLoading && <Loader />}

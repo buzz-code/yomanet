@@ -35,7 +35,7 @@ function RegisterPage(props) {
     return (
         <div className="container">
             <div className="main-content pt-3">
-                <h1>הרשמה</h1>
+                <h2>הרשמה</h2>
                 <p className="lead">פתיחת לחשבון חדש.</p>
 
                 <Formik

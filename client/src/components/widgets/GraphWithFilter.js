@@ -32,7 +32,7 @@ function GraphWithFilter({ url, title, filterFields }) {
     return (
         <div className="container">
             <div className="main-content pt-3">
-                <h1>{title}</h1>
+                <h2>{title}</h2>
                 <div>
                     {filterFields.length > 0 && (
                         <FilterGraph getData={handleGetData} params={params} filterFields={filterFields} />

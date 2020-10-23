@@ -8,7 +8,7 @@ function LandingPage() {
     return (
         <div className="app">
             <div className="container">
-                <h2 className="text-center pt-3">
+                <h2 className="pt-3">
                     {(user && user.userData && user.userData.welcomeMessage) || (
                         <>
                             <div>ברוכים הבאים ליומנט - היומן של בית הספר במרחב הקולי</div>

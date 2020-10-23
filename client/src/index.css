@@ -62,3 +62,13 @@ input.error {
 .dropdown-menu {
     text-align: right;
 }
+
+h2 {
+    text-align: center;
+}
+
+@media (min-width: 48em) {
+    article {
+        font-size: 18px;
+    }
+}
