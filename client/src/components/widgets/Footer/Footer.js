@@ -3,12 +3,8 @@ import React from "react";
 function Footer() {
     return (
         <footer
-            className="footer"
+            className="footer fixed-bottom"
             style={{
-                position: "fixed",
-                zIndex: "9999",
-                top: "calc(100vh - 56px)",
-                width: "100%",
                 height: "60px",
                 lineHeight: "60px",
                 backgroundColor: "#f5f5f5",
