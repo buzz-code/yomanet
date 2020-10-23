@@ -15,8 +15,8 @@ function TableData({ url, title, filterFields }) {
     useEffect(() => {
         setIsLoading(true);
         const defaultParams = {
-            fromDate: new Date().toISOString().substr(0, 10),
-            toDate: new Date().toISOString().substr(0, 10),
+            // fromDate: new Date().toISOString().substr(0, 10),
+            // toDate: new Date().toISOString().substr(0, 10),
         };
         dispatch(getData(url, defaultParams));
     }, [dispatch]);
