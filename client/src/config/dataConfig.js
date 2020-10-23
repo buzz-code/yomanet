@@ -34,6 +34,13 @@ export default [
         isReport: false,
     },
     {
+        url: "file",
+        title: "קבצים שהועלו",
+        filterFields: [],
+        isAdmin: false,
+        isReport: false,
+    },
+    {
         url: "user",
         title: "נתוני משתמשים",
         filterFields: [],

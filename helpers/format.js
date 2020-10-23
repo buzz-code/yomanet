@@ -31,6 +31,9 @@ const getTableCellValue = (item, header) => {
         if (header.format === "time") {
             return moment.utc(item[header.value]).format("HH:mm:ss");
         }
+        if (header.format === "datetime") {
+            return moment.utc(item[header.value]).format("DD/MM/YYYY HH:mm:ss");
+        }
         if (header.format === "nameWOKlass") {
             const regex = /\d(.*)$/;
             if (regex.test(item[header.value])) {

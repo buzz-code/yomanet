@@ -48,6 +48,10 @@ module.exports = {
         { value: "lesson", label: "שיעורים" },
         { value: "student", label: "תלמידות" },
     ],
+    fileHeaders: [
+        { value: "fileName", label: "שם הקובץ" },
+        { value: "createdAt", label: "הועלה בתאריך", format: "datetime" },
+    ],
     pageSize: 10,
     dashboardNumberOfDays: 14,
 };

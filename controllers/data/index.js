@@ -45,6 +45,7 @@ registerHook(require("./lesson"));
 registerHook(require("./student"));
 registerHook(require("./conf"));
 registerHook(require("./user"));
+registerHook(require("./file"));
 registerHook(require("./listeningByKlass"));
 registerHook(require("./listeningByKlassAndLesson"));
 registerHook(require("./confByKlass"));
