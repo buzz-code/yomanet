@@ -19,7 +19,7 @@ function TableData({ url, title, filterFields }) {
             // toDate: new Date().toISOString().substr(0, 10),
         };
         dispatch(getData(url, defaultParams));
-    }, [dispatch]);
+    }, [dispatch, url]);
 
     useEffect(() => {
         if (data) {
