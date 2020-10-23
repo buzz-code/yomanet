@@ -188,3 +188,15 @@
 // Conf.updateMany({ user: lastUser }, { $set: { user: currentUser } }).then(console.log);
 // Student.updateMany({ user: lastUser }, { $set: { user: currentUser } }).then(console.log);
 // User.updateOne({ name: lastUser }, { $set: { name: currentUser } }).then(console.log);
+
+
+
+// const { Lesson } = require("./models/Lesson");
+// const { Listening } = require("./models/Listening");
+// const { Conf } = require("./models/Conf");
+// const { Student } = require("./models/Student");
+// const lastUser = 'hildesimer'
+// Lesson.remove({ user: lastUser }).then(console.log);
+// Listening.remove({ user: lastUser }).then(console.log);
+// Conf.remove({ user: lastUser }).then(console.log);
+// Student.remove({ user: lastUser }).then(console.log);
