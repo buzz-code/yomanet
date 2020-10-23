@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const lessonSchema = mongoose.Schema({
-    user: { type: String },
-    extension: { type: String },
-    messageName: { type: String },
+    user: { type: String, trim: true },
+    extension: { type: String, trim: true },
+    messageName: { type: String, trim: true },
 });
 
 const Lesson = mongoose.model("Lesson", lessonSchema);
