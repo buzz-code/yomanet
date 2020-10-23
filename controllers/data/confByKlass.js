@@ -7,9 +7,11 @@ const { getPagingConfig } = require("../../helpers/normalizer");
 module.exports = {
     url: "/confByKlass",
     title: function (filter) {
-        const { klass } = filter;
+        const { klass, fromDate, toDate } = filter;
         let title = "נתוני ועידה לכיתה ";
         title += klass.map((item) => item.label).join("");
+        if (fromDate) title += " מתאריך " + moment.utc(fromDate).format("DD-MM-YYYY");
+        if (toDate) title += " עד תאריך " + moment.utc(toDate).format("DD-MM-YYYY");
         return title;
     },
     query: async function (body, user) {
