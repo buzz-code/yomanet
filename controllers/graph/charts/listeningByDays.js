@@ -1,6 +1,6 @@
-const { getListOfPreviosDays } = require("../../helpers/utils");
-const { dashboardNumberOfDays } = require("../../helpers/constants");
-const { Listening } = require("../../models/Listening");
+const { getListOfPreviosDays } = require("../../../helpers/utils");
+const { graphNumberOfDays } = require("../../../helpers/constants");
+const { Listening } = require("../../../models/Listening");
 
 module.exports = {
     type: "line",
@@ -9,13 +9,18 @@ module.exports = {
             enabled: true,
         },
     },
-    getData: async function (user) {
-        const days = getListOfPreviosDays(dashboardNumberOfDays);
-        const dateFilter = { $gte: days[0].toDate(), $lte: days[days.length - 1].toDate() };
+    getData: async function (filter) {
+        const { user, klass } = filter;
+        const query = [];
+        if (user) query.push({ user });
+        if (klass && klass.length)
+            query.push({ name: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+
+        const days = getListOfPreviosDays(graphNumberOfDays);
+        query.push({ date: { $gte: days[0].toDate(), $lte: days[days.length - 1].toDate() } });
 
         const data = await Listening.aggregate()
-            .match(user)
-            .match({ date: dateFilter })
+            .match({ $and: query })
             .group({ _id: "$date", count: { $sum: 1 } })
             .sort({ _id: 1 });
 

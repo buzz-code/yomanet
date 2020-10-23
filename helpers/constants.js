@@ -53,5 +53,5 @@ module.exports = {
         { value: "createdAt", label: "הועלה בתאריך", format: "datetime" },
     ],
     pageSize: 10,
-    dashboardNumberOfDays: 14,
+    graphNumberOfDays: 14,
 };

@@ -7,4 +7,4 @@ export const FETCH_DATA = 'fetch_data';
 export const UPLOAD_FILE = 'upload_file';
 export const GET_LIST = 'get_list';
 export const GET_REPORT_DATA = 'get_report_data';
-export const GET_DASHBOARD_DATA = 'get_dashboard_data';
+export const GET_GRAPH_DATA = 'get_graph_data';
