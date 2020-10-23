@@ -284,16 +284,29 @@ export default function FilterTable({ url, params, filterFields }) {
 
     return (
         <>
-            <form className="p-2 jumbotron container">{filterFields.map((item) => fields[item])}</form>
+            {filterFields.length > 0 && (
+                <form className="p-2 jumbotron container">{filterFields.map((item) => fields[item])}</form>
+            )}
             <div className="d-flex mb-4">
-                <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
-                    סנן נתונים
-                </button>
-                &nbsp;
-                <button type="clear" className="btn btn-default mr-auto" onClick={handleClear}>
-                    נקה סינון
-                </button>
-                <button className="btn btn-outline-dark mr-2" onClick={handlePdfReport} title="יצא את הנתונים לPDF">
+                {filterFields.length > 0 ? (
+                    <>
+                        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+                            סנן נתונים
+                        </button>
+                        &nbsp;
+                        <button type="clear" className="btn btn-default" onClick={handleClear}>
+                            נקה סינון
+                        </button>
+                    </>
+                ) : (
+                    <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+                        רענן נתונים
+                    </button>
+                )}
+                <button
+                    className="btn btn-outline-dark mr-2 ml-auto"
+                    onClick={handlePdfReport}
+                    title="יצא את הנתונים לPDF">
                     Excel <i className="fa fa-file-pdf"></i>
                 </button>
                 <button className="btn btn-outline-dark" onClick={handleExcelReport} title="יצא את הנתונים לאקסל">
