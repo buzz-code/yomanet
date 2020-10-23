@@ -9,7 +9,6 @@ function DataPage(props) {
         <>
             <Switch>
                 {dataConfig
-                    .filter((item) => !item.isReport)
                     .map((item) => {
                         return (
                             <Route

@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { useLocation, withRouter } from "react-router-dom";
 import { logoutUser } from "../../../_actions/user_actions";
 import dataConfig from "../../../config/dataConfig";
+import reportConfig from "../../../config/reportConfig";
 
 function NavBar(props) {
     const userData = useSelector((state) => state.user.userData);
@@ -15,7 +16,6 @@ function NavBar(props) {
             label: "נתונים",
             value: "/data",
             children: dataConfig
-                .filter((item) => !item.isReport)
                 .map((item) => ({
                     label: item.title,
                     value: `/data/${item.url}`,
@@ -35,8 +35,7 @@ function NavBar(props) {
         {
             label: "דוחות",
             value: "/report",
-            children: dataConfig
-                .filter((item) => item.isReport)
+            children: reportConfig
                 .map((item) => ({
                     label: item.title,
                     value: `/report/${item.url}`,

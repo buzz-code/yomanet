@@ -1,15 +1,14 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Auth from "../../../hoc/auth";
-import dataConfig from "../../../config/dataConfig";
+import reportConfig from "../../../config/reportConfig";
 import TableData from "../../widgets/TableData";
 
 function ReportPage(props) {
     return (
         <>
             <Switch>
-                {dataConfig
-                    .filter((item) => item.isReport)
+                {reportConfig
                     .map((item) => {
                         return (
                             <Route
