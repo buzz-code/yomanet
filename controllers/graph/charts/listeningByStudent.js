@@ -9,7 +9,9 @@ module.exports = {
         tooltips: {
             enabled: true,
         },
+        legend: false,
     },
+    title: "התלמידות החרוצות ביותר",
     getData: async function (filter) {
         const { user, klass } = filter;
         const query = [];
@@ -34,7 +36,6 @@ module.exports = {
             datasets: [
                 {
                     data: data.map((item) => item.count).map((item) => Math.floor(item / 60)),
-                    label: "התלמידות החרוצות ביותר",
                     lineTension: 0.1,
                     backgroundColor: "rgba(75,192,192,0.4)",
                     borderColor: "rgba(75,192,192,1)",

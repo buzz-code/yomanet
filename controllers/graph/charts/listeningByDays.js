@@ -8,7 +8,9 @@ module.exports = {
         tooltips: {
             enabled: true,
         },
+        legend: false,
     },
+    title: "חיוגים יומיות למערכת",
     getData: async function (filter) {
         const { user, klass } = filter;
         const query = [];
@@ -31,7 +33,6 @@ module.exports = {
                         .map((day) => data.find((item) => day.isSame(item._id)))
                         .map((item) => (item ? item.count : 0))
                         .map((item) => Math.floor(item / 60)),
-                    label: "חיוגים יומיות למערכת",
                     borderColor: "#563d7cd1",
                     fill: false,
                 },

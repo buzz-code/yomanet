@@ -9,7 +9,9 @@ module.exports = {
         tooltips: {
             enabled: true,
         },
+        legend: false,
     },
+    title: "השיעורים הכי פופולריים",
     getData: async function (filter) {
         const { user, klass } = filter;
         const query = [];
@@ -34,7 +36,6 @@ module.exports = {
             datasets: [
                 {
                     data: data.map((item) => item.count).map((item) => Math.floor(item / 60)),
-                    label: "השיעורים הכי פופולריים",
                     backgroundColor: "#563d7caa",
                 },
             ],

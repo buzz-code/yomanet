@@ -46,7 +46,12 @@ function GraphWithFilter({ url, title, filterFields }) {
                             data.charts &&
                             data.charts.map((item) => (
                                 <div className="col-lg-6">
-                                    <Chart {...item} />
+                                    <div className="card mb-4">
+                                        <div className="card-header">{item.title}</div>
+                                        <div className="card-body">
+                                            <Chart {...item} />
+                                        </div>
+                                    </div>
                                 </div>
                             ))}
                     </div>
