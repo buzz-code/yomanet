@@ -2,13 +2,8 @@ const ExcelJS = require("exceljs");
 const contentDisposition = require("content-disposition");
 const { getTableCellValue } = require("./format");
 
-const createExcelReport = async (res, title, results, headers) => {
-    res.writeHead(200, {
-        "Content-Disposition": contentDisposition(title + ".xlsx"),
-        "Transfer-Encoding": "chunked",
-        "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
-    var workbook = new ExcelJS.stream.xlsx.WorkbookWriter({ stream: res, useStyles: true });
+const getExcelReportObject = async (title, results, headers) => {
+    var workbook = new ExcelJS.stream.xlsx.WorkbookWriter({ useStyles: true });
     var worksheet = workbook.addWorksheet(title);
     const header = worksheet.addRow(headers.map((item) => item.label));
     header.eachCell((cell) => {
@@ -29,9 +24,17 @@ const createExcelReport = async (res, title, results, headers) => {
         worksheet.addRow(row).commit();
     });
     worksheet.commit();
-    workbook.commit();
+    await workbook.commit();
+
+    const stream = workbook.stream;
+    const buffer = stream.read();
+
+    return {
+        fileName: title + ".xlsx",
+        buffer,
+    };
 };
 
 module.exports = {
-    createExcelReport,
+    getExcelReportObject,
 };

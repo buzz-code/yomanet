@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getData, reportData } from "../../_actions/data_actions";
+import { getData, reportData, sendReportByEmail } from "../../_actions/data_actions";
 import { getLessonList, getKlassList, getMegamaList } from "../../_actions/list_actions";
+import EmailReportPopup from "./EmailReportPopup";
 import TypeAhead from "./TypeAhead";
 
 export default function FilterTable({ url, params, filterFields }) {
     const dispatch = useDispatch();
+
+    const [isEmailReportOpen, setIsEmailReportOpen] = useState(false);
 
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
@@ -68,6 +71,21 @@ export default function FilterTable({ url, params, filterFields }) {
         e.stopPropagation();
 
         dispatch(getData(url));
+    };
+
+    const handleEmailReportClose = (isSend, recipient, format) => {
+        if (isSend) {
+            dispatch(sendReportByEmail(recipient, url, { ...params, format }))
+                .then((res) => res.payload)
+                .then((res) => {
+                    if (!res.error) {
+                        window.alert("הדוח נשלח בהצלחה");
+                    } else {
+                        window.alert("ארעה שגיאה");
+                    }
+                });
+        }
+        setIsEmailReportOpen(false);
     };
 
     const handlePdfReport = (e) => {
@@ -323,13 +341,17 @@ export default function FilterTable({ url, params, filterFields }) {
                         רענן נתונים
                     </button>
                 )}
+                <EmailReportPopup isOpen={isEmailReportOpen} onClose={handleEmailReportClose} />
                 <button
-                    className="btn btn-outline-dark mr-2 ml-auto"
-                    onClick={handlePdfReport}
-                    title="יצא את הנתונים לPDF">
+                    className="btn btn-outline-dark ml-auto"
+                    onClick={() => setIsEmailReportOpen(true)}
+                    title="שלח את הנתונים במייל">
+                    Email <i className="fa fa-envelope"></i>
+                </button>
+                <button className="btn btn-outline-dark ml-2" onClick={handlePdfReport} title="יצא את הנתונים לPDF">
                     Pdf <i className="fa fa-file-pdf"></i>
                 </button>
-                <button className="btn btn-outline-dark" onClick={handleExcelReport} title="יצא את הנתונים לאקסל">
+                <button className="btn btn-outline-dark ml-2" onClick={handleExcelReport} title="יצא את הנתונים לאקסל">
                     Excel <i className="fa fa-file-excel"></i>
                 </button>
                 {/* {params && (

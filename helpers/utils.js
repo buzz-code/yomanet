@@ -1,8 +1,9 @@
 const moment = require("moment");
 const constants = require("./constants");
 const { getTableCellValue } = require("./format");
-const { createPdfReport } = require("./pdfReport");
-const { createExcelReport } = require("./excelReport");
+const { getPdfReportObject } = require("./pdfReport");
+const { getExcelReportObject } = require("./excelReport");
+const { sendReportByEmail } = require("./mailer");
 
 const getTableDataResponse = (res, results, totalCount, headers, params) => {
     results.forEach((item) => {
@@ -20,11 +21,29 @@ const getTableDataResponse = (res, results, totalCount, headers, params) => {
     res.send(data);
 };
 
-const createReport = (res, format, title, results, headers) => {
+const createReport = async (res, format, title, results, headers) => {
+    let report = null;
     if (format === "PDF") {
-        createPdfReport(res, title, results, headers);
+        report = await getPdfReportObject(title, results, headers);
     } else if (format === "EXCEL") {
-        createExcelReport(res, title, results, headers);
+        report = await getExcelReportObject(title, results, headers);
+    }
+    res.attachment(report.fileName);
+    res.end(report.buffer);
+};
+
+const sendReportByMail = async (res, recipient, format, title, results, headers) => {
+    let report = null;
+    if (format === "PDF") {
+        report = await getPdfReportObject(title, results, headers);
+    } else if (format === "EXCEL") {
+        report = await getExcelReportObject(title, results, headers);
+    }
+    try {
+        await sendReportByEmail(recipient, title, report.buffer, report.fileName);
+        res.send({ error: false, success: true });
+    } catch (e) {
+        res.send({ error: true, errorMessage: e });
     }
 };
 
@@ -57,6 +76,7 @@ module.exports = {
     getTableCellValue,
     getTableDataResponse,
     createReport,
+    sendReportByMail,
     getPagingConfig,
     getListOfPreviosDays,
 };

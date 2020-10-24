@@ -86,7 +86,7 @@ const createHtml = (title, data, headers) => `
       </html>
     `;
 
-const createPdfReport = async (res, title, results, headers) => {
+const getPdfReportObject = async (title, results, headers) => {
     const html = createHtml(title, results, headers);
     const browser = await puppeteer.launch({ headless: true, args: ["--no-sandbox"] });
     const pdf = await browser.newPage();
@@ -103,10 +103,12 @@ const createPdfReport = async (res, title, results, headers) => {
         },
     });
     await browser.close();
-    res.attachment(title + ".pdf");
-    res.end(buffer);
+    return {
+        fileName: title + ".pdf",
+        buffer,
+    };
 };
 
 module.exports = {
-    createPdfReport,
+    getPdfReportObject,
 };
