@@ -2,6 +2,7 @@ const constants = require("../../helpers/constants");
 const moment = require("moment");
 const { Lesson } = require("../../models/Lesson");
 const { Listening } = require("../../models/Listening");
+const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/normalizer");
 
 module.exports = {
@@ -13,14 +14,20 @@ module.exports = {
         const { fromDate, toDate, klass, lesson, name, fromSeconds, toSeconds } = body;
 
         const query = [{ user: user.name }];
+        const studentQuery = [{ user: user.name }];
         if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
         if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
         if (fromSeconds) query.push({ seconds: { $gte: Number(fromSeconds) } });
         if (toSeconds) query.push({ seconds: { ...query.seconds, $lte: Number(toSeconds) } });
         if (lesson && lesson.length) query.push({ extension: new RegExp(lesson.map((item) => item.value).join("|")) });
         if (klass && klass.length)
-            query.push({ name: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+            studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
         if (name) query.push({ name: new RegExp(name) });
+
+        if (studentQuery.length > 1) {
+            const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();
+            query.push({ identityNumber: { $in: studentIds.map((item) => item.identityNumber) } });
+        }
 
         return { $and: query };
     },
