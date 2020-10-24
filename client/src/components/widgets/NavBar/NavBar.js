@@ -51,6 +51,10 @@ function NavBar(props) {
             })),
         },
         {
+            label: "הוראות שימוש",
+            value: "/instruction",
+        },
+        {
             label: "מה חדש?",
             value: "/whats-new",
         },
@@ -67,7 +71,7 @@ function NavBar(props) {
     };
 
     return (
-        <nav className="navbar navbar-expand-md navbar-dark">
+        <nav className="navbar navbar-expand-lg navbar-dark">
             <a href="/" className="navbar-brand">
                 {/* יומן Net */}
                 <img style={{ height: "42px" }} src="/1.jpg" alt="" />

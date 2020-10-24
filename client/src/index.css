@@ -76,3 +76,32 @@ h2 {
 .whats-new h3 {
     margin-top: 2rem;
 }
+
+@media (min-width: 576px) {
+    .container.instruction {
+        max-width: 540px;
+    }
+}
+@media (min-width: 768px) {
+    .container.instruction {
+        max-width: 720px;
+    }
+}
+@media (min-width: 992px) {
+    .container.instruction {
+        max-width: 750px;
+    }
+}
+@media (min-width: 1200px) {
+    .container.instruction {
+        max-width: 750px;
+    }
+}
+
+.instruction ::marker {
+    font-weight: bold;
+}
+
+.instruction table {
+    font-size: 0.9rem;
+}
