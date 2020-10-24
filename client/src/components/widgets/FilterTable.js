@@ -166,7 +166,7 @@ export default function FilterTable({ url, params, filterFields }) {
         ),
         secondRange: (
             <div className="form-group row">
-                <label className="m-1 col-sm-2">טווח שניות</label>
+                <label className="m-1 col-sm-1">טווח שניות</label>
                 <div className="col">
                     <input
                         type="number"
