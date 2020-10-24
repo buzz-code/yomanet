@@ -327,10 +327,10 @@ export default function FilterTable({ url, params, filterFields }) {
                     className="btn btn-outline-dark mr-2 ml-auto"
                     onClick={handlePdfReport}
                     title="יצא את הנתונים לPDF">
-                    Excel <i className="fa fa-file-pdf"></i>
+                    Pdf <i className="fa fa-file-pdf"></i>
                 </button>
                 <button className="btn btn-outline-dark" onClick={handleExcelReport} title="יצא את הנתונים לאקסל">
-                    Pdf <i className="fa fa-file-excel"></i>
+                    Excel <i className="fa fa-file-excel"></i>
                 </button>
                 {/* {params && (
                     <button
