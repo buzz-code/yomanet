@@ -50,6 +50,10 @@ function NavBar(props) {
                 isAdmin: item.isAdmin,
             })),
         },
+        {
+            label: "מה חדש?",
+            value: "/whats-new",
+        },
     ];
 
     const logoutHandler = () => {
