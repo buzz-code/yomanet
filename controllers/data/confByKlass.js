@@ -18,10 +18,16 @@ module.exports = {
         const { klass, fromDate, toDate } = body;
 
         const query = [{ user: user.name }];
+        const studentQuery = [{ user: user.name }];
         if (klass && klass.length)
-            query.push({ name: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+            studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
         if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
         if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
+
+        if (studentQuery.length > 1) {
+            const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();
+            query.push({ identityNumber: { $in: studentIds.map((item) => item.identityNumber) } });
+        }
 
         const aggregate = [
             { $match: { $and: query } },

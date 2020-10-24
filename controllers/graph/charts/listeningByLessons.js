@@ -14,10 +14,20 @@ module.exports = {
     title: "השיעורים הכי פופולריים",
     getData: async function (filter) {
         const { user, klass } = filter;
+
         const query = [];
-        if (user) query.push({ user });
+        const studentQuery = [];
+        if (user) {
+            query.push({ user });
+            studentQuery.push({ user });
+        }
         if (klass && klass.length)
-            query.push({ name: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+            studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+
+        if (studentQuery.length > 1) {
+            const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();
+            query.push({ identityNumber: { $in: studentIds.map((item) => item.identityNumber) } });
+        }
 
         const days = getListOfPreviosDays(graphNumberOfDays);
         query.push({ date: { $gte: days[0].toDate(), $lte: days[days.length - 1].toDate() } });
