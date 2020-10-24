@@ -1,5 +1,5 @@
 const constants = require("../../helpers/constants");
-const { getPagingConfig } = require("../../helpers/normalizer");
+const { getPagingConfig } = require("../../helpers/utils");
 
 module.exports = {
     url: "/sample",

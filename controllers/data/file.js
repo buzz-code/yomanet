@@ -1,6 +1,6 @@
 const constants = require("../../helpers/constants");
 const { File } = require("../../models/File");
-const { getPagingConfig } = require("../../helpers/normalizer");
+const { getPagingConfig } = require("../../helpers/utils");
 
 module.exports = {
     url: "/file",

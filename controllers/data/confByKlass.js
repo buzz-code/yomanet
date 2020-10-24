@@ -2,7 +2,7 @@ const constants = require("../../helpers/constants");
 const moment = require("moment");
 const { Conf } = require("../../models/Conf");
 const { Lesson } = require("../../models/Lesson");
-const { getPagingConfig } = require("../../helpers/normalizer");
+const { getPagingConfig } = require("../../helpers/utils");
 
 module.exports = {
     url: "/confByKlass",

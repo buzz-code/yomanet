@@ -4,7 +4,7 @@ const { Listening } = require("../../models/Listening");
 const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { Conf } = require("../../models/Conf");
-const { getPagingConfig } = require("../../helpers/normalizer");
+const { getPagingConfig } = require("../../helpers/utils");
 
 module.exports = {
     url: "/user",

@@ -3,7 +3,7 @@ const moment = require("moment");
 const { Lesson } = require("../../models/Lesson");
 const { Listening } = require("../../models/Listening");
 const { Student } = require("../../models/Student");
-const { getPagingConfig } = require("../../helpers/normalizer");
+const { getPagingConfig } = require("../../helpers/utils");
 
 module.exports = {
     url: "/listening",

@@ -1,6 +1,6 @@
 const constants = require("../../helpers/constants");
 const { Student } = require("../../models/Student");
-const { getPagingConfig } = require("../../helpers/normalizer");
+const { getPagingConfig } = require("../../helpers/utils");
 
 module.exports = {
     url: "/student",

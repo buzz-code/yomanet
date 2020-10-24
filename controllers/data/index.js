@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { auth } = require("../../middleware/auth");
-const { getTableDataResponse, createReport } = require("../../helpers/normalizer");
+const { getTableDataResponse, createReport, sendReport } = require("../../helpers/utils");
 
 function registerHook(hook) {
     router.post(hook.url, auth, async function (req, res) {
