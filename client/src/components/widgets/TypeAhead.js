@@ -25,6 +25,7 @@ export default function TypeAhead({ id, multiple, placeholder, value, setValue, 
             emptyLabel={"לא נמצאו תוצאות"}
             isLoading={isLoading}
             onSearch={handleSearch}
+            minLength={1}
             useCache={false}
             onChange={(value) => {
                 setValue(value);
