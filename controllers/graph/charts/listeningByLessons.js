@@ -2,6 +2,7 @@ const { getListOfPreviosDays } = require("../../../helpers/utils");
 const { graphNumberOfDays } = require("../../../helpers/constants");
 const { Listening } = require("../../../models/Listening");
 const { Lesson } = require("../../../models/Lesson");
+const { Student } = require("../../../models/Student");
 
 module.exports = {
     type: "bar",
