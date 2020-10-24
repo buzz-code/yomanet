@@ -2,6 +2,7 @@ const constants = require("../../helpers/constants");
 const moment = require("moment");
 const { Listening } = require("../../models/Listening");
 const { Lesson } = require("../../models/Lesson");
+const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/normalizer");
 
 module.exports = {
@@ -19,11 +20,17 @@ module.exports = {
         const { klass, lesson, fromDate, toDate } = body;
 
         const query = [{ user: user.name }];
+        const studentQuery = [{ user: user.name }];
         if (lesson && lesson.length) query.push({ extension: new RegExp(lesson.map((item) => item.value).join("|")) });
         if (klass && klass.length)
-            query.push({ name: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+            studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
         if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
         if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
+
+        if (studentQuery.length > 1) {
+            const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();
+            query.push({ identityNumber: { $in: studentIds.map((item) => item.identityNumber) } });
+        }
 
         const aggregate = [
             { $match: { $and: query } },

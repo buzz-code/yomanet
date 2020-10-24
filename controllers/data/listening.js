@@ -11,7 +11,7 @@ module.exports = {
         return "נתוני האזנה";
     },
     query: async function (body, user) {
-        const { fromDate, toDate, klass, lesson, name, fromSeconds, toSeconds } = body;
+        const { fromDate, toDate, klass, lesson, megama, name, fromSeconds, toSeconds } = body;
 
         const query = [{ user: user.name }];
         const studentQuery = [{ user: user.name }];
@@ -22,6 +22,8 @@ module.exports = {
         if (lesson && lesson.length) query.push({ extension: new RegExp(lesson.map((item) => item.value).join("|")) });
         if (klass && klass.length)
             studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+        if (megama && megama.length)
+            studentQuery.push({ megama: new RegExp(megama.map((item) => item.value).join("|")) });
         if (name) query.push({ name: new RegExp(name) });
 
         if (studentQuery.length > 1) {

@@ -23,6 +23,7 @@ module.exports = {
         { label: "שם", value: "name" },
         { label: "מחזור", value: "grade" },
         { label: "מספר כיתה", value: "classNum" },
+        { label: "מגמה", value: "megama" },
     ],
     confHeaders: [
         { label: "שלוחה", value: "extension" },

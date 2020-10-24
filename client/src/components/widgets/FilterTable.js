@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getData, reportData } from "../../_actions/data_actions";
-import { getLessonList, getKlassList } from "../../_actions/list_actions";
+import { getLessonList, getKlassList, getMegamaList } from "../../_actions/list_actions";
 import TypeAhead from "./TypeAhead";
 
 export default function FilterTable({ url, params, filterFields }) {
@@ -10,6 +10,7 @@ export default function FilterTable({ url, params, filterFields }) {
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
     const [klass, setKlass] = useState([]);
+    const [megama, setMegama] = useState([]);
     const [lesson, setLesson] = useState([]);
     const [fromSeconds, setFromSeconds] = useState("");
     const [toSeconds, setToSeconds] = useState("");
@@ -25,6 +26,7 @@ export default function FilterTable({ url, params, filterFields }) {
             fromDate,
             toDate,
             klass,
+            megama,
             lesson,
             fromSeconds,
             toSeconds,
@@ -41,6 +43,7 @@ export default function FilterTable({ url, params, filterFields }) {
         setFromDate(params.fromDate || "");
         setToDate(params.toDate || "");
         setKlass(params.klass || []);
+        setMegama(params.megama || []);
         setLesson(params.lesson || []);
         setFromSeconds(params.fromSeconds || "");
         setToSeconds(params.toSeconds || "");
@@ -259,6 +262,23 @@ export default function FilterTable({ url, params, filterFields }) {
                         value={klass}
                         setValue={setKlass}
                         getOptions={getKlassList}
+                    />
+                </div>
+            </div>
+        ),
+        singleMegama: (
+            <div className="form-group row">
+                <label htmlFor="megama" className="col-sm-2">
+                    מגמה
+                </label>
+                <div className="col">
+                    <TypeAhead
+                        multiple={false}
+                        id="megama"
+                        placeholder={"בחר מגמה..."}
+                        value={megama}
+                        setValue={setMegama}
+                        getOptions={getMegamaList}
                     />
                 </div>
             </div>

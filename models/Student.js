@@ -6,6 +6,7 @@ const studentSchema = mongoose.Schema({
     name: { type: String, trim: true, trim: true },
     grade: { type: String, trim: true },
     classNum: { type: String, trim: true },
+    megama: { type: String, trim: true },
     fullName: {
         type: String,
         trim: true,

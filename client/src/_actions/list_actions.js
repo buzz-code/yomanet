@@ -22,3 +22,12 @@ export function getKlassList(term) {
         payload: request,
     };
 }
+
+export function getMegamaList(term) {
+    const request = axios.post(`${LIST_SERVER}/megama`, { term }).then((response) => response.data);
+
+    return {
+        type: GET_LIST,
+        payload: request,
+    };
+}
