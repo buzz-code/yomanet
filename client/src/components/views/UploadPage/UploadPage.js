@@ -1,19 +1,23 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Auth from "../../../hoc/auth";
-import Lesson from "./Lesson";
-import Listening from "./Listening";
-import Student from "./Student";
-import Conf from "./Conf";
+import uploadConfig from "../../../config/uploadConfig";
+import Upload from "../../widgets/Upload";
 
 function UploadPage(props) {
     return (
         <>
             <Switch>
-                <Route exact path="/upload/listening" component={Auth(Listening, true)} />
-                <Route exact path="/upload/conf" component={Auth(Conf, true)} />
-                <Route exact path="/upload/lesson" component={Auth(Lesson, true)} />
-                <Route exact path="/upload/student" component={Auth(Student, true)} />
+                {uploadConfig
+                    .map((item) => {
+                        return (
+                            <Route
+                                exact
+                                path={`/upload/${item.url}`}
+                                component={Auth(Upload, true, false, { ...item })}
+                            />
+                        );
+                    })}
             </Switch>
         </>
     );

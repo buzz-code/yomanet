@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { uploadFile } from "../../../_actions/upload_actions";
-import Loader from "../../widgets/Loader";
+import { uploadFile } from "../../_actions/upload_actions";
+import Loader from "./Loader";
 
 function Upload({ url, title, ...props }) {
     const dispatch = useDispatch();

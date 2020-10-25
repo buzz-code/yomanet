@@ -7,6 +7,7 @@ import { logoutUser } from "../../../_actions/user_actions";
 import dataConfig from "../../../config/dataConfig";
 import reportConfig from "../../../config/reportConfig";
 import graphConfig from "../../../config/graphConfig";
+import uploadConfig from "../../../config/uploadConfig";
 
 function NavBar(props) {
     const userData = useSelector((state) => state.user.userData);
@@ -25,12 +26,10 @@ function NavBar(props) {
         {
             label: "העלאת קובץ",
             value: "/upload",
-            children: [
-                { label: "הוספת נתוני האזנה", value: "/upload/listening" },
-                { label: "הוספת נתוני ועידה", value: "/upload/conf" },
-                { label: "עדכון נתוני שיעורים", value: "/upload/lesson" },
-                { label: "עדכון נתוני תלמידות", value: "/upload/student" },
-            ],
+            children: uploadConfig.map((item) => ({
+                label: item.title,
+                value: `/data/${item.url}`,
+            })),
         },
         {
             label: "דוחות",
