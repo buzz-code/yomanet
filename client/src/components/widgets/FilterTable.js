@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { getData, reportData, sendReportByEmail } from "../../_actions/data_actions";
 import { getLessonList, getKlassList, getMegamaList } from "../../_actions/list_actions";
 import EmailReportPopup from "./EmailReportPopup";
 import TypeAhead from "./TypeAhead";
 
-export default function FilterTable({ url, params, filterFields }) {
-    const dispatch = useDispatch();
-
+export default function FilterTable({ params, filterFields, getData, reportData, sendEmailData }) {
     const [isEmailReportOpen, setIsEmailReportOpen] = useState(false);
 
     const [fromDate, setFromDate] = useState("");
@@ -63,27 +59,19 @@ export default function FilterTable({ url, params, filterFields }) {
         e.stopPropagation();
 
         const dataToSubmit = getDataToSubmit();
-        dispatch(getData(url, dataToSubmit));
+        getData(dataToSubmit);
     };
 
     const handleClear = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        dispatch(getData(url));
+        getData();
     };
 
     const handleEmailReportClose = (isSend, recipient, format) => {
         if (isSend) {
-            dispatch(sendReportByEmail(recipient, url, { ...params, format }))
-                .then((res) => res.payload)
-                .then((res) => {
-                    if (!res.error) {
-                        window.alert("הדוח נשלח בהצלחה");
-                    } else {
-                        window.alert("ארעה שגיאה");
-                    }
-                });
+            sendEmailData(recipient, { ...params, format });
         }
         setIsEmailReportOpen(false);
     };
@@ -92,14 +80,14 @@ export default function FilterTable({ url, params, filterFields }) {
         e.preventDefault();
         e.stopPropagation();
 
-        dispatch(reportData(url, { ...params, format: "PDF" }));
+        reportData({ ...params, format: "PDF" });
     };
 
     const handleExcelReport = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        dispatch(reportData(url, { ...params, format: "EXCEL" }));
+        reportData({ ...params, format: "EXCEL" });
     };
 
     // const handleDelete = () => {

@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { getLessonList, getKlassList } from "../../_actions/list_actions";
 import TypeAhead from "./TypeAhead";
 
 export default function FilterGraph({ getData, params, filterFields }) {
-    const dispatch = useDispatch();
-
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
     const [klass, setKlass] = useState([]);

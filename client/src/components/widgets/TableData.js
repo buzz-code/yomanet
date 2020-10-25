@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getData } from "../../_actions/data_actions";
+import { getData, reportData, sendReportByEmail } from "../../_actions/data_actions";
 import FilterTable from "./FilterTable";
 import Loader from "./Loader";
 import PagingTable from "./PagingTable";
@@ -13,12 +13,7 @@ function TableData({ url, title, filterFields }) {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        setIsLoading(true);
-        const defaultParams = {
-            // fromDate: new Date().toISOString().substr(0, 10),
-            // toDate: new Date().toISOString().substr(0, 10),
-        };
-        dispatch(getData(url, defaultParams));
+        handleGetData();
     }, [dispatch, url]);
 
     useEffect(() => {
@@ -27,12 +22,40 @@ function TableData({ url, title, filterFields }) {
         }
     }, [data]);
 
+    const handleGetData = (params) => {
+        setIsLoading(true);
+        dispatch(getData(url, params));
+    };
+    const handleReportData = (params) => {
+        dispatch(reportData(url, params));
+    };
+    const handleSendEmailData = (recipient, params) => {
+        setIsLoading(true);
+        dispatch(sendReportByEmail(recipient, url, params))
+            .then((res) => res.payload)
+            .then((res) => {
+                setIsLoading(false);
+                if (!res.error) {
+                    window.alert("הדוח נשלח בהצלחה");
+                } else {
+                    window.alert("ארעה שגיאה");
+                }
+            });
+    };
+
     return (
         <div className="container">
             <div className="main-content pt-3">
                 <h2>{title}</h2>
                 <div>
-                    <FilterTable url={url} params={params} filterFields={filterFields} />
+                    <FilterTable
+                        url={url}
+                        params={params}
+                        filterFields={filterFields}
+                        getData={handleGetData}
+                        reportData={handleReportData}
+                        sendEmailData={handleSendEmailData}
+                    />
                     {isLoading && <Loader />}
                     {data && data.headers && (
                         <>
