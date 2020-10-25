@@ -11,10 +11,13 @@ module.exports = {
             item.date = moment.utc(item.date, "DD/MM/YYYY").toDate();
             item.startTime = moment(date + " " + item.startTime, "DD/MM/YYYY HH:mm:ss").toDate();
             item.endTime = moment(date + " " + item.endTime, "DD/MM/YYYY HH:mm:ss").toDate();
+            if (!date) {
+                item.skip = true;
+            }
             item.seconds = (item.endTime - item.startTime) / 1000;
             item.user = user.name;
         });
-        await Conf.insertMany(parsed);
+        await Conf.insertMany(parsed.filter(item => !item.skip));
     },
     validate: null,
 };
