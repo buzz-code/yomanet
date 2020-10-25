@@ -13,5 +13,13 @@ module.exports = {
         });
         await Listening.insertMany(parsed);
     },
-    validate: null,
+    validate: function (user) {
+        if (user.name === "דוגמא") {
+            return {
+                isValid: false,
+                errorMessage: "לא ניתן להעלות קבצים למערכת ההדגמה, היא נועדה לקריאה בלבד",
+            };
+        }
+        return { isValid: true, errorMessage: "" };
+    },
 };

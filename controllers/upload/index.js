@@ -16,7 +16,7 @@ function registerHook(hook) {
                     res.send({ error: true, errorMessage: "הקובץ כבר הועלה באתר" });
                     return;
                 }
-                const validateResponse = await (hook.validate || noValidator)(req.user);
+                const validateResponse = await hook.validate(req.user);
                 if (!validateResponse.isValid) {
                     res.send({ error: true, errorMessage: validateResponse.errorMessage });
                     return;
@@ -36,15 +36,6 @@ function registerHook(hook) {
         }
         res.send({ error: true, errorMessage: "ארעה שגיאה, נסה שנית" });
     });
-}
-function noValidator(user) {
-    if (user.name === "דוגמא") {
-        return {
-            isValid: false,
-            errorMessage: "לא ניתן להעלות קבצים למערכת ההדגמה, היא נועדה לקריאה בלבד",
-        };
-    }
-    return { isValid: true, errorMessage: "" };
 }
 
 registerHook(require("./listening"));
