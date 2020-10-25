@@ -6,6 +6,12 @@ export default [
         isAdmin: false,
     },
     {
+        url: "listeningByMegama",
+        title: "נתוני האזנה לפי מגמה - שיעורים",
+        filterFields: ["singleMegama", "lesson", "dateRange"],
+        isAdmin: false,
+    },
+    {
         url: "listeningByKlassAndLesson",
         title: "נתוני האזנה לפי כיתה ומקצוע - שלוחות",
         filterFields: ["singleKlass", "singleLesson", "dateRange"],
