@@ -26,7 +26,7 @@ export default [
     {
         url: "conf",
         title: "נתוני ועידה",
-        filterFields: ["name", "dateRange"],
+        filterFields: ["name", "klass", "singleMegama", "dateRange"],
         isAdmin: false,
     },
     {

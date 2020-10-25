@@ -10,12 +10,23 @@ module.exports = {
         return "נתוני ועידה";
     },
     query: async function (body, user) {
+        const { fromDate, toDate, klass, megama, name } = body;
+
         const query = [{ user: user.name }];
-        const { fromDate, toDate, name } = body;
+        const studentQuery = [{ user: user.name }];
 
         if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
         if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
         if (name) query.push({ name: new RegExp(name) });
+        if (klass && klass.length)
+            studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+        if (megama && megama.length)
+            studentQuery.push({ megama: new RegExp(megama.map((item) => item.value).join("|")) });
+
+        if (studentQuery.length > 1) {
+            const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();
+            query.push({ identityNumber: { $in: studentIds.map((item) => item.identityNumber) } });
+        }
 
         return { $and: query };
     },
