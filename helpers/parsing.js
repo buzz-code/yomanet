@@ -2,7 +2,12 @@ const htmlParser = require("node-html-parser");
 const XLSX = require("xlsx");
 const constants = require("./constants");
 
-const parseListening = (content) => {
+const parseListening = (content, user) => {
+    let headers = constants.listeningHeaders;
+    if (user.name === "seminar-wolf") {
+        headers = [...headers.slice(0, 6), { value: "nothing", label: "nothing" }, ...headers.slice(6)];
+    }
+
     // const keys = [];
     const data = [];
     const root = htmlParser.parse(content.toString());
@@ -17,9 +22,9 @@ const parseListening = (content) => {
         .querySelectorAll("tr")
         .forEach((item) => {
             row = {};
-            item.querySelectorAll("td").forEach(
-                (item, index) => (row[constants.listeningHeaders[index].value] = item.text)
-            );
+            item.querySelectorAll("td").forEach((item, index) => {
+                row[headers[index].value] = item.text;
+            });
             data.push(row);
         });
 
