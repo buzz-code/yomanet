@@ -11,7 +11,8 @@ module.exports = {
             item.date = moment.utc(item.date, "DD/MM/YYYY").toDate();
             item.startTime = moment(date + " " + item.startTime, "DD/MM/YYYY HH:mm:ss").toDate();
             item.endTime = moment(date + " " + item.endTime, "DD/MM/YYYY HH:mm:ss").toDate();
-            if (!date) {
+            if (Number.isNaN(item.endTime - item.startTime)) {
+                console.log('skip conf row save', date, item.endTime, item.startTime);
                 item.skip = true;
             }
             item.seconds = (item.endTime - item.startTime) / 1000;
