@@ -16,7 +16,7 @@ module.exports = {
         return true;
     },
     data: async function (query, page) {
-        return File.find(query, null, getPagingConfig(page)).lean();
+        return File.find(query, null, { ...getPagingConfig(page), sort: { createdAt: -1 } }).lean();
     },
     headers: async function (data) {
         return constants.fileHeaders;
