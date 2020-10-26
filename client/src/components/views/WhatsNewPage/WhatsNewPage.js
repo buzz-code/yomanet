@@ -5,6 +5,10 @@ function WhatsNewPage() {
         <div className="app">
             <article className="container whats-new">
                 <h2 className="pt-3">אפשרויות שנוספו במערכת</h2>
+                <h3>ז' חשוון תשפ"א</h3>
+                <ul>
+                    <li>נוספו דוחות האזנה לפי מגמה</li>
+                </ul>
                 <h3>ו' חשוון תשפ"א</h3>
                 <ul>
                     <li>נוספה תמיכה בסינון לפי מגמה</li>
