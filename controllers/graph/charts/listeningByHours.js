@@ -11,7 +11,7 @@ module.exports = {
         },
         legend: false,
     },
-    title: "חיוגים יומיות למערכת",
+    title: "שיחות לפי שעות ביממה",
     getData: async function (filter) {
         const { user, klass } = filter;
 
@@ -34,20 +34,23 @@ module.exports = {
 
         const data = await Listening.aggregate()
             .match({ $and: query })
-            .group({ _id: "$date", count: { $sum: 1 } })
+            .group({ _id: { $hour: "$startTime" }, count: { $sum: 1 } })
             .sort({ _id: 1 });
+
+        console.log(data);
+        const hours = [...Array(24).keys()];
 
         return {
             datasets: [
                 {
-                    data: days
-                        .map((day) => data.find((item) => day.isSame(item._id)))
+                    data: hours
+                        .map((hour) => data.find((item) => item._id === hour))
                         .map((item) => (item ? item.count : 0)),
                     borderColor: "#563d7cd1",
                     fill: false,
                 },
             ],
-            labels: days.map((item) => item.format("DD/MM")),
+            labels: hours.map((hour) => (hour < 10 ? "0" + hour : hour)),
         };
     },
 };

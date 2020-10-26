@@ -17,5 +17,6 @@ module.exports = {
         require("./charts/listeningByDays"),
         require("./charts/listeningByLessons"),
         require("./charts/listeningByStudent"),
+        require("./charts/listeningByHours"),
     ],
 };
