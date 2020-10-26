@@ -73,8 +73,8 @@ function NavBar(props) {
         <nav className="navbar navbar-expand-lg navbar-dark">
             <a href="/" className="navbar-brand">
                 {/* יומן Net */}
-                <img style={{ height: "42px" }} src="/1.jpg" alt="" />
-                {/* <img style={{ height: "42px" }} src="/2.jpg" /> */}
+                {/* <img style={{ height: "42px" }} src="/1.jpg" alt="" /> */}
+                <img style={{ height: "42px" }} src="/2.jpg" />
             </a>
             <button
                 type="button"
