@@ -2,6 +2,7 @@ const constants = require("../../helpers/constants");
 const moment = require("moment");
 const { Conf } = require("../../models/Conf");
 const { Lesson } = require("../../models/Lesson");
+const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
 
 module.exports = {
