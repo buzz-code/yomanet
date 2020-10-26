@@ -200,3 +200,52 @@
 // Listening.remove({ user: lastUser }).then(console.log);
 // Conf.remove({ user: lastUser }).then(console.log);
 // Student.remove({ user: lastUser }).then(console.log);
+
+
+// require("./models/Listening")
+//     .Listening.updateMany({ startTime: { $type: "string" } }, [
+//         {
+//             $set: {
+//                 startDate: {
+//                     $dateFromString: {
+//                         dateString: {
+//                             $concat: [{ $substr: [{ $dateToString: { date: "$date" } }, 0, 10] }, "T", "$startTime"],
+//                         },
+//                     },
+//                 },
+//             },
+//         },
+//         {
+//             $set: {
+//                 endDate: {
+//                     $dateFromString: {
+//                         dateString: {
+//                             $concat: [{ $substr: [{ $dateToString: { date: "$date" } }, 0, 10] }, "T", "$endTime"],
+//                         },
+//                     },
+//                 },
+//             },
+//         },
+//     ])
+//     .then(console.log);
+
+// require("./models/Listening").Listening.updateMany({startTime: { $type: "string" }}, [
+//     {
+//         $set: {
+//             startTime: "$startDate",
+//         },
+//     },
+//     {
+//         $set: {
+//             endTime: "$endDate",
+//         },
+//     },
+// ]).then(console.log);
+
+// require("./models/Listening")
+//     .Listening.updateMany({}, [
+//         {
+//             $unset: ["startDate", "endDate"],
+//         },
+//     ])
+//     .then(console.log);
