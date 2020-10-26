@@ -37,7 +37,6 @@ module.exports = {
             .group({ _id: { $hour: "$startTime" }, count: { $sum: 1 } })
             .sort({ _id: 1 });
 
-        console.log(data);
         const hours = [...Array(24).keys()];
 
         return {

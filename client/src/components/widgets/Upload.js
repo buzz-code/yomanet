@@ -20,7 +20,6 @@ function Upload({ url, title, ...props }) {
         e.preventDefault();
         e.stopPropagation();
         dispatch(uploadFile(url, file)).then((response) => {
-            console.log(response);
             if (response.payload.error) {
                 setErrorMessage(response.payload.errorMessage);
                 setSuccessMessage(null);
