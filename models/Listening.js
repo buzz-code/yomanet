@@ -11,10 +11,10 @@ const listeningSchema = mongoose.Schema({
     name: { type: String, trim: true },
     hebrew: { type: String, trim: true },
     date: { type: Date },
-    startTime: { type: String, trim: true },
+    startTime: { type: Date },
+    endTime: { type: Date },
     startPoing: { type: String, trim: true },
     endPoint: { type: String, trim: true },
-    endTime: { type: String, trim: true },
     seconds: { type: Number },
 });
 

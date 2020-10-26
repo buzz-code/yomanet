@@ -8,10 +8,10 @@ module.exports = {
         { label: "שם", value: "name", order: 4 },
         { label: "עברי", value: "hebrew", order: 2 },
         { label: "תאריך", value: "date", order: 1, format: "date" },
-        { label: "התחלה שעה", value: "startTime", order: 9 },
+        { label: "שעת התחלה", value: "startTime", order: 9, format: "time" },
         { label: "נקודת התחלה", value: "startPoint", order: 11 },
         { label: "נקודת יציאה", value: "endPoint", order: 12 },
-        { label: "יציאה זמן", value: "endTime", order: 10 },
+        { label: "שעת יציאה", value: "endTime", order: 10, format: "time" },
         { label: "סה''כ דקות", value: "seconds", order: 13, format: "sec2min" },
     ],
     lessonHeaders: [
