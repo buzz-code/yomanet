@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const studentSchema = mongoose.Schema({
     user: { type: String, trim: true },
+    createdAt: { type: Date, default: Date.now },
     identityNumber: { type: String, trim: true },
     name: { type: String, trim: true, trim: true },
     grade: { type: String, trim: true },

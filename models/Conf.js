@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const confSchema = mongoose.Schema({
     user: { type: String, trim: true },
+    createdAt: { type: Date, default: Date.now },
     extension: { type: String, trim: true },
     extensionName: { type: String, trim: true },
     phone: { type: String, trim: true },
