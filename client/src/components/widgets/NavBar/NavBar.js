@@ -28,7 +28,7 @@ function NavBar(props) {
             value: "/upload",
             children: uploadConfig.map((item) => ({
                 label: item.title,
-                value: `/data/${item.url}`,
+                value: `/upload/${item.url}`,
             })),
         },
         {
