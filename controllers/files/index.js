@@ -20,14 +20,16 @@ function registerHook(hook) {
         const loadedFiles = await YemotFile.find({ user: req.user.name }).lean();
 
         const results = [];
-        data.files.forEach((item) => {
-            const loadedFile = loadedFiles.find((file) => file.fullPath === item.what);
-            results.push({
-                fileName: item.name,
-                fullPath: item.what,
-                status: loadedFile ? loadedFile.status : "טרם נטען",
+        data.files
+            .filter((item) => hook.fileRegex.test(item.name))
+            .forEach((item) => {
+                const loadedFile = loadedFiles.find((file) => file.fullPath === item.what);
+                results.push({
+                    fileName: item.name,
+                    fullPath: item.what,
+                    status: loadedFile ? loadedFile.status : "טרם נטען",
+                });
             });
-        });
 
         const headers = constants.yemotFilesHeaders;
 
