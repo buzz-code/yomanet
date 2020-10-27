@@ -67,5 +67,6 @@ registerHook(require("./listeningByKlass"));
 registerHook(require("./listeningByKlassAndLesson"));
 registerHook(require("./confByKlass"));
 registerHook(require("./listeningByKlassPerStudent"));
+registerHook(require("./listeningByMegama"));
 
 module.exports = router;
