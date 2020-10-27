@@ -4,8 +4,12 @@ const constants = require("./constants");
 
 const parseListening = (content, user) => {
     let headers = constants.listeningHeaders;
-    if (user.name === "seminar-wolf") {
-        headers = [...headers.slice(0, 6), { value: "nothing", label: "nothing" }, ...headers.slice(6)];
+    if (user.name === "seminar-wolf" || user.name === 'seminar-hachadash') {
+        headers = [
+            ...headers.slice(0, 6),
+            { value: "instituteDesc", label: "תאור מוסד" },
+            ...headers.slice(6)
+        ];
     }
 
     // const keys = [];

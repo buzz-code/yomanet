@@ -9,6 +9,7 @@ const listeningSchema = mongoose.Schema({
     identityType: { type: String, trim: true },
     identityNumber: { type: String, trim: true },
     name: { type: String, trim: true },
+    instituteDesc: { type: String, trim: true },
     hebrew: { type: String, trim: true },
     date: { type: Date },
     startTime: { type: Date },
