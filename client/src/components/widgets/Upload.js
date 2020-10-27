@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { uploadFile } from "../../_actions/upload_actions";
 import Loader from "./Loader";
 
-function Upload({ url, title, ...props }) {
+function Upload({ url, title, isFromYemot, ...props }) {
     const dispatch = useDispatch();
     const [file, setFile] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);

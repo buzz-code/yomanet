@@ -36,6 +36,18 @@ function registerHook(hook) {
         }
         res.send({ error: true, errorMessage: "ארעה שגיאה, נסה שנית" });
     });
+
+    if(hook.getYemotFiles){
+        // "033069265", "7525"
+        router.get(hook.url, auth, async function(req, res){
+            if(!req.user.yemotUsername || !req.user.yemotPassword){
+                res.send({ error: true, errorMessage: 'לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור לימות המשיח' });
+                return;
+            }
+            const files = await hook.getYemotFiles(req.user);
+            res.send({ files });
+        })
+    }
 }
 
 registerHook(require("./listening"));

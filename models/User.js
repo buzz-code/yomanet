@@ -34,6 +34,14 @@ const userSchema = mongoose.Schema({
         type: String,
         trime: true,
     },
+    yemotUsername: {
+        type: String,
+        trime: true,
+    },
+    yemotPassword: {
+        type: String,
+        trime: true,
+    },
 });
 
 userSchema.pre("save", function (next) {
