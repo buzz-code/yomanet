@@ -48,11 +48,15 @@ router.post("/megama", auth, async function (req, res) {
     if (term) query.megama = new RegExp(term);
     console.log(query);
 
-    const results = await Student.distinct("magama", query);
+    const results = await Student.aggregate([
+        { $match: query },
+        { $group: { _id: "$megama" } },
+        { $project: { _id: 0, megama: "$_id" } },
+    ]);
 
     const items = results.map((item) => ({
-        value: item,
-        label: item,
+        value: item.megama,
+        label: item.megama,
     }));
     res.send({ results: items });
 });
