@@ -16,7 +16,11 @@ module.exports = {
         return true;
     },
     data: async function (query, page) {
-        return File.find(query, null, { ...getPagingConfig(page), sort: { createdAt: -1 } }).lean();
+        const config = {
+            ...getPagingConfig(page),
+            sort: { createdAt: -1 }
+        }
+        return File.find(query, null, config).lean();
     },
     headers: async function (data) {
         return constants.fileHeaders;

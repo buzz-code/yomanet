@@ -28,5 +28,11 @@ export default [
         title: "נתוני ועידה לפי כיתה",
         filterFields: ["singleKlass", "dateRange"],
         isAdmin: false,
+    }, 
+    {
+        url: "confByMegama",
+        title: "נתוני ועידה לפי מגמה",
+        filterFields: ["singleMegama", "lesson", "dateRange"],
+        isAdmin: false,
     },
 ];
