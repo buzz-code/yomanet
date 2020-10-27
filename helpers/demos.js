@@ -201,6 +201,7 @@
 // Conf.remove({ user: lastUser }).then(console.log);
 // Student.remove({ user: lastUser }).then(console.log);
 
+// require('./models/Listening').Listening.remove({user:'shviley-beit-yaakov'}).then(console.log)
 
 // require("./models/Listening")
 //     .Listening.updateMany({ startTime: { $type: "string" } }, [
