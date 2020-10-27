@@ -17,6 +17,9 @@ router.use("/upload", uploadController);
 const listController = require("../controllers/list");
 router.use("/list", listController);
 
+const filesController = require("../controllers/files");
+router.use("/files", filesController);
+
 const graphController = require("../controllers/graph");
 router.use("/graph", graphController);
 

@@ -1,4 +1,4 @@
-const yemotApi = require('./index')
+const yemotApi = require('./yemot')
 
 async function main() {
     const yemot = new yemotApi("033069265", "7525");

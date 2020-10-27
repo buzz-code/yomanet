@@ -1,6 +1,6 @@
 import axios from "axios";
-import { FETCH_DATA, GET_REPORT_DATA, SEND_DATA_BY_EMAIL } from "./types";
-import { DATA_SERVER } from "../components/Config.js";
+import { FETCH_DATA, GET_REPORT_DATA, SEND_DATA_BY_EMAIL, LOAD_FILE } from "./types";
+import { DATA_SERVER, FILES_SERVER } from "../components/Config.js";
 import { getFilterFromParams } from "./utils";
 
 export function getData(url, params) {
@@ -30,5 +30,23 @@ export function reportData(url, params) {
 
     return {
         type: GET_REPORT_DATA,
+    };
+}
+
+export function getFilesData(url) {
+    const request = axios.get(`${FILES_SERVER}/${url}`).then((response) => response.data);
+
+    return {
+        type: FETCH_DATA,
+        payload: request,
+    };
+}
+
+export function loadFile(url, fullPath) {
+    const request = axios.post(`${FILES_SERVER}/${url}`, { fullPath }).then((response) => response.data);
+
+    return {
+        type: LOAD_FILE,
+        payload: request,
     };
 }

@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getData, reportData, sendReportByEmail } from "../../_actions/data_actions";
-import FilterTable from "./FilterTable";
+import { getFilesData, loadFile } from "../../_actions/data_actions";
 import Loader from "./Loader";
-import PagingTable from "./PagingTable";
 
-function TableData({ url, title, filterFields }) {
+function FilesData({ url, title }) {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.data.data);
-    const params = data && data.params ? data.params : {};
 
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        handleGetData();
+        setIsLoading(true);
+        dispatch(getFilesData(url));
     }, [dispatch, url]);
 
     useEffect(() => {
@@ -22,40 +20,21 @@ function TableData({ url, title, filterFields }) {
         }
     }, [data]);
 
-    const handleGetData = (params) => {
+    const handleLoadFile = (fullPath) => {
         setIsLoading(true);
-        dispatch(getData(url, params));
-    };
-    const handleReportData = (params) => {
-        dispatch(reportData(url, params));
-    };
-    const handleSendEmailData = (recipient, params) => {
-        setIsLoading(true);
-        dispatch(sendReportByEmail(recipient, url, params))
+
+        dispatch(loadFile(url, fullPath))
             .then((res) => res.payload)
-            .then((res) => {
-                setIsLoading(false);
-                if (!res.error) {
-                    window.alert("הדוח נשלח בהצלחה");
-                } else {
-                    window.alert("ארעה שגיאה");
-                }
+            .then(() => {
+                dispatch(getFilesData(url));
             });
     };
 
     return (
         <div className="container">
-            <div className="main-content pt-3">
+            <div className="main-content pt-3 pb-3">
                 <h2>{title}</h2>
                 <div>
-                    <FilterTable
-                        url={url}
-                        params={params}
-                        filterFields={filterFields}
-                        getData={handleGetData}
-                        reportData={handleReportData}
-                        sendEmailData={handleSendEmailData}
-                    />
                     {isLoading && <Loader />}
                     {data && data.headers && (
                         <>
@@ -65,6 +44,7 @@ function TableData({ url, title, filterFields }) {
                                         {data.headers.map((item) => (
                                             <th key={item.value}>{item.label}</th>
                                         ))}
+                                        <th>טען</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,11 +53,17 @@ function TableData({ url, title, filterFields }) {
                                             {data.headers.map((header) => (
                                                 <td>{item[header.value]}</td>
                                             ))}
+                                            <td>
+                                                <button
+                                                    className="btn btn-outline-primary btn-sm"
+                                                    onClick={() => handleLoadFile(item.fullPath)}>
+                                                    טען קובץ
+                                                </button>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
-                            <PagingTable url={url} params={params} pageCount={data.pageCount} />
                         </>
                     )}
                     {data && (data.errorMessage || data.results.length === 0) && (
@@ -89,4 +75,4 @@ function TableData({ url, title, filterFields }) {
     );
 }
 
-export default TableData;
+export default FilesData;

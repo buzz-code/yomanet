@@ -8,6 +8,7 @@ import RegisterPage from "./views/RegisterPage/RegisterPage.js";
 import UploadPage from "./views/UploadPage/UploadPage.js";
 import DataPage from "./views/DataPage/DataPage.js";
 import ReportPage from "./views/ReportPage/ReportPage.js";
+import FilesPage from "./views/FilesPage/FilesPage.js";
 import GraphPage from "./views/GraphPage/GraphPage.js";
 import InstructionPage from "./views/InstructionPage/InstructionPage.js";
 import WhatsNewPage from "./views/WhatsNewPage/WhatsNewPage.js";
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/data" component={DataPage} />
                 <Route path="/upload" component={UploadPage} />
                 <Route path="/report" component={ReportPage} />
+                <Route path="/files" component={FilesPage} />
                 <Route path="/graph" component={GraphPage} />
                 <Route exact path="/instruction" component={Auth(InstructionPage, null)} />
                 <Route exact path="/whats-new" component={Auth(WhatsNewPage, null)} />

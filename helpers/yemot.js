@@ -82,13 +82,3 @@ function yemot_api(username, password) {
 }
 
 module.exports = yemot_api;
-
-// async function main() {
-//     const controller = new yemot_api("033069265", "7525");
-//     const res = await controller.exec("GetIVR2Dir", { path: "ivr2:Log/LogPlaybackPlayStop" });
-//     console.log(res.data.html);
-//     // const fileRes = await controller.exec("DownloadFile", { path: res.data.html[0].what });
-//     // console.log(fileRes);
-// }
-
-// main().then(console.log);

@@ -9,3 +9,4 @@ export const GET_LIST = "get_list";
 export const GET_REPORT_DATA = "get_report_data";
 export const GET_GRAPH_DATA = "get_graph_data";
 export const SEND_DATA_BY_EMAIL = "send_data_by_email";
+export const LOAD_FILE = "load_file";

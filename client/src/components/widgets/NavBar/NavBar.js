@@ -8,6 +8,7 @@ import dataConfig from "../../../config/dataConfig";
 import reportConfig from "../../../config/reportConfig";
 import graphConfig from "../../../config/graphConfig";
 import uploadConfig from "../../../config/uploadConfig";
+import yemotFilesConfig from "../../../config/yemotFilesConfig";
 
 function NavBar(props) {
     const userData = useSelector((state) => state.user.userData);
@@ -24,6 +25,15 @@ function NavBar(props) {
             })),
         },
         {
+            label: "דוחות",
+            value: "/report",
+            children: reportConfig.map((item) => ({
+                label: item.title,
+                value: `/report/${item.url}`,
+                isAdmin: item.isAdmin,
+            })),
+        },
+        {
             label: "העלאת קובץ",
             value: "/upload",
             children: uploadConfig.map((item) => ({
@@ -32,12 +42,11 @@ function NavBar(props) {
             })),
         },
         {
-            label: "דוחות",
-            value: "/report",
-            children: reportConfig.map((item) => ({
+            label: "קבצי ימות המשיח",
+            value: "/files",
+            children: yemotFilesConfig.map((item) => ({
                 label: item.title,
-                value: `/report/${item.url}`,
-                isAdmin: item.isAdmin,
+                value: `/files/${item.url}`,
             })),
         },
         {

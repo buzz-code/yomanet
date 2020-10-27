@@ -166,7 +166,6 @@
 // //     console.log("end");
 // // })().finally(console.log);
 
-
 // // const {Lesson} = require('./../models/Lesson')
 // // const a =  Lesson.countDocuments().then(console.log);
 // // // console.log(a)
@@ -180,7 +179,6 @@
 // const { Student } = require("./models/Student");
 // const { User } = require("./models/User");
 
-
 // const lastUser = "aysk123",
 //     currentUser = "shviley-beit-yaakov";
 // Lesson.updateMany({ user: lastUser }, { $set: { user: currentUser } }).then(console.log);
@@ -188,8 +186,6 @@
 // Conf.updateMany({ user: lastUser }, { $set: { user: currentUser } }).then(console.log);
 // Student.updateMany({ user: lastUser }, { $set: { user: currentUser } }).then(console.log);
 // User.updateOne({ name: lastUser }, { $set: { name: currentUser } }).then(console.log);
-
-
 
 // const { Lesson } = require("./models/Lesson");
 // const { Listening } = require("./models/Listening");
@@ -250,3 +246,51 @@
 //         },
 //     ])
 //     .then(console.log);
+
+// const path = "ymgr-example";
+// const readLine = require("readline");
+// const moment = require("moment");
+
+// function parseYemotFile(user, fullPath) {
+//     return new Promise((resolve, reject) => {
+//         var arr = [];
+
+//         var lineReader = readLine.createInterface({
+//             input: require("fs").createReadStream(path),
+//         });
+
+//         lineReader.on("line", function (line) {
+//             const item = {
+//                 user: user.name,
+//                 fileName: fullPath,
+//             };
+//             line.split("%").forEach((pair) => {
+//                 const [key, value] = pair.split("#");
+//                 item[key] = getValue(key, value, item);
+//             });
+//             arr.push(item);
+//         });
+
+//         function getValue(key, value, item) {
+//             switch (key) {
+//                 case "EnterDate":
+//                     return moment.utc(value, "DD/MM/YYYY").toDate();
+//                 case "EnterTime":
+//                 case "ExitTime":
+//                     return moment
+//                         .utc(item["EnterDate"].toISOString().slice(0, 10) + " " + value, "YYYY-MM-DD HH:mm:ss")
+//                         .toDate();
+//                 case "PositionPlay":
+//                 case "PositionStop":
+//                 case "TimeTotal":
+//                     return Number(value);
+//                 default:
+//                     return value;
+//             }
+//         }
+
+//         lineReader.on("close", function () {
+//             resolve(arr);
+//         });
+//     });
+// }

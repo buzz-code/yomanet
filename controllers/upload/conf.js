@@ -29,9 +29,4 @@ module.exports = {
         }
         return { isValid: true, errorMessage: "" };
     },
-    getYemotFiles: async function (user) {
-        const yemot = new yemotApi(user.yemotUsername, user.yemotPassword);
-        const { data } = await yemot.exec("GetIVR2Dir", { path: "ivr2:Log/LogConfBridgeEnterExit" });
-        return data.html.map(item => ({ label: item.name, value: item.what }));
-    }
 };

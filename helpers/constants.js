@@ -53,6 +53,11 @@ module.exports = {
         { value: "fileName", label: "שם הקובץ" },
         { value: "createdAt", label: "הועלה בתאריך", format: "datetime" },
     ],
+    yemotFilesHeaders: [
+        { value: "fileName", label: "שם קובץ" },
+        // { value: "fullPath", label: "נתיב מלא" },
+        { value: "status", label: "האם נטען כבר" },
+    ],
     pageSize: 10,
     graphNumberOfDays: 14,
 };
