@@ -42,6 +42,8 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, function () {
+const server = app.listen(PORT, function () {
     console.log("Express server listening on port ", PORT);
 });
+
+server.timeout = 4 * 60 * 1000;

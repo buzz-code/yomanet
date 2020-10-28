@@ -15,7 +15,9 @@ export function getData(url, params) {
 
 export function sendReportByEmail(recipient, url, params) {
     const filter = getFilterFromParams(params);
-    const request = axios.put(`${DATA_SERVER}/${url}`, { filter, recipient }).then((response) => response.data);
+    const request = axios
+        .put(`${DATA_SERVER}/${url}`, { filter, recipient }, { timeout: 4 * 60 * 1000 })
+        .then((response) => response.data);
 
     return {
         type: SEND_DATA_BY_EMAIL,
@@ -43,7 +45,9 @@ export function getFilesData(url) {
 }
 
 export function loadFile(url, fullPath) {
-    const request = axios.post(`${FILES_SERVER}/${url}`, { fullPath }).then((response) => response.data);
+    const request = axios
+        .post(`${FILES_SERVER}/${url}`, { fullPath }, { timeout: 4 * 60 * 1000 })
+        .then((response) => response.data);
 
     return {
         type: LOAD_FILE,
