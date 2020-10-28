@@ -8,15 +8,16 @@ const { getPagingConfig } = require("../../helpers/utils");
 module.exports = {
     url: "/confByKlass",
     title: function (filter) {
-        const { klass, fromDate, toDate } = filter;
+        const { klass, lesson, fromDate, toDate } = filter;
         let title = "דוח ועידה לכיתה ";
         title += klass.map((item) => item.label).join("");
+        if (lesson && lesson.length) title += " לשיעורים " + lesson.map((item) => item.label).join(",");
         if (fromDate) title += " מתאריך " + moment.utc(fromDate).format("DD-MM-YYYY");
         if (toDate) title += " עד תאריך " + moment.utc(toDate).format("DD-MM-YYYY");
         return title;
     },
     query: async function (body, user) {
-        const { klass, fromDate, toDate } = body;
+        const { klass, lesson, fromDate, toDate } = body;
 
         const query = [{ user: user.name }];
         const studentQuery = [{ user: user.name }];
@@ -24,6 +25,7 @@ module.exports = {
             studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
         if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
         if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
+        if (lesson && lesson.length) query.push({ extension: new RegExp(lesson.map((item) => item.value).join("|")) });
 
         return { query, studentQuery };
     },

@@ -26,9 +26,9 @@ export default [
     {
         url: "confByKlass",
         title: "דוח ועידה לפי כיתה",
-        filterFields: ["singleKlass", "dateRange"],
+        filterFields: ["singleKlass", "lesson", "dateRange"],
         isAdmin: false,
-    }, 
+    },
     {
         url: "confByMegama",
         title: "דוח ועידה לפי מגמה",
