@@ -124,7 +124,7 @@ export default function FilterTable({ params, filterFields, getData, reportData,
         klass: (
             <div className="form-group row">
                 <label htmlFor="klass" className="col-sm-2">
-                    כיתה
+                    כיתות
                 </label>
                 <div className="col">
                     <TypeAhead
@@ -141,7 +141,7 @@ export default function FilterTable({ params, filterFields, getData, reportData,
         lesson: (
             <div className="form-group row">
                 <label htmlFor="lesson" className="col-sm-2">
-                    שיעור
+                    שיעורים
                 </label>
                 <div className="col">
                     <TypeAhead
