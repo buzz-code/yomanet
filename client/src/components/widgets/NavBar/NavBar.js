@@ -41,15 +41,14 @@ function NavBar(props) {
                 value: `/upload/${item.url}`,
             })),
         },
-        // todo: return this
-        // {
-        //     label: "קבצי ימות המשיח",
-        //     value: "/files",
-        //     children: yemotFilesConfig.map((item) => ({
-        //         label: item.title,
-        //         value: `/files/${item.url}`,
-        //     })),
-        // },
+        {
+            label: "קבצי ימות המשיח",
+            value: "/files",
+            children: yemotFilesConfig.map((item) => ({
+                label: item.title,
+                value: `/files/${item.url}`,
+            })),
+        },
         {
             label: "גרפים",
             value: "/graph",
