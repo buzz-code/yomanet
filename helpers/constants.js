@@ -58,8 +58,20 @@ module.exports = {
         // { value: "fullPath", label: "נתיב מלא" },
         { value: "status", label: "האם נטען כבר" },
     ],
-    yemotPlaybackHeaders:[
-
+    yemotPlaybackHeaders: [
+        { value: "Folder", label: "שלוחה" },
+        { value: "Current", label: "השמעה" },
+        { value: "Phone", label: "טלפון" },
+        { value: "IdType", label: "סוג זיהוי" },
+        { value: "EnterId", label: "מספר זיהוי" },
+        { value: "ValName", label: "שם" },
+        { value: "EnterHebrewDate", label: "עברי" },
+        { value: "EnterDate", label: "תאריך" },
+        { value: "EnterTime", label: "שעת התחלה" },
+        { value: "ExitTime", label: "שעת סיום" },
+        { value: "PositionPlay", label: "נקודת התחלה" },
+        { value: "PositionStop", label: "נקודת יציאה" },
+        { value: "TimeTotal", label: "סה''כ שניות" },
     ],
     pageSize: 10,
     graphNumberOfDays: 14,
