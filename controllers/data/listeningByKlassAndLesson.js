@@ -9,7 +9,7 @@ module.exports = {
     url: "/listeningByKlassAndLesson",
     title: function (filter) {
         const { klass, lesson, fromDate, toDate } = filter;
-        let title = "נתוני האזנה לכיתה ";
+        let title = "דוח האזנה לכיתה ";
         title += klass.map((item) => item.label).join("");
         if (lesson && lesson.length) title += " לשיעור " + lesson.map((item) => item.label).join("");
         if (fromDate) title += " מתאריך " + moment.utc(fromDate).format("DD-MM-YYYY");

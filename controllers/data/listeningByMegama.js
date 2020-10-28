@@ -9,7 +9,7 @@ module.exports = {
     url: "/listeningByMegama",
     title: function (filter) {
         const { megama, lesson, fromDate, toDate } = filter;
-        let title = "נתוני האזנה למגמה ";
+        let title = "דוח האזנה למגמה ";
         title += megama.map((item) => item.label).join("");
         if (lesson && lesson.length) title += " לשיעורים " + lesson.map((item) => item.label).join(",");
         if (fromDate) title += " מתאריך " + moment.utc(fromDate).format("DD-MM-YYYY");

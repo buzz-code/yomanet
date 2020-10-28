@@ -7,7 +7,7 @@ module.exports = {
     url: "/listeningByKlassPerStudent",
     title: function (filter) {
         const { klass, fromDate, toDate } = filter;
-        let title = "סך נתוני האזנה לפי תלמידה לכיתה ";
+        let title = "דוח האזנה כללי לכיתה ";
         title += klass.map((item) => item.label).join("");
         if (fromDate) title += " מתאריך " + moment.utc(fromDate).format("DD-MM-YYYY");
         if (toDate) title += " עד תאריך " + moment.utc(toDate).format("DD-MM-YYYY");

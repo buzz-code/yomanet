@@ -1,37 +1,37 @@
 export default [
     {
         url: "listeningByKlass",
-        title: "נתוני האזנה לפי כיתה - שיעורים",
+        title: "דוח האזנה לפי כיתה",
         filterFields: ["singleKlass", "lesson", "dateRange"],
         isAdmin: false,
     },
     {
         url: "listeningByMegama",
-        title: "נתוני האזנה לפי מגמה - שיעורים",
+        title: "דוח האזנה לפי מגמה",
         filterFields: ["singleMegama", "lesson", "dateRange"],
         isAdmin: false,
     },
     {
         url: "listeningByKlassAndLesson",
-        title: "נתוני האזנה לפי כיתה ומקצוע - שלוחות",
+        title: "דוח האזנה לפי כיתה ומקצוע",
         filterFields: ["singleKlass", "singleLesson", "dateRange"],
         isAdmin: false,
     },
     {
         url: "listeningByKlassPerStudent",
-        title: "נתוני האזנה לפי כיתה - תלמידות",
+        title: "דוח האזנה כללי לכיתה",
         filterFields: ["singleKlass", "dateRange"],
         isAdmin: false,
     },
     {
         url: "confByKlass",
-        title: "נתוני ועידה לפי כיתה",
+        title: "דוח ועידה לפי כיתה",
         filterFields: ["singleKlass", "dateRange"],
         isAdmin: false,
     }, 
     {
         url: "confByMegama",
-        title: "נתוני ועידה לפי מגמה",
+        title: "דוח ועידה לפי מגמה",
         filterFields: ["singleMegama", "lesson", "dateRange"],
         isAdmin: false,
     },
