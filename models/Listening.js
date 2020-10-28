@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const listeningSchema = mongoose.Schema({
     user: { type: String, trim: true },
     createdAt: { type: Date, default: Date.now },
+    fileName: { type: String, trim: true },
     extension: { type: String, trim: true },
     listening: { type: String, trim: true },
     phone: { type: String, trim: true },

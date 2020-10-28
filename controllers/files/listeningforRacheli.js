@@ -24,6 +24,7 @@ module.exports = {
     }) {
         return {
             user,
+            fileName,
             extension: Folder,
             listening: Current,
             phone: Phone,
