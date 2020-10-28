@@ -5,6 +5,10 @@ function WhatsNewPage() {
         <div className="app">
             <article className="container whats-new">
                 <h2 className="pt-3">אפשרויות שנוספו במערכת</h2>
+                <h3>י' חשוון תשפ"א</h3>
+                <ul>
+                    <li>חדש! כעת מוצגים בדוחות כל התלמידים, גם אלו שזמן ההאזנה שלהם הוא 0</li>
+                </ul>
                 <h3>ט' חשוון תשפ"א</h3>
                 <ul>
                     <li>בקרוב! התחברות אוטומטית לשאיבת הנתונים ישירות מימות המשיח</li>
