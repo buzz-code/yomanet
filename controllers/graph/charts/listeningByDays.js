@@ -11,7 +11,7 @@ module.exports = {
         },
         legend: false,
     },
-    title: "חיוגים יומיות למערכת",
+    title: "חיוגים יומיים למערכת",
     getData: async function (filter) {
         const { user, klass } = filter;
 
