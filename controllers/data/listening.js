@@ -34,7 +34,7 @@ module.exports = {
         return { $and: query };
     },
     validate: async function (query, user) {
-        return true;
+        return { isValid: true, errorMessage: null };
     },
     data: async function (query, page) {
         const results = await Listening.find(query, null, getPagingConfig(page)).lean();
