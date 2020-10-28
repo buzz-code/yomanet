@@ -43,22 +43,33 @@ function registerHook(hook) {
         }
 
         const { fullPath } = req.body;
-
+        const arr = await parsing.parseYemotFile(req.user, fullPath);
+        console.log(hook.url, 'got', arr.length);
+     
+        const session = await hook.model.startSession();
+        session.startTransaction();
         try {
-            const arr = await parsing.parseYemotFile(req.user, fullPath);
-            //todo: add transaction here
-            // await hook.model.deleteMany({ user: req.user.name, fileName: fullPath });
-            await hook.model.insertMany(arr);
-
-            await YemotFile.deleteMany({ user: req.user.name, fullPath });
-            await YemotFile.create({
-                user: req.user.name,
-                fileName: path.basename(fullPath),
-                fullPath,
-                status: "נטען",
-            });
+            const opts = { session };
+            await hook.model.deleteMany({ user: req.user.name, fileName: fullPath }, opts);
+            await hook.model.insertMany(arr, opts);
+            await YemotFile.deleteMany({ user: req.user.name, fullPath }, opts);
+            await YemotFile.create(
+                [
+                    {
+                        user: req.user.name,
+                        fileName: path.basename(fullPath),
+                        fullPath,
+                        status: "נטען",
+                    },
+                ],
+                opts
+            );
+            await session.commitTransaction();
+            session.endSession();
         } catch (e) {
             console.log(e);
+            await session.abortTransaction();
+            session.endSession();
 
             await YemotFile.deleteMany({ user: req.user.name, fullPath });
             await YemotFile.create({
