@@ -55,7 +55,13 @@ module.exports = {
         return aggregate;
     },
     validate: async function (query, user, filter) {
-        return filter.klass && filter.klass.length && filter.lesson && filter.lesson.length;
+        if (filter.klass && filter.klass.length && filter.lesson && filter.lesson.length) {
+            return { isValid: true, errorMessage: null };
+        }
+        return {
+            isValid: false,
+            errorMessage: filter.klass && filter.klass.length ? "חובה לבחור שיעור" : "חובה לבחור כיתה",
+        };
     },
     data: async function (query, page) {
         const { skip, limit } = getPagingConfig(page);

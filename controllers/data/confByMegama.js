@@ -55,7 +55,10 @@ module.exports = {
         return aggregate;
     },
     validate: async function (query, user, filter) {
-        return filter.megama && filter.megama.length;
+        if (filter.megama && filter.megama.length) {
+            return { isValid: true, errorMessage: null };
+        }
+        return { isValid: false, errorMessage: "חובה לבחור מגמה" };
     },
     data: async function (query, page) {
         const { skip, limit } = getPagingConfig(page);

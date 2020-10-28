@@ -9,9 +9,9 @@ function registerHook(hook) {
         const query = await hook.query(filter, req.user);
         console.log(hook.url, filter, query);
 
-        const isValid = await hook.validate(query, req.user, filter);
+        const { isValid, errorMessage } = await hook.validate(query, req.user, filter);
         if (!isValid) {
-            res.send({ error: true });
+            res.send({ error: true, errorMessage, params: filter });
             return;
         }
 
@@ -28,7 +28,7 @@ function registerHook(hook) {
 
         const isValid = await hook.validate(query, req.user, filter);
         if (!isValid) {
-            res.send({ error: true, errorMessage: "invalid filter" });
+            res.send({ error: true, errorMessage: "אופס, משהו השתבש" });
             return;
         }
 
@@ -45,7 +45,7 @@ function registerHook(hook) {
 
         const isValid = await hook.validate(query, req.user, filter);
         if (!isValid) {
-            res.send({ error: true, errorMessage: "invalid filter" });
+            res.send({ error: true, errorMessage: "אופס, משהו השתבש" });
             return;
         }
 

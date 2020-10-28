@@ -13,13 +13,13 @@ module.exports = {
         return { $and: query };
     },
     validate: async function (query, user) {
-        return true;
+        return { isValid: true, errorMessage: null };
     },
     data: async function (query, page) {
         const config = {
             ...getPagingConfig(page),
-            sort: { createdAt: -1 }
-        }
+            sort: { createdAt: -1 },
+        };
         return File.find(query, null, config).lean();
     },
     headers: async function (data) {

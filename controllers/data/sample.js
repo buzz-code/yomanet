@@ -10,7 +10,7 @@ module.exports = {
         return {};
     },
     validate: async function (query, user) {
-        return true;
+        return { isValid: true, errorMessage: null };
     },
     data: async function (query, page) {
         return [];

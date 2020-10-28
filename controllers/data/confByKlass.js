@@ -53,7 +53,10 @@ module.exports = {
         return aggregate;
     },
     validate: async function (query, user, filter) {
-        return filter.klass && filter.klass.length;
+        if (filter.klass && filter.klass.length) {
+            return { isValid: true, errorMessage: null };
+        }
+        return { isValid: false, errorMessage: "חובה לבחור כיהת" };
     },
     data: async function (query, page) {
         const { skip, limit } = getPagingConfig(page);

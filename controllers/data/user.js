@@ -15,7 +15,10 @@ module.exports = {
         return {};
     },
     validate: async function (query, user) {
-        return user.role !== 0;
+        if (user.role !== 0) {
+            return { isValid: true, errorMessage: null };
+        }
+        return { isValid: false, errorMessage: "אין לך הרשאה לצפות בדף זה" };
     },
     data: async function (query, page) {
         const results = await User.find(query).lean();
