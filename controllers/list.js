@@ -55,7 +55,7 @@ router.post("/megama", auth, async function (req, res) {
         { $match: query },
         { $group: { _id: "$megama" } },
         { $project: { _id: 0, megama: "$_id" } },
-        { sort: { megame: 1 } },
+        { $sort: { megame: 1 } },
     ]);
 
     const items = results.map((item) => ({
