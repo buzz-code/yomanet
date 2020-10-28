@@ -44,14 +44,15 @@ function registerHook(hook) {
 
         const { fullPath } = req.body;
         const arr = await parsing.parseYemotFile(req.user, fullPath);
-        console.log(hook.url, 'got', arr.length);
-     
+        console.log(hook.url, "got", arr.length);
+
         const session = await hook.model.startSession();
         session.startTransaction();
         try {
             const opts = { session };
             await hook.model.deleteMany({ user: req.user.name, fileName: fullPath }, opts);
-            await hook.model.insertMany(arr, opts);
+            const items = arr.map(hook.map);
+            await hook.model.insertMany(items, opts);
             await YemotFile.deleteMany({ user: req.user.name, fullPath }, opts);
             await YemotFile.create(
                 [
@@ -84,7 +85,8 @@ function registerHook(hook) {
     });
 }
 
-registerHook(require("./listening"));
-registerHook(require("./conf"));
+registerHook(require('./listeningforRacheli'))
+// registerHook(require("./listening"));
+// registerHook(require("./conf"));
 
 module.exports = router;
