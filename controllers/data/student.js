@@ -23,7 +23,7 @@ module.exports = {
         return { isValid: true, errorMessage: null };
     },
     data: async function (query, page) {
-        return Student.find(query, null, getPagingConfig(page)).lean();
+        return Student.find(query, null, { ...getPagingConfig(page), sort: { name: 1 } }).lean();
     },
     headers: async function (data) {
         return constants.studentHeaders;

@@ -20,7 +20,7 @@ module.exports = {
         return { isValid: true, errorMessage: null };
     },
     data: async function (query, page) {
-        return Lesson.find(query, null, getPagingConfig(page)).lean();
+        return Lesson.find(query, null, { ...getPagingConfig(page), sort: { extension: 1 } }).lean();
     },
     headers: async function (data) {
         return constants.lessonHeaders;

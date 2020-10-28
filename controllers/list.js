@@ -12,7 +12,9 @@ router.post("/lesson", auth, async function (req, res) {
     if (klass) query.push({ messageName: new RegExp(klass) });
     console.log(query);
 
-    const results = await Lesson.find({ $and: query }, ["extension", "messageName"]).lean();
+    const results = await Lesson.find({ $and: query }, ["extension", "messageName"], {
+        sort: { messageName: 1 },
+    }).lean();
 
     const items = results.map((item) => ({
         value: item.extension,
@@ -33,6 +35,7 @@ router.post("/klass", auth, async function (req, res) {
         { $match: query },
         { $group: { _id: { grade: "$grade", classNum: "$classNum" } } },
         { $project: { _id: 0, grade: "$_id.grade", classNum: "$_id.classNum" } },
+        { $sort: { grade: 1, classNum: 1 } },
     ]);
     const items = results.map((item) => ({
         value: `${item.grade} - ${item.classNum}`,
@@ -52,6 +55,7 @@ router.post("/megama", auth, async function (req, res) {
         { $match: query },
         { $group: { _id: "$megama" } },
         { $project: { _id: 0, megama: "$_id" } },
+        { sort: { megame: 1 } },
     ]);
 
     const items = results.map((item) => ({
