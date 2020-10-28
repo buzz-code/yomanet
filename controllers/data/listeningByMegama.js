@@ -27,32 +27,7 @@ module.exports = {
         if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
         if (lesson && lesson.length) query.push({ extension: new RegExp(lesson.map((item) => item.value).join("|")) });
 
-        if (studentQuery.length > 1) {
-            const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();
-            query.push({ identityNumber: { $in: studentIds.map((item) => item.identityNumber) } });
-        }
-
-        const aggregate = [
-            { $match: { $and: query } },
-            {
-                $group: {
-                    _id: { name: "$name", extension: "$extension" },
-                    seconds: { $sum: "$seconds" },
-                },
-            },
-            {
-                $group: {
-                    _id: { name: "$_id.name" },
-                    items: { $addToSet: { extension: "$_id.extension", seconds: { $sum: "$seconds" } } },
-                },
-            },
-            { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.extension", "$items.seconds"] } } } } },
-            { $addFields: { "tmp.name": "$_id.name" } },
-            { $replaceRoot: { newRoot: "$tmp" } },
-            { $sort: { name: 1 } },
-        ];
-
-        return aggregate;
+        return { query, studentQuery };
     },
     validate: async function (query, user, filter) {
         if (filter.megama && filter.megama.length) {
@@ -60,13 +35,41 @@ module.exports = {
         }
         return { isValid: false, errorMessage: "חובה לבחור מגמה" };
     },
-    data: async function (query, page) {
-        const { skip, limit } = getPagingConfig(page);
-        const pagingConfig = [{ $skip: skip }, { $limit: limit }];
+    data: async function (queries, page) {
+        const { query, studentQuery } = queries;
+        const students = await Student.find({ $and: studentQuery }, ["identityNumber", "name"], {
+            ...getPagingConfig(page),
+            sort: { name: 1 },
+        }).lean();
+        query.push({ identityNumber: { $in: students.map((item) => item.identityNumber) } });
 
-        const results = await Listening.aggregate([...query, ...pagingConfig]);
+        const aggregate = [
+            { $match: { $and: query } },
+            {
+                $group: {
+                    _id: { identityNumber: "$identityNumber", extension: "$extension" },
+                    seconds: { $sum: "$seconds" },
+                },
+            },
+            {
+                $group: {
+                    _id: { identityNumber: "$_id.identityNumber" },
+                    items: { $addToSet: { extension: "$_id.extension", seconds: { $sum: "$seconds" } } },
+                },
+            },
+            { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.extension", "$items.seconds"] } } } } },
+            { $addFields: { "tmp.identityNumber": "$_id.identityNumber" } },
+            { $replaceRoot: { newRoot: "$tmp" } },
+        ];
 
-        return results;
+        const listenings = await Listening.aggregate(aggregate);
+        const listeningById = {};
+        listenings.map((item) => (listeningById[item.identityNumber] = item));
+
+        return students.map((item) => ({
+            name: item.name,
+            ...listeningById[item.identityNumber],
+        }));
     },
     headers: async function (data) {
         const keys = new Set();
@@ -83,16 +86,15 @@ module.exports = {
         const headers = [
             { label: "שם התלמידה", value: "name" },
             ...[...keys]
-                .filter((item) => item !== "name")
+                .filter((item) => item !== "name" && item !== "identityNumber")
                 .sort()
                 .map((item) => ({ value: item, label: lessonByExt[item] || item, format: "sec2min" })),
         ];
 
         return headers;
     },
-    count: async function (query) {
-        return await Listening.aggregate(query)
-            .count("totalCount")
-            .then((res) => (res && res.length && res[0].totalCount) || 0);
+    count: async function (queries) {
+        const { studentQuery } = queries;
+        return await Student.count({ $and: studentQuery });
     },
 };

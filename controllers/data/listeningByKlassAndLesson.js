@@ -27,32 +27,7 @@ module.exports = {
         if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
         if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
 
-        if (studentQuery.length > 1) {
-            const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();
-            query.push({ identityNumber: { $in: studentIds.map((item) => item.identityNumber) } });
-        }
-
-        const aggregate = [
-            { $match: { $and: query } },
-            {
-                $group: {
-                    _id: { name: "$name", extension: "$extension", listening: "$listening" },
-                    seconds: { $sum: "$seconds" },
-                },
-            },
-            {
-                $group: {
-                    _id: { name: "$_id.name", extension: "$_id.extension" },
-                    items: { $addToSet: { listening: "$_id.listening", seconds: { $sum: "$seconds" } } },
-                },
-            },
-            { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.listening", "$items.seconds"] } } } } },
-            { $addFields: { "tmp.name": "$_id.name", "tmp.extension": "$_id.extension" } },
-            { $replaceRoot: { newRoot: "$tmp" } },
-            { $sort: { name: 1 } },
-        ];
-
-        return aggregate;
+        return { query, studentQuery };
     },
     validate: async function (query, user, filter) {
         if (filter.klass && filter.klass.length && filter.lesson && filter.lesson.length) {
@@ -63,19 +38,42 @@ module.exports = {
             errorMessage: filter.klass && filter.klass.length ? "חובה לבחור שיעור" : "חובה לבחור כיתה",
         };
     },
-    data: async function (query, page) {
-        const { skip, limit } = getPagingConfig(page);
-        const pagingConfig = [{ $skip: skip }, { $limit: limit }];
+    data: async function (queries, page, filter) {
+        const { query, studentQuery } = queries;
+        const students = await Student.find({ $and: studentQuery }, ["identityNumber", "name"], {
+            ...getPagingConfig(page),
+            sort: { name: 1 },
+        }).lean();
+        query.push({ identityNumber: { $in: students.map((item) => item.identityNumber) } });
 
-        const results = await Listening.aggregate([...query, ...pagingConfig]);
+        const aggregate = [
+            { $match: { $and: query } },
+            {
+                $group: {
+                    _id: { identityNumber: "$identityNumber", extension: "$extension", listening: "$listening" },
+                    seconds: { $sum: "$seconds" },
+                },
+            },
+            {
+                $group: {
+                    _id: { identityNumber: "$_id.identityNumber", extension: "$_id.extension" },
+                    items: { $addToSet: { listening: "$_id.listening", seconds: { $sum: "$seconds" } } },
+                },
+            },
+            { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.listening", "$items.seconds"] } } } } },
+            { $addFields: { "tmp.identityNumber": "$_id.identityNumber", "tmp.extension": "$_id.extension" } },
+            { $replaceRoot: { newRoot: "$tmp" } },
+        ];
 
-        const extensions = new Set(results.map((item) => item.extension));
-        const lessons = await Lesson.find({ extension: { $in: [...extensions] } });
-        const lessonByExt = {};
-        lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
-        results.forEach((item) => (item.extension = lessonByExt[item.extension] || item.extension));
+        const listenings = await Listening.aggregate(aggregate);
+        const listeningById = {};
+        listenings.map((item) => (listeningById[item.identityNumber] = item));
 
-        return results;
+        return students.map((item) => ({
+            name: item.name,
+            ...listeningById[item.identityNumber],
+            extension: filter.lesson[0].label,
+        }));
     },
     headers: async function (data, query, body) {
         const keys = new Set();
@@ -86,19 +84,18 @@ module.exports = {
         });
 
         const headers = [
-            { label: "שם התלמידה", value: "name", format: body.klass ? "nameWOKlass" : null },
+            { label: "שם התלמידה", value: "name", format: "nameWOKlass" },
             { label: "שם השיעור", value: "extension" },
             ...[...keys]
-                .filter((item) => item !== "name" && item !== "extension")
+                .filter((item) => item !== "name" && item !== "extension" && item !== "identityNumber")
                 .sort()
                 .map((item) => ({ value: item, label: item, format: "sec2min" })),
         ];
 
         return headers;
     },
-    count: async function (query) {
-        return await Listening.aggregate(query)
-            .count("totalCount")
-            .then((res) => (res && res.length && res[0].totalCount) || 0);
+    count: async function (queries) {
+        const { studentQuery } = queries;
+        return await Student.count({ $and: studentQuery });
     },
 };
