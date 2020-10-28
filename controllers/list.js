@@ -12,7 +12,7 @@ router.post("/lesson", auth, async function (req, res) {
     if (klass) query.push({ messageName: new RegExp(klass) });
     console.log(query);
 
-    const results = await Lesson.find({ $and: query }, ["extension", "messageName"], { limit: 10 }).lean();
+    const results = await Lesson.find({ $and: query }, ["extension", "messageName"]).lean();
 
     const items = results.map((item) => ({
         value: item.extension,
