@@ -58,6 +58,9 @@ module.exports = {
         // { value: "fullPath", label: "נתיב מלא" },
         { value: "status", label: "האם נטען כבר" },
     ],
+    yemotPlaybackHeaders:[
+
+    ],
     pageSize: 10,
     graphNumberOfDays: 14,
 };
