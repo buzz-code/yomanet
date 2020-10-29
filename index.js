@@ -47,3 +47,5 @@ const server = app.listen(PORT, function () {
 });
 
 server.timeout = 4 * 60 * 1000;
+
+console.log("process env", process.env);
