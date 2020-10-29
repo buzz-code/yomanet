@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "prepush": "cd client && npm run build"
   },
   "keywords": [],
   "author": "",
@@ -35,6 +36,7 @@
     "xlsx": "^0.16.8"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "husky": "^4.3.0"
   }
 }
