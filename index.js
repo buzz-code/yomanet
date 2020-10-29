@@ -1,4 +1,4 @@
-console.log("process env", process.env);
+console.log("process env", Object.entries(process.env));
 
 const express = require("express");
 const path = require("path");
@@ -19,7 +19,7 @@ const connect = mongoose
         useCreateIndex: true,
         useFindAndModify: false,
     })
-    .then(() => console.log("MongoDB Connected...", process.env))
+    .then(() => console.log("MongoDB Connected..."))
     .catch((err) => console.log(err));
 
 app.use(morgan("combined"));
