@@ -5,8 +5,9 @@ const { auth } = require("../../middleware/auth");
 const { getTableDataResponse } = require("../../helpers/utils");
 const constants = require("../../helpers/constants");
 const { YemotFile } = require("../../models/YemotFile");
-const yemotApi = require("./../../helpers/yemot");
+const yemotApi = require("../../helpers/sandbox/yemot");
 const parsing = require("../../helpers/parsing");
+const processYemotFile = require("../../helpers/process-yemot-file");
 
 function registerHook(hook) {
     router.get(hook.url, auth, async function (req, res) {
@@ -83,9 +84,26 @@ function registerHook(hook) {
 
         res.send({ error: false, success: true });
     });
+
+    router.put(/*post*/ hook.url, auth, async function (req, res) {
+        if (!req.user.yemotUsername || !req.user.yemotPassword) {
+            res.send({ error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור לימות המשיח" });
+            return;
+        }
+        const currentlyProcessing = await YemotFile.count({ user: user.name, status: "בטעינה" });
+        if (currentlyProcessing >= 3) {
+            res.send({ error: true, errorMessage: "לא ניתן לשאוב יותר מ3 קבצים בו זמנית" });
+            return;
+        }
+
+        const { fullPath } = req.body;
+        processYemotFile.uploadFile(req.user, fullPath, hook.fileType);
+
+        res.send({ error: false, success: true });
+    });
 }
 
-registerHook(require('./listeningforRacheli'))
+registerHook(require("./listeningforRacheli"));
 // registerHook(require("./listening"));
 // registerHook(require("./conf"));
 

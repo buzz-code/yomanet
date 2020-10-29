@@ -27,6 +27,7 @@ function FilesData({ url, title }) {
             .then((res) => res.payload)
             .then(() => {
                 dispatch(getFilesData(url));
+                setTimeout(() => dispatch(getFilesData(url)), 5000);
             });
     };
 

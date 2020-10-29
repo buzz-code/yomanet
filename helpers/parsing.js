@@ -3,7 +3,7 @@ const XLSX = require("xlsx");
 const readLine = require("readline");
 const moment = require("moment");
 const { Readable } = require("stream");
-const yemotApi = require("./yemot");
+const yemotApi = require("./sandbox/yemot");
 const constants = require("./constants");
 
 const parseListening = (content, user) => {

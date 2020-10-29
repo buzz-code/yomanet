@@ -1,5 +1,6 @@
-const { YemotPlayback } = require("./../../models/YemotPlayback");
-const { YemotFile } = require("../../models/YemotFile");
+const { YemotPlayback } = require("../models/YemotPlayback");
+const { YemotFile } = require("../models/YemotFile");
+const { YemotConfBridge } = require("../models/YemotConfBridge");
 const axios = require("axios");
 const qs = require("querystring");
 const fs = require("fs");
@@ -7,10 +8,10 @@ const path = require("path");
 const tmp = require("tmp");
 const byline = require("byline");
 const moment = require("moment");
-const mongoose = require("mongoose");
 
 const models = {
     LogPlaybackPlayStop: YemotPlayback,
+    LogConfBridgeEnterExit: YemotConfBridge,
 };
 
 const loginAndGetToken = async (username, password) => {
@@ -105,19 +106,6 @@ function getValue(key, value, item) {
 }
 
 async function uploadFile(user, fullPath, fileType) {
-    // await mongoose
-    //     .connect(
-    //         "mongodb+srv://user:LTfJoXV9VX7JA7KX@vocal-center-stats.ymyj5.gcp.mongodb.net/vocal?retryWrites=true&w=majority",
-    //         {
-    //             useNewUrlParser: true,
-    //             useUnifiedTopology: true,
-    //             useCreateIndex: true,
-    //             useFindAndModify: false,
-    //         }
-    //     )
-    //     .then(() => console.log("MongoDB Connected..."))
-    //     .catch((err) => console.log(err));
-
     await YemotFile.deleteMany({ user: user.name, fullPath });
     await YemotFile.create({
         user: user.name,
