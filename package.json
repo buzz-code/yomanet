@@ -36,7 +36,6 @@
     "xlsx": "^0.16.8"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6",
-    "husky": "^4.3.0"
+    "nodemon": "^2.0.6"
   }
 }
