@@ -1,3 +1,5 @@
+console.log("process env", process.env);
+
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -17,7 +19,7 @@ const connect = mongoose
         useCreateIndex: true,
         useFindAndModify: false,
     })
-    .then(() => console.log("MongoDB Connected..."))
+    .then(() => console.log("MongoDB Connected...", process.env))
     .catch((err) => console.log(err));
 
 app.use(morgan("combined"));
@@ -47,5 +49,3 @@ const server = app.listen(PORT, function () {
 });
 
 server.timeout = 4 * 60 * 1000;
-
-console.log("process env", process.env);
