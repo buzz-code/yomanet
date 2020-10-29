@@ -11,7 +11,7 @@ function registerHook(hook) {
 
         const { isValid, errorMessage } = await hook.validate(query, req.user, filter);
         if (!isValid) {
-            res.send({ error: true, errorMessage, params: filter });
+            res.send({ error: true, errorMessage: errorMessage || 'ארעה שגיאה', params: filter });
             return;
         }
 
@@ -26,9 +26,9 @@ function registerHook(hook) {
         const query = await hook.query(filter, req.user);
         console.log(filter, query);
 
-        const isValid = await hook.validate(query, req.user, filter);
+        const { isValid, errorMessage } = await hook.validate(query, req.user, filter);
         if (!isValid) {
-            res.send({ error: true, errorMessage: "אופס, משהו השתבש" });
+            res.send({ error: true, errorMessage: errorMessage || 'ארעה שגיאה' });
             return;
         }
 
@@ -43,9 +43,9 @@ function registerHook(hook) {
         const query = await hook.query(filter, req.user);
         console.log(filter, query);
 
-        const isValid = await hook.validate(query, req.user, filter);
+        const { isValid, errorMessage } = await hook.validate(query, req.user, filter);
         if (!isValid) {
-            res.send({ error: true, errorMessage: "אופס, משהו השתבש" });
+            res.send({ error: true, errorMessage: errorMessage || 'ארעה שגיאה' });
             return;
         }
 
