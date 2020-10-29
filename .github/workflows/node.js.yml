@@ -30,4 +30,4 @@ jobs:
           cd ~/VocalCenterStats
           git pull origin master
           npm install --production
-          pm2 restart yomanet
+          pm2 delete yomanet && pm2 start ecosystem.config.js
