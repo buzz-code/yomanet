@@ -1,5 +1,3 @@
-console.log("process env", Object.entries(process.env));
-
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");

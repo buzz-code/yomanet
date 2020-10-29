@@ -6,8 +6,7 @@ module.exports = {
             watch: true,
             env: {
                 NODE_ENV: "production",
-                MONGO_URI: "mongodb://127.0.0.1:27017",
-                TEST: "test",
+                MONGO_URI: "mongodb+srv://mongouser:1@127.0.0.1:27017/vocal",
             },
         },
     ],
