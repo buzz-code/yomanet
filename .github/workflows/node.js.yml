@@ -6,28 +6,7 @@ on:
       - master
 
 jobs:
-  test:
-
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [8.x, 10.x, 12.x]
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: npm install and test
-      run: |
-        npm install
-      env:
-        CI: true
-
   deploy:
-    needs: [test]
     runs-on: ubuntu-latest
 
     steps:
@@ -40,23 +19,15 @@ jobs:
        port: ${{ secrets.PORT }} 
        script: whoami 
 
-    - name: executing remote ssh commands using ssh key 
-      uses: appleboy/ssh-action@master 
-      with: 
-       host: ${{ secrets.HOST }} 
-       username: ${{ secrets.USERNAME }} 
-       key: ${{ secrets.KEY }} 
-       port: ${{ secrets.PORT }} 
-       script: whoami 
-
-    - name: SSH and deploy node app
+    - name: deploy node app
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        script: |
-          cd ~/node-github-demo
+       host: ${{ secrets.HOST }} 
+       username: ${{ secrets.USERNAME }} 
+       password: ${{ secrets.PASSWORD }} 
+       port: ${{ secrets.PORT }} 
+       script: |
+          cd ~/VocalCenterStats
           git pull origin master
           npm install --production
-          pm2 restart node-app
+          pm2 restart yomanet
