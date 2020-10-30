@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFilesData, loadFile } from "../../_actions/data_actions";
 import Loader from "./Loader";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 function FilesData({ url, title }) {
     const dispatch = useDispatch();
@@ -20,15 +21,24 @@ function FilesData({ url, title }) {
         }
     }, [data]);
 
-    const handleLoadFile = (fullPath) => {
+    const goToRoot = () => {
+        setIsLoading(true);
+        dispatch(getFilesData(url));
+    };
+
+    const handleItem = (item) => {
         setIsLoading(true);
 
-        dispatch(loadFile(url, fullPath))
-            .then((res) => res.payload)
-            .then(() => {
-                dispatch(getFilesData(url));
-                setTimeout(() => dispatch(getFilesData(url)), 5000);
-            });
+        if (!item.isFile) {
+            dispatch(getFilesData(url, { subPath: item.name }));
+        } else {
+            dispatch(loadFile(url, item.fullPath))
+                .then((res) => res.payload)
+                .then(() => {
+                    dispatch(getFilesData(url, data.params));
+                    setTimeout(() => dispatch(getFilesData(url, data.params)), 5000);
+                });
+        }
     };
 
     return (
@@ -37,30 +47,40 @@ function FilesData({ url, title }) {
                 <h2>{title}</h2>
                 <div>
                     {isLoading && <Loader />}
+                    {data && data.params && (
+                        <Breadcrumb>
+                            <Breadcrumb.Item onClick={goToRoot} active={!data.params.subPath}>
+                                תיקית הבסיס
+                            </Breadcrumb.Item>
+                            {data.params.subPath && <Breadcrumb.Item active>{data.params.subPath}</Breadcrumb.Item>}
+                        </Breadcrumb>
+                    )}
                     {data && data.headers && (
                         <>
                             <table className="table table-striped table-hover table-sm">
                                 <thead>
                                     <tr>
-                                        {data.headers.map((item) => (
-                                            <th key={item.value}>{item.label}</th>
-                                        ))}
-                                        <th>טען</th>
+                                        <th> </th>
+                                        <th>שם</th>
+                                        <th>גודל</th>
+                                        <th>תאריך שינוי</th>
+                                        <th>סטטוס</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {data.results.map((item) => (
-                                        <tr>
-                                            {data.headers.map((header) => (
-                                                <td>{item[header.value]}</td>
-                                            ))}
+                                        <tr style={{ cursor: "pointer" }} onDoubleClick={() => handleItem(item)}>
                                             <td>
-                                                <button
-                                                    className="btn btn-outline-primary btn-sm"
-                                                    onClick={() => handleLoadFile(item.fullPath)}>
-                                                    טען קובץ
-                                                </button>
+                                                {item.isFile ? (
+                                                    <i className="fa fa-file-chart-line"></i>
+                                                ) : (
+                                                    <i className="fa fa-folder"></i>
+                                                )}
                                             </td>
+                                            <td>{item.name}</td>
+                                            <td style={{ direction: "ltr" }}>{item.size}</td>
+                                            <td>{item.mtime}</td>
+                                            <td>{item.status}</td>
                                         </tr>
                                     ))}
                                 </tbody>

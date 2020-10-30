@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
+const prettyBytes = require("pretty-bytes");
 const { auth } = require("../../middleware/auth");
 const { getTableDataResponse } = require("../../helpers/utils");
-const constants = require("../../helpers/constants");
 const { YemotFile } = require("../../models/YemotFile");
 const yemotApi = require("../../helpers/sandbox/yemot");
 const parsing = require("../../helpers/parsing");
@@ -16,25 +16,39 @@ function registerHook(hook) {
             return;
         }
 
+        const filter = JSON.parse(req.query.filter);
+        const { subPath } = filter;
+
         const yemot = new yemotApi(req.user.yemotUsername, req.user.yemotPassword);
-        const { data } = await yemot.exec("GetIVR2Dir", { path: hook.yemotPath });
+        const { data } = await yemot.exec("GetIVR2Dir", { path: hook.yemotPath + "/" + (subPath || "") });
         const loadedFiles = await YemotFile.find({ user: req.user.name }).lean();
 
         const results = [];
+        data.dirs
+            .filter((item) => hook.dirRegex.test(item.name))
+            .forEach((item) => {
+                results.push({
+                    name: item.name,
+                    fullPath: item.what,
+                    status: null,
+                    isFile: false,
+                });
+            });
         data.files
             .filter((item) => hook.fileRegex.test(item.name))
             .forEach((item) => {
                 const loadedFile = loadedFiles.find((file) => file.fullPath === item.what);
                 results.push({
-                    fileName: item.name,
+                    name: item.name,
                     fullPath: item.what,
+                    size: prettyBytes(item.size),
+                    mtime: item.mtime,
                     status: loadedFile ? loadedFile.status : "טרם נטען",
+                    isFile: true,
                 });
             });
 
-        const headers = constants.yemotFilesHeaders;
-
-        getTableDataResponse(res, results, 0, headers, {});
+        getTableDataResponse(res, results, 0, [], { subPath });
     });
 
     router.post(hook.url, auth, async function (req, res) {
@@ -90,7 +104,7 @@ function registerHook(hook) {
             res.send({ error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור לימות המשיח" });
             return;
         }
-        const currentlyProcessing = await YemotFile.count({ user: user.name, status: "בטעינה" });
+        const currentlyProcessing = await YemotFile.count({ user: req.user.name, status: "בטעינה" });
         if (currentlyProcessing >= 3) {
             res.send({ error: true, errorMessage: "לא ניתן לשאוב יותר מ3 קבצים בו זמנית" });
             return;

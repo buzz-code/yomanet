@@ -35,8 +35,9 @@ export function reportData(url, params) {
     };
 }
 
-export function getFilesData(url) {
-    const request = axios.get(`${FILES_SERVER}/${url}`).then((response) => response.data);
+export function getFilesData(url, params) {
+    const filter = getFilterFromParams(params);
+    const request = axios.get(`${FILES_SERVER}/${url}?filter=${filter}`).then((response) => response.data);
 
     return {
         type: FETCH_DATA,
@@ -46,6 +47,7 @@ export function getFilesData(url) {
 
 export function loadFile(url, fullPath) {
     const request = axios
+        // .put(`${FILES_SERVER}/${url}`, { fullPath }, { timeout: 4 * 60 * 1000 })
         .post(`${FILES_SERVER}/${url}`, { fullPath }, { timeout: 4 * 60 * 1000 })
         .then((response) => response.data);
 
