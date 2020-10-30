@@ -119,6 +119,6 @@ function registerHook(hook) {
 
 registerHook(require("./listeningforRacheli"));
 // registerHook(require("./listening"));
-// registerHook(require("./conf"));
+registerHook(require("./conf"));
 
 module.exports = router;
