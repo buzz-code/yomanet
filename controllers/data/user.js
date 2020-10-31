@@ -3,7 +3,7 @@ const { User } = require("../../models/User");
 const { Listening } = require("../../models/Listening");
 const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
-const { Conf } = require("../../models/Conf");
+const { YemotConfBridge } = require("../../models/YemotConfBridge");
 const { getPagingConfig } = require("../../helpers/utils");
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
 
                 const isAdmin = user.role !== 0 ? "כן" : "לא";
                 const listening = await Listening.countDocuments(query);
-                const conf = await Conf.countDocuments(query);
+                const conf = await YemotConfBridge.countDocuments(query);
                 const lesson = await Lesson.countDocuments(query);
                 const student = await Student.countDocuments(query);
 

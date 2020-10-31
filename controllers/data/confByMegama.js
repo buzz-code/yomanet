@@ -1,6 +1,6 @@
 const constants = require("../../helpers/constants");
 const moment = require("moment");
-const { Conf } = require("../../models/Conf");
+const { YemotConfBridge } = require("../../models/YemotConfBridge");
 const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
@@ -23,9 +23,9 @@ module.exports = {
         const studentQuery = [{ user: user.name }];
         if (megama && megama.length)
             studentQuery.push({ megama: new RegExp(megama.map((item) => item.value).join("|")) });
-        if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
-        if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
-        if (lesson && lesson.length) query.push({ extension: new RegExp(lesson.map((item) => item.value).join("|")) });
+        if (fromDate) query.push({ EnterDate: { $gte: moment.utc(fromDate).toDate() } });
+        if (toDate) query.push({ EnterDate: { $lte: moment.utc(toDate).toDate() } });
+        if (lesson && lesson.length) query.push({ Folder: new RegExp(lesson.map((item) => item.value).join("|")) });
 
         return { query, studentQuery };
     },
@@ -41,30 +41,30 @@ module.exports = {
             ...getPagingConfig(page),
             sort: { name: 1 },
         }).lean();
-        query.push({ identityNumber: { $in: students.map((item) => item.identityNumber) } });
+        query.push({ EnterId: { $in: students.map((item) => item.identityNumber) } });
 
         const aggregate = [
             { $match: { $and: query } },
             {
                 $group: {
-                    _id: { identityNumber: "$identityNumber", extension: "$extension" },
-                    seconds: { $sum: "$seconds" },
+                    _id: { EnterId: "$EnterId", Folder: "$Folder" },
+                    TimeTotal: { $sum: "$TimeTotal" },
                 },
             },
             {
                 $group: {
-                    _id: { identityNumber: "$_id.identityNumber" },
-                    items: { $addToSet: { extension: "$_id.extension", seconds: { $sum: "$seconds" } } },
+                    _id: { EnterId: "$_id.EnterId" },
+                    items: { $addToSet: { Folder: "$_id.Folder", TimeTotal: { $sum: "$TimeTotal" } } },
                 },
             },
-            { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.extension", "$items.seconds"] } } } } },
-            { $addFields: { "tmp.identityNumber": "$_id.identityNumber" } },
+            { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.Folder", "$items.TimeTotal"] } } } } },
+            { $addFields: { "tmp.EnterId": "$_id.EnterId" } },
             { $replaceRoot: { newRoot: "$tmp" } },
         ];
 
-        const confs = await Conf.aggregate(aggregate);
+        const confs = await YemotConfBridge.aggregate(aggregate);
         const confById = {};
-        confs.map((item) => (confById[item.identityNumber] = item));
+        confs.map((item) => (confById[item.EnterId] = item));
 
         return students.map((item) => ({
             name: item.name,
@@ -86,7 +86,7 @@ module.exports = {
         const headers = [
             { label: "שם התלמידה", value: "name" },
             ...[...keys]
-                .filter((item) => item !== "name" && item !== "identityNumber")
+                .filter((item) => item !== "name" && item !== "EnterId")
                 .sort()
                 .map((item) => ({ value: item, label: lessonByExt[item] || item, format: "sec2min" })),
         ];

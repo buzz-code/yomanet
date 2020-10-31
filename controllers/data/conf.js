@@ -1,6 +1,6 @@
 const constants = require("../../helpers/constants");
 const moment = require("moment");
-const { Conf } = require("../../models/Conf");
+const { YemotConfBridge } = require("../../models/YemotConfBridge");
 const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
@@ -16,9 +16,9 @@ module.exports = {
         const query = [{ user: user.name }];
         const studentQuery = [{ user: user.name }];
 
-        if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
-        if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
-        if (name) query.push({ name: new RegExp(name) });
+        if (fromDate) query.push({ EnterDate: { $gte: moment.utc(fromDate).toDate() } });
+        if (toDate) query.push({ EnterDate: { $lte: moment.utc(toDate).toDate() } });
+        if (name) query.push({ ValName: new RegExp(name) });
         if (klass && klass.length)
             studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
         if (megama && megama.length)
@@ -26,7 +26,7 @@ module.exports = {
 
         if (studentQuery.length > 1) {
             const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();
-            query.push({ identityNumber: { $in: studentIds.map((item) => item.identityNumber) } });
+            query.push({ EnterId: { $in: studentIds.map((item) => item.identityNumber) } });
         }
 
         return { $and: query };
@@ -35,20 +35,20 @@ module.exports = {
         return { isValid: true, errorMessage: null };
     },
     data: async function (query, page) {
-        const results = await Conf.find(query, null, getPagingConfig(page)).lean();
+        const results = await YemotConfBridge.find(query, null, getPagingConfig(page)).lean();
 
         const extensions = new Set(results.map((item) => item.extension));
         const lessons = await Lesson.find({ extension: { $in: [...extensions] } }).lean();
         const lessonByExt = {};
         lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
-        results.forEach((item) => (item.extension = lessonByExt[item.extension] || item.extension));
+        results.forEach((item) => (item.Folder = lessonByExt[item.Folder] || item.Folder));
 
         return results;
     },
     headers: async function (data) {
-        return constants.confHeaders;
+        return constants.yemotConfBridgeHeaders;
     },
     count: async function (query) {
-        return Conf.count(query);
+        return YemotConfBridge.count(query);
     },
 };
