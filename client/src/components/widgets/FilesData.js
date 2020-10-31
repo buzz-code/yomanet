@@ -34,9 +34,13 @@ function FilesData({ url, title }) {
         } else {
             dispatch(loadFile(url, item.fullPath))
                 .then((res) => res.payload)
-                .then(() => {
-                    dispatch(getFilesData(url, data.params));
-                    setTimeout(() => dispatch(getFilesData(url, data.params)), 5000);
+                .then((res) => {
+                    if (res.error) {
+                        alert(res.errorMessage);
+                    } else {
+                        dispatch(getFilesData(url, data.params));
+                        setTimeout(() => dispatch(getFilesData(url, data.params)), 5000);
+                    }
                 });
         }
     };
