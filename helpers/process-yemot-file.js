@@ -55,7 +55,6 @@ const readFile = async (path, fileType, defaultItem, options) => {
     return new Promise((resolve, reject) => {
         stream.on("data", function (line) {
             stream.pause();
-            console.log(index++);
 
             processLine(line, fileType, defaultItem, options)
                 .then(() => stream.resume())
