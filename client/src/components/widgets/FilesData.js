@@ -55,6 +55,11 @@ function FilesData({ url, title }) {
                             {data.params.subPath && <Breadcrumb.Item active>{data.params.subPath}</Breadcrumb.Item>}
                         </Breadcrumb>
                     )}
+                    {data && (
+                        <div className="pb-2">
+                            יש ללחוץ לחיצה כפולה על תיקיה כדי להכנס אליה, לחיצה כפולה על קובץ כדי לטעון אותו
+                        </div>
+                    )}
                     {data && data.headers && (
                         <>
                             <table className="table table-striped table-hover table-sm">
