@@ -12,7 +12,6 @@ function LandingPage() {
                     {(user && user.userData && user.userData.welcomeMessage) || (
                         <>
                             <div>ברוכים הבאים ליומנט - היומן של בית הספר במרחב הקולי</div>
-                            <h6>פרטי משתמש לדוגמא- שם משתמש: a0527609942@gmail.com סיסמא: 123456</h6>
                         </>
                     )}
                 </h2>
