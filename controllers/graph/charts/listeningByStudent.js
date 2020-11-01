@@ -32,7 +32,7 @@ module.exports = {
         const days = getListOfPreviosDays(graphNumberOfDays);
         query.push({ EnterDate: { $gte: days[0].toDate(), $lte: days[days.length - 1].toDate() } });
 
-        const data = await Listening.aggregate()
+        const data = await YemotPlayback.aggregate()
             .match({ $and: query })
             .group({ _id: "$EnterId", count: { $sum: "$TimeTotal" } })
             .sort({ count: -1 })
