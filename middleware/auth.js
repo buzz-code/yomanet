@@ -9,6 +9,7 @@ let auth = (req, res, next) => {
     if (!user)
       return res.json({
         isAuth: false,
+        errorMessage: "אינך מחובר",
         error: true
       });
 
