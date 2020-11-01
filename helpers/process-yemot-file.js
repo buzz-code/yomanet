@@ -119,16 +119,19 @@ async function uploadFile(user, fullPath, fileType) {
     try {
         const opts = {};//{ session };
         const defaultItem = { user: user.name, fileName: fullPath };
+        console.log('start processing file', user.name, fullPath);
 
         const token = await loginAndGetToken(user.yemotUsername, user.yemotPassword);
         const tempPath = await downloadFile(token, fullPath);
         await readFile(tempPath, fileType, defaultItem, opts);
         await YemotFile.findOneAndUpdate({ user: user.name, fullPath }, { $set: { status: "נטען בהצלחה" } }, opts);
+        console.log('finish processing file', user.name, fullPath);
 
         // await session.commitTransaction();
         // session.endSession();
     } catch (err) {
         console.log(err);
+        console.log('error processing file', user.name, fullPath);
 
         // await session.abortTransaction();
         // session.endSession();
