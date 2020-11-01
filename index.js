@@ -1,7 +1,8 @@
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const morgan = require("morgan");
+const winston = require("winston"),
+    expressWinston = require("express-winston");
 const routes = require("./routes");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
@@ -20,7 +21,14 @@ const connect = mongoose
     .then(() => console.log("MongoDB Connected..."))
     .catch((err) => console.log(err));
 
-app.use(morgan("combined"));
+expressWinston.requestWhitelist.splice(expressWinston.requestWhitelist.indexOf("headers"), 1);
+app.use(
+    expressWinston.logger({
+        transports: [new winston.transports.Console()],
+        format: winston.format.combine(winston.format.colorize(), winston.format.json()),
+    })
+);
+
 app.use(
     fileUpload({
         useTempFiles: true,
@@ -33,6 +41,13 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 
 app.use("/api", routes);
+
+app.use(
+    expressWinston.errorLogger({
+        transports: [new winston.transports.Console()],
+        format: winston.format.combine(winston.format.colorize(), winston.format.json()),
+    })
+);
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "client/build")));
