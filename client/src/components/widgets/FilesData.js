@@ -36,6 +36,7 @@ function FilesData({ url, title }) {
                 .then((res) => res.payload)
                 .then((res) => {
                     if (res.error) {
+                        setIsLoading(false);
                         alert(res.errorMessage);
                     } else {
                         dispatch(getFilesData(url, data.params));
