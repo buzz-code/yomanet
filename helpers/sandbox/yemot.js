@@ -1,8 +1,10 @@
 const axios = require("axios").default;
 const qs = require("qs");
 
+const yemotUrl = (isPrivate) =>
+    isPrivate ? "https://private.call2all.co.il/ym/api/" : "https://www.call2all.co.il/ym/api/";
+
 const yemot_con = axios.create({
-    baseURL: "https://www.call2all.co.il/ym/api/",
     maxContentLength: Infinity,
 });
 
@@ -13,7 +15,7 @@ const yemot_con = axios.create({
  * @param {string} password
  *
  */
-function yemot_api(username, password) {
+function yemot_api(username, password, isPrivateYemot) {
     let token;
     let is_connect = false;
 
@@ -35,6 +37,8 @@ function yemot_api(username, password) {
         }
 
         options.headers = { "Content-Type": "application/x-www-form-urlencoded" };
+        options.baseURL = yemotUrl(isPrivateYemot);
+
         const data = qs.stringify(parameters);
 
         try {

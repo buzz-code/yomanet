@@ -19,7 +19,7 @@ function registerHook(hook) {
         const filter = JSON.parse(req.query.filter);
         const { subPath } = filter;
 
-        const yemot = new yemotApi(req.user.yemotUsername, req.user.yemotPassword);
+        const yemot = new yemotApi(req.user.yemotUsername, req.user.yemotPassword, req.user.yemotIsPrivate);
         const { data } = await yemot.exec("GetIVR2Dir", { path: hook.yemotPath + "/" + (subPath || "") });
         const loadedFiles = await YemotFile.find({ user: req.user.name }).lean();
 

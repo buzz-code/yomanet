@@ -42,6 +42,7 @@ const userSchema = mongoose.Schema({
         type: String,
         trime: true,
     },
+    yemotIsPrivate: { type: Boolean },
 });
 
 userSchema.pre("save", function (next) {

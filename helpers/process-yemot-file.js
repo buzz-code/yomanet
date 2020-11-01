@@ -14,10 +14,13 @@ const models = {
     LogConfBridgeEnterExit: YemotConfBridge,
 };
 
-const loginAndGetToken = async (username, password) => {
+const yemotUrl = (isPrivate) =>
+    isPrivate ? "https://private.call2all.co.il/ym/api/" : "https://www.call2all.co.il/ym/api/";
+
+const loginAndGetToken = async (username, password, isPrivateYemot) => {
     const parameters = { username, password };
     const data = qs.stringify(parameters);
-    const res = await axios.get("https://www.call2all.co.il/ym/api/Login?" + data);
+    const res = await axios.get(yemotUrl(isPrivateYemot) + "Login?" + data);
 
     if (res.data && res.data.responseStatus !== "OK") {
         throw res.data.responseStatus + ": " + res.data.message;
@@ -26,11 +29,11 @@ const loginAndGetToken = async (username, password) => {
     return res.data.token;
 };
 
-const downloadFile = async (token, path) => {
+const downloadFile = async (token, path, isPrivateYemot) => {
     const parameters = { token, path };
     const data = qs.stringify(parameters);
     const name = tmp.tmpNameSync();
-    const res = await axios.get("https://www.call2all.co.il/ym/api/DownloadFile?" + data, {
+    const res = await axios.get(yemotUrl(isPrivateYemot) + "DownloadFile?" + data, {
         maxContentLength: Infinity,
         responseType: "stream",
     });
@@ -117,21 +120,21 @@ async function uploadFile(user, fullPath, fileType) {
     // session.startTransaction();
 
     try {
-        const opts = {};//{ session };
+        const opts = {}; //{ session };
         const defaultItem = { user: user.name, fileName: fullPath };
-        console.log('start processing file', user.name, fullPath);
+        console.log("start processing file", user.name, fullPath);
 
-        const token = await loginAndGetToken(user.yemotUsername, user.yemotPassword);
-        const tempPath = await downloadFile(token, fullPath);
+        const token = await loginAndGetToken(user.yemotUsername, user.yemotPassword, user.yemotIsPrivate);
+        const tempPath = await downloadFile(token, fullPath, user.yemotIsPrivate);
         await readFile(tempPath, fileType, defaultItem, opts);
         await YemotFile.findOneAndUpdate({ user: user.name, fullPath }, { $set: { status: "נטען בהצלחה" } }, opts);
-        console.log('finish processing file', user.name, fullPath);
+        console.log("finish processing file", user.name, fullPath);
 
         // await session.commitTransaction();
         // session.endSession();
     } catch (err) {
         console.log(err);
-        console.log('error processing file', user.name, fullPath);
+        console.log("error processing file", user.name, fullPath);
 
         // await session.abortTransaction();
         // session.endSession();
