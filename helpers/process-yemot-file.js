@@ -80,6 +80,9 @@ const processLine = async (line, fileType, defaultItem, options) => {
         const [key, value] = pair.split("#");
         item[key] = getValue(key, value, item);
     });
+    if (Object.keys(item).length < 10) {
+        return;
+    }
     await models[fileType].create([item], options);
 };
 
@@ -89,6 +92,9 @@ function getValue(key, value, item) {
             return moment.utc(value, "DD/MM/YYYY").toDate();
         case "EnterTime":
         case "ExitTime":
+            if (item["EnterDate"] === undefined) {
+                return null;
+            }
             return moment
                 .utc(item["EnterDate"].toISOString().slice(0, 10) + " " + value, "YYYY-MM-DD HH:mm:ss")
                 .toDate();
