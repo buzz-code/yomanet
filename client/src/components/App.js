@@ -19,6 +19,10 @@ import Footer from "./widgets/Footer/Footer";
 //false  logged in user can't go inside
 
 function App() {
+    if (window.location.host === "yomanet.herokuapp.com" || window.location.host === "drive2gether.herokuapp.com") {
+        window.location.href = "//www.yomanet.com";
+    }
+
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <NavBar />

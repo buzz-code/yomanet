@@ -16,7 +16,7 @@ function LandingPage() {
                         </>
                     )}
                 </h2>
-                <div class="alert alert-info text-center">
+                <div className="alert alert-info text-center">
                     <strong>שימו לב!</strong>
                     <span> עברנו לכתובת חדשה </span>
                     <a href="https://yomanet.herokuapp.com">https://yomanet.herokuapp.com</a>
