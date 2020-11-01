@@ -19,7 +19,7 @@ function LandingPage() {
                 <div className="alert alert-info text-center">
                     <strong>שימו לב!</strong>
                     <span> עברנו לכתובת חדשה </span>
-                    <a href="https://yomanet.herokuapp.com">https://yomanet.herokuapp.com</a>
+                    <a href="http://www.yomanet.com">http://www.yomanet.com</a>
                 </div>
                 <GraphWithFilter url="" title="" filterFields={[]} />
             </div>
