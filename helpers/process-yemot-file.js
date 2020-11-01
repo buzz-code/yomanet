@@ -113,11 +113,11 @@ async function uploadFile(user, fullPath, fileType) {
         status: "בטעינה",
     });
 
-    const session = await YemotFile.startSession();
-    session.startTransaction();
+    // const session = await YemotFile.startSession();
+    // session.startTransaction();
 
     try {
-        const opts = { session };
+        const opts = {};//{ session };
         const defaultItem = { user: user.name, fileName: fullPath };
 
         const token = await loginAndGetToken(user.yemotUsername, user.yemotPassword);
@@ -125,13 +125,13 @@ async function uploadFile(user, fullPath, fileType) {
         await readFile(tempPath, fileType, defaultItem, opts);
         await YemotFile.findOneAndUpdate({ user: user.name, fullPath }, { $set: { status: "נטען בהצלחה" } }, opts);
 
-        await session.commitTransaction();
-        session.endSession();
+        // await session.commitTransaction();
+        // session.endSession();
     } catch (err) {
         console.log(err);
 
-        await session.abortTransaction();
-        session.endSession();
+        // await session.abortTransaction();
+        // session.endSession();
 
         await YemotFile.findOneAndUpdate({ user: user.name, fullPath }, { $set: { status: "טעינה נכשלה" } });
     }
