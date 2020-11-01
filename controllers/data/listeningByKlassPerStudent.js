@@ -1,5 +1,5 @@
 const moment = require("moment");
-const { Listening } = require("../../models/Listening");
+const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
 
@@ -37,32 +37,32 @@ module.exports = {
         };
         const students = await Student.find(query, null, config).lean();
 
-        const match = [{ identityNumber: { $in: students.map((item) => item.identityNumber) } }];
-        if (fromDate) match.push({ date: { $gte: moment.utc(fromDate).toDate() } });
-        if (toDate) match.push({ date: { $lte: moment.utc(toDate).toDate() } });
+        const match = [{ EnterId: { $in: students.map((item) => item.identityNumber) } }];
+        if (fromDate) match.push({ EnterDate: { $gte: moment.utc(fromDate).toDate() } });
+        if (toDate) match.push({ EnterDate: { $lte: moment.utc(toDate).toDate() } });
 
         const aggregate = [
             { $match: { $and: match } },
             {
                 $group: {
-                    _id: { identityNumber: "$identityNumber", name: "$name" },
-                    seconds: { $sum: "$seconds" },
+                    _id: { EnterId: "$EnterId" },
+                    TimeTotal: { $sum: "$TimeTotal" },
                 },
             },
-            { $addFields: { identityNumber: "$_id.identityNumber", name: "$_id.name" } },
+            { $addFields: { EnterId: "$_id.EnterId" } },
         ];
-        const results = await Listening.aggregate(aggregate);
+        const results = await YemotPlayback.aggregate(aggregate);
 
         return students
-            .map((student) => results.find((item) => student.identityNumber === item._id.identityNumber))
-            .map((item, index) => item || students[index])
-            .map((item) => ({ identityNumber: item.identityNumber, name: item.name, seconds: item.seconds || 0 }));
+            .map((student) => results.find((item) => student.identityNumber === item.EnterId))
+            .map((item, index) => ({ ...item, ...students[index] }))
+            .map((item) => ({ identityNumber: item.identityNumber, name: item.name, TimeTotal: item.TimeTotal || 0 }));
     },
     headers: async function (data) {
         const headers = [
             { label: "מספר זהות", value: "identityNumber" },
             { label: "שם התלמידה", value: "name", format: "nameWOKlass" },
-            { label: "דקות האזנה", value: "seconds", format: "sec2min" },
+            { label: "דקות האזנה", value: "TimeTotal", format: "sec2min" },
         ];
 
         return headers;

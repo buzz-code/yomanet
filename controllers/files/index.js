@@ -51,55 +51,7 @@ function registerHook(hook) {
         getTableDataResponse(res, results, 0, [], { subPath });
     });
 
-    // router.post(hook.url, auth, async function (req, res) {
-    //     if (!req.user.yemotUsername || !req.user.yemotPassword) {
-    //         res.send({ error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור לימות המשיח" });
-    //         return;
-    //     }
-
-    //     const { fullPath } = req.body;
-    //     const arr = await parsing.parseYemotFile(req.user, fullPath);
-    //     console.log(hook.url, "got", arr.length);
-
-    //     const session = await hook.model.startSession();
-    //     session.startTransaction();
-    //     try {
-    //         const opts = { session };
-    //         await hook.model.deleteMany({ user: req.user.name, fileName: fullPath }, opts);
-    //         const items = arr.map(hook.map);
-    //         await hook.model.insertMany(items, opts);
-    //         await YemotFile.deleteMany({ user: req.user.name, fullPath }, opts);
-    //         await YemotFile.create(
-    //             [
-    //                 {
-    //                     user: req.user.name,
-    //                     fileName: path.basename(fullPath),
-    //                     fullPath,
-    //                     status: "נטען",
-    //                 },
-    //             ],
-    //             opts
-    //         );
-    //         await session.commitTransaction();
-    //         session.endSession();
-    //     } catch (e) {
-    //         console.log(e);
-    //         await session.abortTransaction();
-    //         session.endSession();
-
-    //         await YemotFile.deleteMany({ user: req.user.name, fullPath });
-    //         await YemotFile.create({
-    //             user: req.user.name,
-    //             fileName: path.basename(fullPath),
-    //             fullPath,
-    //             status: "נכשל",
-    //         });
-    //     }
-
-    //     res.send({ error: false, success: true });
-    // });
-
-    router.post/*put*/(hook.url, auth, async function (req, res) {
+    router.post(hook.url, auth, async function (req, res) {
         if (!req.user.yemotUsername || !req.user.yemotPassword) {
             res.send({ error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור לימות המשיח" });
             return;
@@ -117,7 +69,6 @@ function registerHook(hook) {
     });
 }
 
-// registerHook(require("./listeningforRacheli"));
 registerHook(require("./listening"));
 registerHook(require("./conf"));
 

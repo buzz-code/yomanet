@@ -1,6 +1,6 @@
 const { getListOfPreviosDays } = require("../../../helpers/utils");
 const { graphNumberOfDays } = require("../../../helpers/constants");
-const { Listening } = require("../../../models/Listening");
+const { YemotPlayback } = require("../../../models/YemotPlayback");
 const { Student } = require("../../../models/Student");
 
 module.exports = {
@@ -26,15 +26,15 @@ module.exports = {
 
         if (studentQuery.length > 1) {
             const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();
-            query.push({ identityNumber: { $in: studentIds.map((item) => item.identityNumber) } });
+            query.push({ EnterId: { $in: studentIds.map((item) => item.identityNumber) } });
         }
 
         const days = getListOfPreviosDays(graphNumberOfDays);
-        query.push({ date: { $gte: days[0].toDate(), $lte: days[days.length - 1].toDate() } });
+        query.push({ EnterDate: { $gte: days[0].toDate(), $lte: days[days.length - 1].toDate() } });
 
         const data = await Listening.aggregate()
             .match({ $and: query })
-            .group({ _id: { $hour: "$startTime" }, count: { $sum: 1 } })
+            .group({ _id: { $hour: "$EnterTime" }, count: { $sum: 1 } })
             .sort({ _id: 1 });
 
         const hours = [...Array(24).keys()];

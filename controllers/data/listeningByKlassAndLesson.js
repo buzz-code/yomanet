@@ -1,6 +1,6 @@
 const constants = require("../../helpers/constants");
 const moment = require("moment");
-const { Listening } = require("../../models/Listening");
+const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
@@ -21,11 +21,11 @@ module.exports = {
 
         const query = [{ user: user.name }];
         const studentQuery = [{ user: user.name }];
-        if (lesson && lesson.length) query.push({ extension: new RegExp(lesson.map((item) => item.value).join("|")) });
+        if (lesson && lesson.length) query.push({ Folder: new RegExp(lesson.map((item) => item.value).join("|")) });
         if (klass && klass.length)
             studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
-        if (fromDate) query.push({ date: { $gte: moment.utc(fromDate).toDate() } });
-        if (toDate) query.push({ date: { $lte: moment.utc(toDate).toDate() } });
+        if (fromDate) query.push({ EnterDate: { $gte: moment.utc(fromDate).toDate() } });
+        if (toDate) query.push({ EnterDate: { $lte: moment.utc(toDate).toDate() } });
 
         return { query, studentQuery };
     },
@@ -44,30 +44,30 @@ module.exports = {
             ...getPagingConfig(page),
             sort: { name: 1 },
         }).lean();
-        query.push({ identityNumber: { $in: students.map((item) => item.identityNumber) } });
+        query.push({ EnterId: { $in: students.map((item) => item.identityNumber) } });
 
         const aggregate = [
             { $match: { $and: query } },
             {
                 $group: {
-                    _id: { identityNumber: "$identityNumber", extension: "$extension", listening: "$listening" },
-                    seconds: { $sum: "$seconds" },
+                    _id: { EnterId: "$EnterId", Folder: "$Folder", Current: "$Current" },
+                    TimeTotal: { $sum: "$TimeTotal" },
                 },
             },
             {
                 $group: {
-                    _id: { identityNumber: "$_id.identityNumber", extension: "$_id.extension" },
-                    items: { $addToSet: { listening: "$_id.listening", seconds: { $sum: "$seconds" } } },
+                    _id: { EnterId: "$_id.EnterId", Folder: "$_id.Folder" },
+                    items: { $addToSet: { Current: "$_id.Current", TimeTotal: { $sum: "$TimeTotal" } } },
                 },
             },
-            { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.listening", "$items.seconds"] } } } } },
-            { $addFields: { "tmp.identityNumber": "$_id.identityNumber", "tmp.extension": "$_id.extension" } },
+            { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.Current", "$items.TimeTotal"] } } } } },
+            { $addFields: { "tmp.EnterId": "$_id.EnterId", "tmp.Folder": "$_id.Folder" } },
             { $replaceRoot: { newRoot: "$tmp" } },
         ];
 
-        const listenings = await Listening.aggregate(aggregate);
+        const listenings = await YemotPlayback.aggregate(aggregate);
         const listeningById = {};
-        listenings.map((item) => (listeningById[item.identityNumber] = item));
+        listenings.map((item) => (listeningById[item.EnterId] = item));
 
         return students.map((item) => ({
             name: item.name,
@@ -87,7 +87,7 @@ module.exports = {
             { label: "שם התלמידה", value: "name", format: "nameWOKlass" },
             { label: "שם השיעור", value: "extension" },
             ...[...keys]
-                .filter((item) => item !== "name" && item !== "extension" && item !== "identityNumber")
+                .filter((item) => item !== "name" && item !== "extension" && item !== "EnterId")
                 .sort()
                 .map((item) => ({ value: item, label: item, format: "sec2min" })),
         ];

@@ -1,6 +1,6 @@
 const constants = require("../../helpers/constants");
 const { User } = require("../../models/User");
-const { Listening } = require("../../models/Listening");
+const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { YemotConfBridge } = require("../../models/YemotConfBridge");
@@ -28,7 +28,7 @@ module.exports = {
                 const query = { user: user.name };
 
                 const isAdmin = user.role !== 0 ? "כן" : "לא";
-                const listening = await Listening.countDocuments(query);
+                const listening = await YemotPlayback.countDocuments(query);
                 const conf = await YemotConfBridge.countDocuments(query);
                 const lesson = await Lesson.countDocuments(query);
                 const student = await Student.countDocuments(query);

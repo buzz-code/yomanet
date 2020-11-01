@@ -38,8 +38,8 @@ function registerHook(hook) {
     });
 }
 
-registerHook(require("./listening"));
-registerHook(require("./conf"));
+// registerHook(require("./listening"));
+// registerHook(require("./conf"));
 registerHook(require("./lesson"));
 registerHook(require("./student"));
 
