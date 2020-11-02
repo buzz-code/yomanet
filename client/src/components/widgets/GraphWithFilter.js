@@ -25,7 +25,9 @@ function GraphWithFilter({ url, title, filterFields }) {
     }, [data]);
 
     const handleGetData = (params) => {
-        setIsLoading(true);
+        if (filterFields.length > 0) {
+            setIsLoading(true);
+        }
         dispatch(getGraphData(url, params));
     };
 
