@@ -6,8 +6,9 @@ const qs = require("querystring");
 const fs = require("fs");
 const path = require("path");
 const tmp = require("tmp");
-const byline = require("byline");
+// const byline = require("byline");
 const moment = require("moment");
+const LineByLineReader = require("line-by-line");
 
 const models = {
     LogPlaybackPlayStop: YemotPlayback,
@@ -50,25 +51,30 @@ const downloadFile = async (token, path, isPrivateYemot) => {
 };
 
 const readFile = async (path, fileType, defaultItem, options) => {
-    var stream = fs.createReadStream(path);
-    stream.setEncoding("utf8");
-    stream = byline.createStream(stream);
+    // var stream = fs.createReadStream(path);
+    // stream.setEncoding("utf8");
+    // stream = byline.createStream(stream);
+    const lr = new LineByLineReader(path);
     let index = 0;
 
     return new Promise((resolve, reject) => {
-        stream.on("data", function (line) {
-            stream.pause();
+        lr.on("line", function (line) {
+            lr.pause();
 
             processLine(line, fileType, defaultItem, options)
-                .then(() => stream.resume())
+                .then(() => lr.resume())
                 .catch((err) => {
-                    stream.destroy();
+                    // stream.destroy();
+                    lr.close();
                     console.log(err);
-                    reject();
+                    reject(err);
                     return;
                 });
         });
-        stream.on("end", function () {
+        lr.on("error", function (err) {
+            reject(err);
+        });
+        lr.on("end", function () {
             resolve();
         });
     });

@@ -26,6 +26,7 @@
     "express-winston": "^4.0.5",
     "jade": "^1.11.0",
     "jsonwebtoken": "^8.5.1",
+    "line-by-line": "^0.1.6",
     "moment": "^2.29.1",
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.9",
