@@ -109,13 +109,13 @@ function getValue(key, value, item) {
 
 async function uploadFile(user, fullPath, fileType) {
     await YemotFile.deleteMany({ user: user.name, fullPath });
-    await models[fileType].deleteMany({ user: user.name, fileName: fullPath });
     await YemotFile.create({
         user: user.name,
         fileName: path.basename(fullPath),
         fullPath,
         status: "בטעינה",
     });
+    await models[fileType].deleteMany({ user: user.name, fileName: fullPath });
 
     // const session = await YemotFile.startSession();
     // session.startTransaction();
