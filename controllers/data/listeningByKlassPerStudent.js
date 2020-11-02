@@ -68,6 +68,6 @@ module.exports = {
         return headers;
     },
     count: async function (query) {
-        return Student.count(query);
+        return Student.countDocuments(query);
     },
 };

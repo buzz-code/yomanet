@@ -49,6 +49,6 @@ module.exports = {
         return constants.yemotConfBridgeHeaders;
     },
     count: async function (query) {
-        return YemotConfBridge.count(query);
+        return YemotConfBridge.countDocuments(query);
     },
 };

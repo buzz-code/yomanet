@@ -56,7 +56,7 @@ function registerHook(hook) {
             res.send({ error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור לימות המשיח" });
             return;
         }
-        const currentlyProcessing = await YemotFile.count({ user: req.user.name, status: "בטעינה" });
+        const currentlyProcessing = await YemotFile.countDocuments({ user: req.user.name, status: "בטעינה" });
         if (currentlyProcessing >= 3) {
             res.send({ error: true, errorMessage: "לא ניתן לשאוב יותר מ3 קבצים בו זמנית" });
             return;

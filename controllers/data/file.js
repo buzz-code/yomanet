@@ -26,6 +26,6 @@ module.exports = {
         return constants.fileHeaders;
     },
     count: async function (query) {
-        return File.count(query);
+        return File.countDocuments(query);
     },
 };

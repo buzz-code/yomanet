@@ -29,6 +29,6 @@ module.exports = {
         return constants.studentHeaders;
     },
     count: async function (query) {
-        return Student.count(query);
+        return Student.countDocuments(query);
     },
 };

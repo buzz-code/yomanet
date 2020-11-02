@@ -51,6 +51,6 @@ module.exports = {
         return constants.yemotPlaybackHeaders;
     },
     count: async function (query) {
-        return await YemotPlayback.count(query);
+        return await YemotPlayback.countDocuments(query);
     },
 };

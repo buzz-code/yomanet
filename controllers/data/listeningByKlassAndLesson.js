@@ -96,6 +96,6 @@ module.exports = {
     },
     count: async function (queries) {
         const { studentQuery } = queries;
-        return await Student.count({ $and: studentQuery });
+        return await Student.countDocuments({ $and: studentQuery });
     },
 };
