@@ -25,9 +25,7 @@ function GraphWithFilter({ url, title, filterFields }) {
     }, [data]);
 
     const handleGetData = (params) => {
-        if (filterFields.length > 0) {
-            setIsLoading(true);
-        }
+        setIsLoading(true);
         dispatch(getGraphData(url, params));
     };
 
@@ -39,7 +37,7 @@ function GraphWithFilter({ url, title, filterFields }) {
                     {filterFields.length > 0 && (
                         <FilterGraph getData={handleGetData} params={params} filterFields={filterFields} />
                     )}
-                    {isLoading && <Loader />}
+                    {isLoading && <Loader isFullScreen={filterFields.length > 0} />}
                     {!isLoading && !data && filterFields.length > 0 && (
                         <h5 className="text-center">כדי לראות תוצאות יש לבצע סינון</h5>
                     )}
