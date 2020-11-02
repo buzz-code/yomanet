@@ -10,14 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: executing remote ssh commands using password 
+    - name: deploy node app for ovh
       uses: appleboy/ssh-action@master 
       with: 
        host: ${{ secrets.OVH_HOST }} 
        username: ${{ secrets.USERNAME }} 
        password: ${{ secrets.PASSWORD }} 
        port: ${{ secrets.PORT }} 
-       script: whoami 
+       script: |
+          cd ~/VocalCenterStats
+          git pull origin master
+          npm install --production
+          npm run heroku-postbuild
+          pm2 restart yomanet
 
     - name: deploy node app
       uses: appleboy/ssh-action@master
