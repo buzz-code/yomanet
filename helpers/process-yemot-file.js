@@ -3,12 +3,11 @@ const { YemotFile } = require("../models/YemotFile");
 const { YemotConfBridge } = require("../models/YemotConfBridge");
 const axios = require("axios");
 const qs = require("querystring");
+const readline = require("readline");
 const fs = require("fs");
 const path = require("path");
 const tmp = require("tmp");
-// const byline = require("byline");
 const moment = require("moment");
-const LineByLineReader = require("line-by-line");
 
 const models = {
     LogPlaybackPlayStop: YemotPlayback,
@@ -51,34 +50,22 @@ const downloadFile = async (token, path, isPrivateYemot) => {
 };
 
 const readFile = async (path, fileType, defaultItem, options) => {
-    // var stream = fs.createReadStream(path);
-    // stream.setEncoding("utf8");
-    // stream = byline.createStream(stream);
-    const lr = new LineByLineReader(path);
+    const rl = readline.createInterface({
+        input: fs.createReadStream(path),
+        crlfDelay: Infinity,
+    });
     let index = 0;
 
-    return new Promise((resolve, reject) => {
-        lr.on("line", function (line) {
-            lr.pause();
-
-            processLine(line, fileType, defaultItem, options)
-                .then(() => lr.resume())
-                .catch((err) => {
-                    // stream.destroy();
-                    lr.close();
-                    console.log(err);
-                    reject(err);
-                    return;
-                });
-        });
-        lr.on("error", function (err) {
-            reject(err);
-        });
-        lr.on("end", function () {
-            resolve();
-        });
-    });
+    for await (const line of getLine(rl, fileType, defaultItem, options)) {
+        // console.log(index++);
+    }
 };
+
+async function* getLine(rl, fileType, defaultItem, options) {
+    for await (const line of rl) {
+        yield processLine(line, fileType, defaultItem, options);
+    }
+}
 
 const processLine = async (line, fileType, defaultItem, options) => {
     const item = { ...defaultItem };
@@ -90,6 +77,7 @@ const processLine = async (line, fileType, defaultItem, options) => {
         return;
     }
     await models[fileType].create([item], options);
+    console.log("saved");
 };
 
 function getValue(key, value, item) {
@@ -121,6 +109,7 @@ function getValue(key, value, item) {
 
 async function uploadFile(user, fullPath, fileType) {
     await YemotFile.deleteMany({ user: user.name, fullPath });
+    await models[fileType].deleteMany({ user: user.name, fileName: fullPath });
     await YemotFile.create({
         user: user.name,
         fileName: path.basename(fullPath),
