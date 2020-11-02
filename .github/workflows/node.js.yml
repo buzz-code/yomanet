@@ -24,15 +24,15 @@ jobs:
           npm run heroku-postbuild
           pm2 restart yomanet
 
-    - name: deploy node app
-      uses: appleboy/ssh-action@master
-      with:
-       host: ${{ secrets.HOST }} 
-       username: ${{ secrets.USERNAME }} 
-       password: ${{ secrets.PASSWORD }} 
-       port: ${{ secrets.PORT }} 
-       script: |
-          cd ~/VocalCenterStats
-          git pull origin master
-          npm install --production
-          pm2 restart yomanet
+    # - name: deploy node app
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #    host: ${{ secrets.HOST }} 
+    #    username: ${{ secrets.USERNAME }} 
+    #    password: ${{ secrets.PASSWORD }} 
+    #    port: ${{ secrets.PORT }} 
+    #    script: |
+    #       cd ~/VocalCenterStats
+    #       git pull origin master
+    #       npm install --production
+    #       pm2 restart yomanet
