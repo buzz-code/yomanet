@@ -19,36 +19,41 @@ function registerHook(hook) {
         const filter = JSON.parse(req.query.filter);
         const { subPath } = filter;
 
-        const yemot = new yemotApi(req.user.yemotUsername, req.user.yemotPassword, req.user.yemotIsPrivate);
-        const { data } = await yemot.exec("GetIVR2Dir", { path: hook.yemotPath + "/" + (subPath || "") });
-        const loadedFiles = await YemotFile.find({ user: req.user.name }).lean();
+        try {
+            const yemot = new yemotApi(req.user.yemotUsername, req.user.yemotPassword, req.user.yemotIsPrivate);
+            const { data } = await yemot.exec("GetIVR2Dir", { path: hook.yemotPath + "/" + (subPath || "") });
+            const loadedFiles = await YemotFile.find({ user: req.user.name }).lean();
 
-        const results = [];
-        data.dirs
-            .filter((item) => hook.dirRegex.test(item.name))
-            .forEach((item) => {
-                results.push({
-                    name: item.name,
-                    fullPath: item.what,
-                    status: null,
-                    isFile: false,
+            const results = [];
+            data.dirs
+                .filter((item) => hook.dirRegex.test(item.name))
+                .forEach((item) => {
+                    results.push({
+                        name: item.name,
+                        fullPath: item.what,
+                        status: null,
+                        isFile: false,
+                    });
                 });
-            });
-        data.files
-            .filter((item) => hook.fileRegex.test(item.name))
-            .forEach((item) => {
-                const loadedFile = loadedFiles.find((file) => file.fullPath === item.what);
-                results.push({
-                    name: item.name,
-                    fullPath: item.what,
-                    size: prettyBytes(item.size),
-                    mtime: item.mtime,
-                    status: loadedFile ? loadedFile.status : "טרם נטען",
-                    isFile: true,
+            data.files
+                .filter((item) => hook.fileRegex.test(item.name))
+                .forEach((item) => {
+                    const loadedFile = loadedFiles.find((file) => file.fullPath === item.what);
+                    results.push({
+                        name: item.name,
+                        fullPath: item.what,
+                        size: prettyBytes(item.size),
+                        mtime: item.mtime,
+                        status: loadedFile ? loadedFile.status : "טרם נטען",
+                        isFile: true,
+                    });
                 });
-            });
 
-        getTableDataResponse(res, results, 0, [], { subPath });
+            getTableDataResponse(res, results, 0, [], { subPath });
+        } catch (err) {
+            console.log("yemot file list error", req.user.name, err);
+            res.send({ error: true, errorMessage: "ארעה שגיאה: " + err });
+        }
     });
 
     router.post(hook.url, auth, async function (req, res) {

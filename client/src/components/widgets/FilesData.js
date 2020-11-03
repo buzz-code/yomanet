@@ -60,7 +60,7 @@ function FilesData({ url, title }) {
                             {data.params.subPath && <Breadcrumb.Item active>{data.params.subPath}</Breadcrumb.Item>}
                         </Breadcrumb>
                     )}
-                    {data && (
+                    {data && data.results && data.results.length > 0 && (
                         <div className="pb-2">
                             יש ללחוץ לחיצה כפולה על תיקיה כדי להכנס אליה, לחיצה כפולה על קובץ כדי לטעון אותו
                         </div>
