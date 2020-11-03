@@ -61,13 +61,22 @@ function getPagingConfig(page) {
     };
 }
 
-function getListOfPreviosDays(count) {
+function getDateList(fromDate, toDate) {
     const today = moment.utc().startOf("day");
-    let firstDay = moment(today).subtract(count, "day");
+    if (fromDate) {
+        fromDate = moment.utc(fromDate);
+    } else {
+        fromDate = moment(today).subtract(constants.graphNumberOfDays, "day");
+    }
+    if (toDate) {
+        toDate = moment.utc(toDate);
+    } else {
+        toDate = today;
+    }
     const days = [];
-    while (firstDay.isSameOrBefore(today)) {
-        days.push(firstDay);
-        firstDay = moment(firstDay).add(1, "day");
+    while (fromDate.isSameOrBefore(toDate)) {
+        days.push(fromDate);
+        fromDate = moment(fromDate).add(1, "day");
     }
     return days;
 }
@@ -78,5 +87,5 @@ module.exports = {
     createReport,
     sendReportByMail,
     getPagingConfig,
-    getListOfPreviosDays,
+    getDateList,
 };

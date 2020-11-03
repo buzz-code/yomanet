@@ -2,13 +2,13 @@ export default [
     {
         url: "",
         title: "גרפים כלליים",
-        filterFields: [],
+        filterFields: ["dateRange"],
         isAdmin: false,
     },
     {
         url: "graphByKlass",
         title: "גרפים לפי כיתה",
-        filterFields: ["singleKlass"],
+        filterFields: ["dateRange", "singleKlass"],
         isAdmin: false,
     },
 ];

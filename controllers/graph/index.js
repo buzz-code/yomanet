@@ -9,6 +9,7 @@ function registerHook(hook) {
             if (err) throw err;
             const params = JSON.parse(req.body.filter);
             params.user = user && user.name;
+            
             const { isValid, errorMessage } = hook.validate(params);
             if (!isValid) {
                 res.send({ isValid, errorMessage, params });

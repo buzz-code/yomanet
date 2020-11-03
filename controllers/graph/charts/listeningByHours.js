@@ -1,5 +1,4 @@
-const { getListOfPreviosDays } = require("../../../helpers/utils");
-const { graphNumberOfDays } = require("../../../helpers/constants");
+const { getDateList } = require("../../../helpers/utils");
 const { YemotPlayback } = require("../../../models/YemotPlayback");
 const { Student } = require("../../../models/Student");
 
@@ -13,7 +12,7 @@ module.exports = {
     },
     title: "שיחות לפי שעות ביממה",
     getData: async function (filter) {
-        const { user, klass } = filter;
+        const { user, klass, fromDate, toDate } = filter;
 
         const query = [];
         const studentQuery = [];
@@ -29,7 +28,10 @@ module.exports = {
             query.push({ EnterId: { $in: studentIds.map((item) => item.identityNumber) } });
         }
 
-        const days = getListOfPreviosDays(graphNumberOfDays);
+        const days = getDateList(fromDate, toDate);
+        if (days.length === 0) {
+            return { datasets: [], labels: [] };
+        }
         query.push({ EnterDate: { $gte: days[0].toDate(), $lte: days[days.length - 1].toDate() } });
 
         const data = await YemotPlayback.aggregate()

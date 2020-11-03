@@ -13,7 +13,7 @@ function GraphWithFilter({ url, title, filterFields }) {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        if (filterFields.length === 0) {
+        if (filterFields.length <= 1) {
             handleGetData();
         }
     }, [dispatch, url]);
@@ -37,8 +37,8 @@ function GraphWithFilter({ url, title, filterFields }) {
                     {filterFields.length > 0 && (
                         <FilterGraph getData={handleGetData} params={params} filterFields={filterFields} />
                     )}
-                    {isLoading && <Loader isFullScreen={filterFields.length > 0} />}
-                    {!isLoading && !data && filterFields.length > 0 && (
+                    {isLoading && <Loader isFullScreen={filterFields.length > 1} />}
+                    {!isLoading && !data && filterFields.length > 1 && (
                         <h5 className="text-center">כדי לראות תוצאות יש לבצע סינון</h5>
                     )}
                     <div className="row">
