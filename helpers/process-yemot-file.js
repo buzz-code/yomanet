@@ -54,30 +54,44 @@ const readFile = async (path, fileType, defaultItem, options) => {
         input: fs.createReadStream(path),
         crlfDelay: Infinity,
     });
-    let index = 0;
+    const arr = [];
 
-    for await (const line of getLine(rl, fileType, defaultItem, options)) {
-        // console.log(index++);
+    for await (const line of getLine(rl, arr, fileType, defaultItem, options)) {
+    }
+
+    if (arr.length > 0) {
+        await models[fileType].create(arr, options);
+        console.log(defaultItem, arr.length);
+        arr.length = 0;
     }
 };
 
-async function* getLine(rl, fileType, defaultItem, options) {
+async function* getLine(rl, arr, fileType, defaultItem, options) {
+    let index = 0;
     for await (const line of rl) {
-        yield processLine(line, fileType, defaultItem, options);
+        const item = processLine(line, defaultItem);
+        arr.push(item);
+        index++;
+
+        if (arr.length === 3000) {
+            await models[fileType].create(arr, options);
+            arr.length = 0;
+            console.log(defaultItem, index);
+        }
+        yield item;
     }
 }
 
-const processLine = async (line, fileType, defaultItem, options) => {
+const processLine = (line, defaultItem) => {
     const item = { ...defaultItem };
     line.split("%").forEach((pair) => {
         const [key, value] = pair.split("#");
         item[key] = getValue(key, value, item);
     });
     if (Object.keys(item).length < 10) {
-        return;
+        return null;
     }
-    await models[fileType].create([item], options);
-    console.log("saved");
+    return item;
 };
 
 function getValue(key, value, item) {
