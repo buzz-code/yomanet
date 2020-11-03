@@ -22,7 +22,7 @@ function registerHook(hook) {
                     return;
                 }
                 await hook.upload(content, req.user);
-                console.log("saved", hook.url);
+                console.log("upload file complete for url:", hook.url);
                 await File.create({
                     user: req.user.name,
                     fileName: req.files.fileUpload.name,
@@ -32,7 +32,7 @@ function registerHook(hook) {
                 return;
             }
         } catch (e) {
-            console.log(e);
+            console.log("error in file upload for url:", hook.url, e);
         }
         res.send({ error: true, errorMessage: "ארעה שגיאה, נסה שנית" });
     });

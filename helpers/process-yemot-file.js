@@ -119,7 +119,7 @@ function getValue(key, value, item) {
 const saveAndClear = async (arr, fileType, options, defaultItem, index) => {
     await models[fileType].create(arr, options);
     arr.length = 0;
-    console.log(defaultItem, index);
+    console.log("save yemot file data for ", defaultItem, fileType, index);
 };
 
 async function uploadFile(user, fullPath, fileType) {
@@ -134,23 +134,22 @@ async function uploadFile(user, fullPath, fileType) {
 
     // const session = await YemotFile.startSession();
     // session.startTransaction();
+    const defaultItem = { user: user.name, fileName: fullPath };
 
     try {
         const opts = {}; //{ session };
-        const defaultItem = { user: user.name, fileName: fullPath };
-        console.log("start processing file", user.name, fullPath);
+        console.log("start processing yemot file", defaultItem);
 
         const token = await loginAndGetToken(user.yemotUsername, user.yemotPassword, user.yemotIsPrivate);
         const tempPath = await downloadFile(token, fullPath, user.yemotIsPrivate);
         await readFile(tempPath, fileType, defaultItem, opts);
         await YemotFile.findOneAndUpdate({ user: user.name, fullPath }, { $set: { status: "נטען בהצלחה" } }, opts);
-        console.log("finish processing file", user.name, fullPath);
+        console.log("finish processing yemot file", defaultItem);
 
         // await session.commitTransaction();
         // session.endSession();
     } catch (err) {
-        console.log(err);
-        console.log("error processing file", user.name, fullPath);
+        console.log("error processing yemot file", defaultItem, err);
 
         // await session.abortTransaction();
         // session.endSession();

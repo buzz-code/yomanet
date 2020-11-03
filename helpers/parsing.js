@@ -32,7 +32,7 @@ const parseListening = (content, user) => {
             data.push(row);
         });
 
-    console.log("parsing finished");
+    console.log("parsing listening file is finished");
     return data;
 };
 
@@ -57,7 +57,7 @@ const parseConf = (content) => {
             data.push(row);
         });
 
-    console.log("parsing finished");
+    console.log("parsing conf file is finished");
     return data;
 };
 

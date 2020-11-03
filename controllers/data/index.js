@@ -7,11 +7,11 @@ function registerHook(hook) {
     router.post(hook.url, auth, async function (req, res) {
         const filter = JSON.parse(req.body.filter);
         const query = await hook.query(filter, req.user);
-        console.log(hook.url, filter, query);
+        console.log("data query for url:", hook.url, filter, query);
 
         const { isValid, errorMessage } = await hook.validate(query, req.user, filter);
         if (!isValid) {
-            res.send({ error: true, errorMessage: errorMessage || 'ארעה שגיאה', params: filter });
+            res.send({ error: true, errorMessage: errorMessage || "ארעה שגיאה", params: filter });
             return;
         }
 
@@ -24,11 +24,11 @@ function registerHook(hook) {
     router.get(hook.url, auth, async function (req, res) {
         const filter = JSON.parse(req.query.filter);
         const query = await hook.query(filter, req.user);
-        console.log(filter, query);
+        console.log("report query for url:", hook.url, filter, query);
 
         const { isValid, errorMessage } = await hook.validate(query, req.user, filter);
         if (!isValid) {
-            res.send({ error: true, errorMessage: errorMessage || 'ארעה שגיאה' });
+            res.send({ error: true, errorMessage: errorMessage || "ארעה שגיאה" });
             return;
         }
 
@@ -41,11 +41,11 @@ function registerHook(hook) {
     router.put(hook.url, auth, async function (req, res) {
         const filter = JSON.parse(req.body.filter);
         const query = await hook.query(filter, req.user);
-        console.log(filter, query);
+        console.log("email query for url:", hook.url, filter, query);
 
         const { isValid, errorMessage } = await hook.validate(query, req.user, filter);
         if (!isValid) {
-            res.send({ error: true, errorMessage: errorMessage || 'ארעה שגיאה' });
+            res.send({ error: true, errorMessage: errorMessage || "ארעה שגיאה" });
             return;
         }
 

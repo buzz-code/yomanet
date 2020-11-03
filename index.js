@@ -19,7 +19,7 @@ const connect = mongoose
         useFindAndModify: false,
     })
     .then(() => console.log("MongoDB Connected..."))
-    .catch((err) => console.log(err));
+    .catch((err) => console.log("MongoDB connect error", err));
 
 expressWinston.requestWhitelist.splice(expressWinston.requestWhitelist.indexOf("headers"), 1);
 app.use(
