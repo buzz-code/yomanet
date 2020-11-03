@@ -38,7 +38,7 @@ router.post("/klass", auth, async function (req, res) {
         { $sort: { grade: 1, classNum: 1 } },
     ]);
     const items = results.map((item) => ({
-        value: `${item.grade} - ${item.classNum}`,
+        value: `${item.grade} - ${item.classNum} `,
         label: `${item.grade}${item.classNum}`,
     }));
     res.send({ results: items });
