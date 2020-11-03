@@ -504,3 +504,97 @@
 //         });
 //     }
 // );
+
+// const MongoClient = require("mongodb").MongoClient;
+// const assert = require("assert");
+// const { fstat } = require("fs");
+
+// /*
+//  * Requires the MongoDB Node.js Driver
+//  * https://mongodb.github.io/node-mongodb-native
+//  */
+
+// const agg = [
+//     {
+//         //     '$match': {
+//         //       'user': {
+//         //         '$ne': 'testing'
+//         //       }
+//         //     }
+//         //   }, {
+//         $group: {
+//             _id: {
+//                 user: "$user",
+//                 fileName: "$fileName",
+//                 enterId: "$EnterId",
+//                 enterTime: "$EnterTime",
+//             },
+//             count: {
+//                 $sum: 1,
+//             },
+//         },
+//     },
+//     {
+//         $match: {
+//             count: {
+//                 $gt: 1,
+//             },
+//         },
+//     },
+//     {
+//         $group: {
+//             _id: {
+//                 user: "$_id.user",
+//                 fileName: "$_id.fileName",
+//             },
+//             count: {
+//                 $sum: 1,
+//             },
+//         },
+//     },
+// ];
+
+// MongoClient.connect(
+//     "mongodb://myUserAdmin:1@145.239.83.4:27018/admin?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false",
+//     { useNewUrlParser: true, useUnifiedTopology: true },
+//     function (connectErr, client) {
+//         assert.equal(null, connectErr);
+//         const coll = client.db("vocal").collection("yemotplaybacks");
+//         coll.aggregate(agg, { allowDiskUse: true }, (cmdErr, result) => {
+//             assert.equal(null, cmdErr);
+//             result
+//                 .toArray()
+//                 .then((res) => require("fs").writeFileSync("duplicate files", JSON.stringify(res, null, "\t")))
+//                 .then(() => client.close());
+//         });
+//     }
+// );
+
+// async function main() {
+//     await require("mongoose")
+//         .connect("mongodb://myUserAdmin:1@145.239.83.4:27018/vocal?authSource=admin", {
+//             useNewUrlParser: true,
+//             useUnifiedTopology: true,
+//             useCreateIndex: true,
+//             useFindAndModify: false,
+//         })
+//         .then(() => console.log("MongoDB Connected..."))
+//         .catch((err) => console.log(err));
+
+//     const { uploadFile } = require("./process-yemot-file");
+//     const User = require("./../models/User").User;
+//     const data = require("fs").readFileSync("duplicate files");
+//     const json = JSON.parse(data);
+//     for (const row of json) {
+//         const user = row._id.user;
+//         const userModel = await User.findOne({ name: user });
+//         const fileType = row._id.fileName.includes("Playback") ? "LogPlaybackPlayStop" : "LogConfBridgeEnterExit";
+//         console.log("start process", row);
+//         await uploadFile(userModel, row._id.fileName, fileType);
+//         console.log("end process", row);
+//     }
+// }
+
+// main().then(console.log).catch(console.log);
+
+
