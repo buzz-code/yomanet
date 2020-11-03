@@ -56,33 +56,28 @@ const readFile = async (path, fileType, defaultItem, options) => {
     });
     const arr = [];
 
-    for await (const line of getLine(rl, arr, fileType, defaultItem, options)) {
+    for await (const line of processLine(rl, arr, fileType, defaultItem, options)) {
     }
 
     if (arr.length > 0) {
-        await models[fileType].create(arr, options);
-        console.log(defaultItem, arr.length);
-        arr.length = 0;
+        saveAndClear(arr, fileType, options, defaultItem, arr.length);
     }
 };
 
-async function* getLine(rl, arr, fileType, defaultItem, options) {
+async function* processLine(rl, arr, fileType, defaultItem, options) {
     let index = 0;
     for await (const line of rl) {
-        const item = processLine(line, defaultItem);
-        arr.push(item);
+        arr.push(getItemFromLine(line, defaultItem));
         index++;
 
         if (arr.length === 3000) {
-            await models[fileType].create(arr, options);
-            arr.length = 0;
-            console.log(defaultItem, index);
+            saveAndClear(arr, fileType, options, defaultItem, index);
         }
         yield item;
     }
 }
 
-const processLine = (line, defaultItem) => {
+const getItemFromLine = (line, defaultItem) => {
     const item = { ...defaultItem };
     line.split("%").forEach((pair) => {
         const [key, value] = pair.split("#");
@@ -120,6 +115,12 @@ function getValue(key, value, item) {
             return value;
     }
 }
+
+const saveAndClear = async (arr, fileType, options, defaultItem, index) => {
+    await models[fileType].create(arr, options);
+    arr.length = 0;
+    console.log(defaultItem, index);
+};
 
 async function uploadFile(user, fullPath, fileType) {
     await YemotFile.deleteMany({ user: user.name, fullPath });
