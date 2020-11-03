@@ -67,12 +67,17 @@ process.on("SIGINT", () => {
     console.info("SIGINT signal received.");
 
     // Stops the server from accepting new connections and finishes existing connections.
-    server.close(function (err) {
+    server.close(async function (err) {
         // if error, log and exit with error (1 code)
         if (err) {
             console.error(err);
             process.exit(1);
         }
+
+        await require("./models/YemotFile").YemotFile.updateMany(
+            { status: "בטעינה" },
+            { $set: { status: "טעינה נכשלה" } }
+        );
 
         // close your database connection and exit with success (0 code)
         // for example with mongoose
