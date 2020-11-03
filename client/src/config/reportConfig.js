@@ -35,4 +35,14 @@ export default [
         filterFields: ["singleMegama", "lesson", "dateRange"],
         isAdmin: false,
     },
+    {
+        url: "diploma",
+        title: "הנפקת תעודות לתלמידות",
+        filterFields: ["singleKlass", "lesson", "dateRange"],
+        isAdmin: false,
+        filterProps: {
+            isHideEmailButton: true,
+            isHideExcelButton: true,
+        },
+    },
 ];

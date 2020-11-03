@@ -3,6 +3,7 @@ const constants = require("./constants");
 const { getTableCellValue } = require("./format");
 const { getPdfReportObject } = require("./pdfReport");
 const { getExcelReportObject } = require("./excelReport");
+const { getDiplomaReportObject } = require("./diplomaReport");
 const { sendReportByEmail } = require("./mailer");
 
 const getTableDataResponse = (res, results, totalCount, headers, params) => {
@@ -21,10 +22,14 @@ const getTableDataResponse = (res, results, totalCount, headers, params) => {
     res.send(data);
 };
 
-const createReport = async (res, format, title, results, headers) => {
+const createReport = async (res, url, format, title, results, headers) => {
     let report = null;
     if (format === "PDF") {
-        report = await getPdfReportObject(title, results, headers);
+        if (url !== "/diploma") {
+            report = await getPdfReportObject(title, results, headers);
+        } else {
+            report = await getDiplomaReportObject(title, results, headers);
+        }
     } else if (format === "EXCEL") {
         report = await getExcelReportObject(title, results, headers);
     }

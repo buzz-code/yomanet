@@ -3,7 +3,16 @@ import { getLessonList, getKlassList, getMegamaList } from "../../_actions/list_
 import EmailReportPopup from "./EmailReportPopup";
 import TypeAhead from "./TypeAhead";
 
-export default function FilterTable({ params, filterFields, getData, reportData, sendEmailData }) {
+export default function FilterTable({
+    params,
+    filterFields,
+    getData,
+    reportData,
+    sendEmailData,
+    isHideEmailButton,
+    isHidePdfButton,
+    isHideExcelButton,
+}) {
     const [isEmailReportOpen, setIsEmailReportOpen] = useState(false);
 
     const [fromDate, setFromDate] = useState("");
@@ -320,28 +329,37 @@ export default function FilterTable({ params, filterFields, getData, reportData,
                             סנן נתונים
                         </button>
                         &nbsp;
-                        <button type="clear" className="btn btn-default" onClick={handleClear}>
+                        <button type="clear" className="btn btn-default mr-auto" onClick={handleClear}>
                             נקה סינון
                         </button>
                     </>
                 ) : (
-                    <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+                    <button type="submit" className="btn btn-primary mr-auto" onClick={handleSubmit}>
                         רענן נתונים
                     </button>
                 )}
                 <EmailReportPopup isOpen={isEmailReportOpen} onClose={handleEmailReportClose} />
-                <button
-                    className="btn btn-outline-dark ml-auto"
-                    onClick={() => setIsEmailReportOpen(true)}
-                    title="שלח את הנתונים במייל">
-                    Email <i className="fa fa-envelope"></i>
-                </button>
-                <button className="btn btn-outline-dark ml-2" onClick={handlePdfReport} title="יצא את הנתונים לPDF">
-                    Pdf <i className="fa fa-file-pdf"></i>
-                </button>
-                <button className="btn btn-outline-dark ml-2" onClick={handleExcelReport} title="יצא את הנתונים לאקסל">
-                    Excel <i className="fa fa-file-excel"></i>
-                </button>
+                {!isHideEmailButton && (
+                    <button
+                        className="btn btn-outline-dark"
+                        onClick={() => setIsEmailReportOpen(true)}
+                        title="שלח את הנתונים במייל">
+                        Email <i className="fa fa-envelope"></i>
+                    </button>
+                )}
+                {!isHidePdfButton && (
+                    <button className="btn btn-outline-dark ml-2" onClick={handlePdfReport} title="יצא את הנתונים לPDF">
+                        Pdf <i className="fa fa-file-pdf"></i>
+                    </button>
+                )}
+                {!isHideExcelButton && (
+                    <button
+                        className="btn btn-outline-dark ml-2"
+                        onClick={handleExcelReport}
+                        title="יצא את הנתונים לאקסל">
+                        Excel <i className="fa fa-file-excel"></i>
+                    </button>
+                )}
                 {/* {params && (
                     <button
                         className="btn btn-outline-dark"

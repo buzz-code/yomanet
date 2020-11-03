@@ -36,7 +36,7 @@ function registerHook(hook) {
         const headers = await hook.headers(results, query, filter);
         const title = hook.title(filter);
 
-        createReport(res, filter.format, title, results, headers);
+        createReport(res, hook.url, filter.format, title, results, headers);
     });
     router.put(hook.url, auth, async function (req, res) {
         const filter = JSON.parse(req.body.filter);
@@ -69,5 +69,6 @@ registerHook(require("./confByKlass"));
 registerHook(require("./listeningByKlassPerStudent"));
 registerHook(require("./listeningByMegama"));
 registerHook(require("./confByMegama"));
+registerHook(require("./diploma"));
 
 module.exports = router;

@@ -5,7 +5,7 @@ import FilterTable from "./FilterTable";
 import Loader from "./Loader";
 import PagingTable from "./PagingTable";
 
-function TableData({ url, title, filterFields }) {
+function TableData({ url, title, filterFields, filterProps }) {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.data.data);
     const params = data && data.params ? data.params : {};
@@ -55,6 +55,7 @@ function TableData({ url, title, filterFields }) {
                         getData={handleGetData}
                         reportData={handleReportData}
                         sendEmailData={handleSendEmailData}
+                        {...filterProps}
                     />
                     {isLoading && <Loader />}
                     {data && data.headers && (
