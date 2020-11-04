@@ -54,28 +54,19 @@ const readFile = async (path, fileType, defaultItem, options) => {
         input: fs.createReadStream(path),
         crlfDelay: Infinity,
     });
+
     const arr = [];
-
-    for await (const line of processLine(rl, arr, fileType, defaultItem, options)) {
-    }
-
-    if (arr.length > 0) {
-        saveAndClear(arr, fileType, options, defaultItem, arr.length);
-    }
-};
-
-async function* processLine(rl, arr, fileType, defaultItem, options) {
     let index = 0;
     for await (const line of rl) {
         arr.push(getItemFromLine(line, defaultItem));
         index++;
 
         if (arr.length === 3000) {
-            saveAndClear(arr, fileType, options, defaultItem, index);
+            await saveAndClear(arr, fileType, options, defaultItem, index);
         }
-        yield index;
     }
-}
+    await saveAndClear(arr, fileType, options, defaultItem, index);
+};
 
 const getItemFromLine = (line, defaultItem) => {
     const item = { ...defaultItem };
