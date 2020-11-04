@@ -56,7 +56,7 @@ const createHtml = (data, headers) => `
             table {
                 width: 100%;
                 padding: 0 10%;
-                margin-top: 20px;
+                margin: 20px 0 40px;
             }
             thead tr {
                 background-color: #563d7c;

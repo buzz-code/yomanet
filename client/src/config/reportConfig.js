@@ -38,7 +38,7 @@ export default [
     {
         url: "diploma",
         title: "הנפקת תעודות לתלמידות",
-        filterFields: ["singleKlass", "lesson", "dateRange"],
+        filterFields: ["singleKlass", "lesson", "name", "dateRange"],
         isAdmin: false,
         filterProps: {
             isHideEmailButton: true,

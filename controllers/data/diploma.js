@@ -16,12 +16,13 @@ module.exports = {
         return title;
     },
     query: async function (body, user) {
-        const { klass, lesson, fromDate, toDate } = body;
+        const { klass, lesson, name, fromDate, toDate } = body;
 
         const query = [{ user: user.name }];
         const studentQuery = [{ user: user.name }];
         if (klass && klass.length)
             studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+        if (name) studentQuery.push({ name: new RegExp(name) });
         if (fromDate) query.push({ EnterDate: { $gte: moment.utc(fromDate).toDate() } });
         if (toDate) query.push({ EnterDate: { $lte: moment.utc(toDate).toDate() } });
         if (lesson && lesson.length) query.push({ Folder: new RegExp(lesson.map((item) => item.value).join("|")) });
