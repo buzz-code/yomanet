@@ -49,7 +49,7 @@ const createHtml = (data, headers) => `
                 page-break-after: always;
                 text-align: center;
                 width: 600px;
-                height: 88vh;
+                min-height: 88vh;
                 margin: 5vh auto;
                 border: double #563d7c;
             }
