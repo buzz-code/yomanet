@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getLessonList, getKlassList } from "../../_actions/list_actions";
 import TypeAhead from "./TypeAhead";
 
-export default function FilterGraph({ getData, params, filterFields }) {
+export default function FilterGraph({ getData, reportData, params, filterFields, isHidePdfButton }) {
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
     const [klass, setKlass] = useState([]);
@@ -61,6 +61,13 @@ export default function FilterGraph({ getData, params, filterFields }) {
         e.stopPropagation();
 
         getData();
+    };
+
+    const handlePdfReport = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        reportData({ ...params, format: "PDF" });
     };
 
     const fields = {
@@ -272,13 +279,18 @@ export default function FilterGraph({ getData, params, filterFields }) {
                             הצג גרפים
                         </button>
                         &nbsp;
-                        <button type="clear" className="btn btn-default" onClick={handleClear}>
+                        <button type="clear" className="btn btn-default mr-auto" onClick={handleClear}>
                             נקה סינון
                         </button>
                     </>
                 ) : (
-                    <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+                    <button type="submit" className="btn btn-primary mr-auto" onClick={handleSubmit}>
                         רענן נתונים
+                    </button>
+                )}
+                {!isHidePdfButton && (
+                    <button className="btn btn-outline-dark ml-2" onClick={handlePdfReport} title="יצא את הנתונים לPDF">
+                        Pdf <i className="fa fa-file-pdf"></i>
                     </button>
                 )}
             </div>

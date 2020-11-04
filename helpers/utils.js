@@ -5,6 +5,7 @@ const { getPdfReportObject } = require("./pdfReport");
 const { getExcelReportObject } = require("./excelReport");
 const { getDiplomaReportObject } = require("./diplomaReport");
 const { sendReportByEmail } = require("./mailer");
+const { getGraphReportObject } = require("./graphReport");
 
 const getTableDataResponse = (res, results, totalCount, headers, params) => {
     results.forEach((item) => {
@@ -32,6 +33,15 @@ const createReport = async (res, url, format, title, results, headers) => {
         }
     } else if (format === "EXCEL") {
         report = await getExcelReportObject(title, results, headers);
+    }
+    res.attachment(report.fileName);
+    res.end(report.buffer);
+};
+
+const createGraphReport = async (res, format, title, results) => {
+    let report = null;
+    if (format === "PDF") {
+        report = await getGraphReportObject(title, results);
     }
     res.attachment(report.fileName);
     res.end(report.buffer);
@@ -90,6 +100,7 @@ module.exports = {
     getTableCellValue,
     getTableDataResponse,
     createReport,
+    createGraphReport,
     sendReportByMail,
     getPagingConfig,
     getDateList,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Chart from "react-chartjs-2";
-import { getGraphData } from "../../_actions/graph_actions";
+import { getGraphData, reportGraphData } from "../../_actions/graph_actions";
 import FilterGraph from "./FilterGraph";
 import Loader from "./Loader";
 
@@ -29,13 +29,22 @@ function GraphWithFilter({ url, title, filterFields }) {
         dispatch(getGraphData(url, params));
     };
 
+    const handleReportData = (params) => {
+        dispatch(reportGraphData(url, params));
+    };
+
     return (
         <div className="container">
             <div className="main-content pt-3">
                 <h2>{title}</h2>
                 <div>
                     {filterFields.length > 0 && (
-                        <FilterGraph getData={handleGetData} params={params} filterFields={filterFields} />
+                        <FilterGraph
+                            getData={handleGetData}
+                            reportData={handleReportData}
+                            params={params}
+                            filterFields={filterFields}
+                        />
                     )}
                     {isLoading && <Loader isFullScreen={filterFields.length > 1} />}
                     {!isLoading && !data && filterFields.length > 1 && (
