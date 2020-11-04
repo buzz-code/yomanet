@@ -15,9 +15,9 @@ function registerHook(hook) {
             return;
         }
 
-        const results = await hook.data(query, filter.page, filter);
+        const results = await hook.data(query, filter.page, filter, req.user);
         const count = await hook.count(query);
-        const headers = await hook.headers(results, query, filter);
+        const headers = await hook.headers(results, query, filter, req.user);
 
         getTableDataResponse(res, results, count, headers, filter);
     });
@@ -49,8 +49,8 @@ function registerHook(hook) {
             return;
         }
 
-        const results = await hook.data(query, -1, filter);
-        const headers = await hook.headers(results, query, filter);
+        const results = await hook.data(query, -1, filter, req.user);
+        const headers = await hook.headers(results, query, filter, req.user);
         const title = hook.title(filter);
 
         sendReportByMail(res, req.body.recipient, filter.format, title, results, headers);
