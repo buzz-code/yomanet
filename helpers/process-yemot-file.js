@@ -117,7 +117,7 @@ function getValue(key, value, item) {
 }
 
 const saveAndClear = async (arr, fileType, options, defaultItem, index) => {
-    await models[fileType].create(arr, options);
+    await models[fileType].insertMany(arr, options);
     arr.length = 0;
     console.log("save yemot file data for ", defaultItem, fileType, index);
 };
