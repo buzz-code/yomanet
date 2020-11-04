@@ -47,7 +47,6 @@ export function getFilesData(url, params) {
 
 export function loadFile(url, fullPath) {
     const request = axios
-        // .put(`${FILES_SERVER}/${url}`, { fullPath }, { timeout: 4 * 60 * 1000 })
         .post(`${FILES_SERVER}/${url}`, { fullPath }, { timeout: 4 * 60 * 1000 })
         .then((response) => response.data);
 
