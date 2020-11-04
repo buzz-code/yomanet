@@ -84,7 +84,7 @@ const createHtml = (data, headers) => `
             </style>
         </head>
         <body>
-            <h1>${data.length == 0 ? "לא נמצאו נתונים" : ""}</h2>
+            <h1>${data.length == 0 ? "לא נמצאו נתונים" : ""}</h1>
             ${data.map((item) => createPage(item, headers)).join("")}
         </body>
       </html>
