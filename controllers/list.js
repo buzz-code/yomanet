@@ -53,6 +53,8 @@ router.post("/megama", auth, async function (req, res) {
 
     const results = await Student.aggregate([
         { $match: query },
+        { $project: { megama: "$megama" } },
+        { $unwind: "$megama" },
         { $group: { _id: "$megama" } },
         { $project: { _id: 0, megama: "$_id" } },
         { $sort: { megame: 1 } },
