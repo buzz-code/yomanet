@@ -73,7 +73,7 @@ async function* processLine(rl, arr, fileType, defaultItem, options) {
         if (arr.length === 3000) {
             saveAndClear(arr, fileType, options, defaultItem, index);
         }
-        yield item;
+        yield index;
     }
 }
 
