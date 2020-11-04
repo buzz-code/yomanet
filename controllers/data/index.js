@@ -32,8 +32,8 @@ function registerHook(hook) {
             return;
         }
 
-        const results = await hook.data(query, -1, filter);
-        const headers = await hook.headers(results, query, filter);
+        const results = await hook.data(query, -1, filter, req.user);
+        const headers = await hook.headers(results, query, filter, req.user);
         const title = hook.title(filter);
 
         createReport(res, hook.url, filter.format, title, results, headers);

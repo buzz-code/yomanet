@@ -40,7 +40,7 @@ module.exports = {
             .sort({ count: -1 })
             .limit(10);
 
-        const students = await Student.find({ identityNumber: { $in: data.map((item) => item._id) } });
+        const students = await Student.find({ user, identityNumber: { $in: data.map((item) => item._id) } }).lean();
         const studentsById = {};
         students.forEach((item) => (studentsById[item.identityNumber] = item.name));
 

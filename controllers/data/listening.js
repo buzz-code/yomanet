@@ -36,11 +36,11 @@ module.exports = {
     validate: async function (query, user) {
         return { isValid: true, errorMessage: null };
     },
-    data: async function (query, page) {
+    data: async function (query, page, filter, user) {
         const results = await YemotPlayback.find(query, null, getPagingConfig(page)).lean();
 
         const extensions = new Set(results.map((item) => item.extension));
-        const lessons = await Lesson.find({ extension: { $in: [...extensions] } }).lean();
+        const lessons = await Lesson.find({ user: user.name, extension: { $in: [...extensions] } }).lean();
         const lessonByExt = {};
         lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
         results.forEach((item) => (item.Folder = lessonByExt[item.Folder] || item.Folder));

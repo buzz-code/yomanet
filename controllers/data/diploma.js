@@ -92,7 +92,7 @@ module.exports = {
             ...listeningById[item.identityNumber],
         }));
     },
-    headers: async function (data, query, filter) {
+    headers: async function (data, query, filter, user) {
         const keys = new Set();
         data.forEach((item) => {
             for (const key in item) {
@@ -100,7 +100,7 @@ module.exports = {
             }
         });
 
-        const lessons = await Lesson.find({ extension: { $in: [...keys] } });
+        const lessons = await Lesson.find({ user: user.name, extension: { $in: [...keys] } }).lean();
         const lessonByExt = {};
         lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
 

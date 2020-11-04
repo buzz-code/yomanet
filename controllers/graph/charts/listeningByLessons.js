@@ -41,7 +41,7 @@ module.exports = {
             .sort({ count: -1 })
             .limit(10);
 
-        const lessons = await Lesson.find({ extension: { $in: data.map((item) => item._id) } });
+        const lessons = await Lesson.find({ user, extension: { $in: data.map((item) => item._id) } }).lean();
         const lessonByExt = {};
         lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
 
