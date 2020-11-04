@@ -18,7 +18,7 @@ module.exports = {
 
         if (fromDate) query.push({ EnterDate: { $gte: moment.utc(fromDate).toDate() } });
         if (toDate) query.push({ EnterDate: { $lte: moment.utc(toDate).toDate() } });
-        if (name) query.push({ ValName: new RegExp(name) });
+        if (name) studentQuery.push({ name: new RegExp(name) });
         if (klass && klass.length)
             studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
         if (megama && megama.length)
