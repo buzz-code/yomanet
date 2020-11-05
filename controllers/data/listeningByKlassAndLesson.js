@@ -87,7 +87,7 @@ module.exports = {
             { label: "שם התלמידה", value: "name", format: "nameWOKlass" },
             { label: "שם השיעור", value: "extension" },
             ...[...keys]
-                .filter((item) => item !== "name" && item !== "extension" && item !== "EnterId")
+                .filter((item) => item !== "name" && item !== "Folder" && item !== "EnterId")
                 .sort()
                 .map((item) => ({ value: item, label: item, format: "sec2min" })),
         ];
