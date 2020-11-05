@@ -22,35 +22,30 @@ function registerHook(hook) {
                 req.user.yemotUsername,
                 req.user.yemotPassword,
                 req.user.yemotIsPrivate,
-                "GetIVR2Dir",
+                "GetIvrTree",
                 { path: hook.yemotPath + "/" + (subPath || "") }
             );
             const loadedFiles = await YemotFile.find({ user: req.user.name }).lean();
 
-            const results = [];
-            data.dirs
-                .filter((item) => hook.dirRegex.test(item.name))
-                .forEach((item) => {
-                    results.push({
+            require("fs").writeFileSync("data.json", JSON.stringify(data.items, null, "\t"));
+            const results = data.items
+                .filter((item) => (item.exists && hook.dirRegex.test(item.name)) || hook.fileRegex.test(item.name))
+                .map((item) => {
+                    const isFile = item.fileType !== "DIR";
+                    const resItem = {
                         name: item.name,
                         fullPath: item.what,
-                        status: null,
-                        isFile: false,
-                    });
-                });
-            data.files
-                .filter((item) => hook.fileRegex.test(item.name))
-                .forEach((item) => {
-                    const loadedFile = loadedFiles.find((file) => file.fullPath === item.what);
-                    results.push({
-                        name: item.name,
-                        fullPath: item.what,
-                        size: prettyBytes(item.size),
-                        mtime: item.mtime,
-                        status: loadedFile ? loadedFile.status : "טרם נטען",
-                        isFile: true,
-                    });
-                });
+                        isFile,
+                    };
+                    if (isFile) {
+                        const loadedFile = isFile && loadedFiles.find((file) => file.fullPath === item.what);
+                        resItem.size = prettyBytes(item.size);
+                        resItem.mtime = item.mtime;
+                        resItem.status = loadedFile ? loadedFile.status : "טרם נטען";
+                    }
+                    return resItem;
+                })
+                .reverse();
 
             getTableDataResponse(res, results, 0, [], { subPath });
         } catch (err) {
