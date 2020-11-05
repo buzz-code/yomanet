@@ -1,12 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
 const prettyBytes = require("pretty-bytes");
 const { auth } = require("../../middleware/auth");
 const { getTableDataResponse } = require("../../helpers/utils");
 const { YemotFile } = require("../../models/YemotFile");
-const yemotApi = require("../../helpers/sandbox/yemot");
-const parsing = require("../../helpers/parsing");
+const { doYemotAction } = require("../../helpers/yemot");
 const processYemotFile = require("../../helpers/process-yemot-file");
 
 function registerHook(hook) {
@@ -20,8 +18,13 @@ function registerHook(hook) {
         const { subPath } = filter;
 
         try {
-            const yemot = new yemotApi(req.user.yemotUsername, req.user.yemotPassword, req.user.yemotIsPrivate);
-            const { data } = await yemot.exec("GetIVR2Dir", { path: hook.yemotPath + "/" + (subPath || "") });
+            const { data } = await doYemotAction(
+                req.user.yemotUsername,
+                req.user.yemotPassword,
+                req.user.yemotIsPrivate,
+                "GetIVR2Dir",
+                { path: hook.yemotPath + "/" + (subPath || "") }
+            );
             const loadedFiles = await YemotFile.find({ user: req.user.name }).lean();
 
             const results = [];

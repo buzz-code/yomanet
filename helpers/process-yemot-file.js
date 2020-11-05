@@ -1,49 +1,35 @@
 const { YemotPlayback } = require("../models/YemotPlayback");
 const { YemotFile } = require("../models/YemotFile");
 const { YemotConfBridge } = require("../models/YemotConfBridge");
-const axios = require("axios");
-const qs = require("querystring");
 const readline = require("readline");
 const fs = require("fs");
 const path = require("path");
 const tmp = require("tmp");
 const moment = require("moment");
+const { doYemotAction } = require("./yemot");
 
 const models = {
     LogPlaybackPlayStop: YemotPlayback,
     LogConfBridgeEnterExit: YemotConfBridge,
 };
 
-const yemotUrl = (isPrivate) =>
-    isPrivate ? "https://private.call2all.co.il/ym/api/" : "https://www.call2all.co.il/ym/api/";
+const downloadFile = async (username, password, isPrivateYemot, path) => {
+    const { data } = await doYemotAction(
+        username,
+        password,
+        isPrivateYemot,
+        "DownloadFile",
+        { path },
+        { responseType: "stream" }
+    );
 
-const loginAndGetToken = async (username, password, isPrivateYemot) => {
-    const parameters = { username, password };
-    const data = qs.stringify(parameters);
-    const res = await axios.get(yemotUrl(isPrivateYemot) + "Login?" + data);
-
-    if (res.data && res.data.responseStatus !== "OK") {
-        throw res.data.responseStatus + ": " + res.data.message;
-    }
-
-    return res.data.token;
-};
-
-const downloadFile = async (token, path, isPrivateYemot) => {
-    const parameters = { token, path };
-    const data = qs.stringify(parameters);
     const name = tmp.tmpNameSync();
-    const res = await axios.get(yemotUrl(isPrivateYemot) + "DownloadFile?" + data, {
-        maxContentLength: Infinity,
-        responseType: "stream",
-    });
-
-    res.data.pipe(fs.createWriteStream(name));
+    data.pipe(fs.createWriteStream(name));
     return new Promise((resolve, reject) => {
-        res.data.on("end", function () {
+        data.on("end", function () {
             resolve(name);
         });
-        res.data.on("err", function (err) {
+        data.on("err", function (err) {
             reject(err);
         });
     });
@@ -131,8 +117,7 @@ async function uploadFile(user, fullPath, fileType) {
         const opts = {}; //{ session };
         console.log("start processing yemot file", defaultItem);
 
-        const token = await loginAndGetToken(user.yemotUsername, user.yemotPassword, user.yemotIsPrivate);
-        const tempPath = await downloadFile(token, fullPath, user.yemotIsPrivate);
+        const tempPath = await downloadFile(user.yemotUsername, user.yemotPassword, user.yemotIsPrivate, fullPath);
         await readFile(tempPath, fileType, defaultItem, opts);
         await YemotFile.findOneAndUpdate({ user: user.name, fullPath }, { $set: { status: "נטען בהצלחה" } }, opts);
         console.log("finish processing yemot file", defaultItem);
