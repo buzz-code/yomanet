@@ -1,4 +1,4 @@
-const { YemotConfBridge } = require("../../models/YemotConfBridge");
+const { YemotConfBridge } = require("../../../models/YemotConfBridge");
 
 module.exports = {
     url: "/conf",

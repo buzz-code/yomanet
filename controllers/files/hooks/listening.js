@@ -1,4 +1,4 @@
-const { YemotPlayback } = require("../../models/YemotPlayback");
+const { YemotPlayback } = require("../../../models/YemotPlayback");
 
 module.exports = {
     url: "/listening",

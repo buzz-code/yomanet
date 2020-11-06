@@ -72,7 +72,7 @@ function registerHook(hook) {
     });
 }
 
-registerHook(require("./listening"));
-registerHook(require("./conf"));
+registerHook(require("./hooks/listening"));
+registerHook(require("./hooks/conf"));
 
 module.exports = router;
