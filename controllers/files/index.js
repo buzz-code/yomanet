@@ -27,7 +27,6 @@ function registerHook(hook) {
             );
             const loadedFiles = await YemotFile.find({ user: req.user.name }).lean();
 
-            require("fs").writeFileSync("data.json", JSON.stringify(data.items, null, "\t"));
             const results = data.items
                 .filter((item) => (item.exists && hook.dirRegex.test(item.name)) || hook.fileRegex.test(item.name))
                 .map((item) => {
