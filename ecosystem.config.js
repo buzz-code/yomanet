@@ -6,7 +6,7 @@ module.exports = {
             watch: true,
             env: {
                 NODE_ENV: "production",
-                MONGO_URI: "mongodb://127.0.0.1:27018/vocal?retryWrites=false",
+                MONGO_URI: "mongodb://USERNAME:PASSWORD@localhost:PORT/vocal?authSource=admin",
             },
             instances: "max",
             exec_mode: "cluster",
