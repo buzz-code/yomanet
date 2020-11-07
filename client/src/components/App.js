@@ -34,9 +34,9 @@ function App() {
                 <Route path="/files" component={FilesPage} />
                 <Route path="/graph" component={GraphPage} />
                 <Route exact path="/instruction" component={Auth(InstructionPage, null)} />
-                <Route exact path="/whats-new" component={Auth(WhatsNewPage, null)} />
+                {/* <Route exact path="/whats-new" component={Auth(WhatsNewPage, null)} /> */}
                 <Route exact path="/login" component={Auth(LoginPage, false)} />
-                <Route exact path="/register" component={Auth(RegisterPage, null)} />
+                <Route exact path="/register" component={Auth(RegisterPage, true, true)} />
             </Switch>
             <Footer />
         </Suspense>

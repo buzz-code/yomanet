@@ -62,10 +62,10 @@ function NavBar(props) {
             label: "הוראות שימוש",
             value: "/instruction",
         },
-        {
-            label: "מה חדש?",
-            value: "/whats-new",
-        },
+        // {
+        //     label: "מה חדש?",
+        //     value: "/whats-new",
+        // },
     ];
 
     const logoutHandler = () => {
@@ -155,7 +155,7 @@ function NavBar(props) {
                             </a>
                         </li>
                     )}
-                    {
+                    {userData && userData.isAdmin && (
                         <li
                             className={clsx("nav-item dropdown", {
                                 active: location.pathname.startsWith("/register"),
@@ -164,7 +164,7 @@ function NavBar(props) {
                                 הרשמה
                             </a>
                         </li>
-                    }
+                    )}
                 </ul>
             </div>
         </nav>
