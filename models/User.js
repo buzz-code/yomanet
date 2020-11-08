@@ -48,6 +48,9 @@ const userSchema = mongoose.Schema({
     },
 });
 
+userSchema.index({ email: 1 });
+userSchema.index({ _id: 1, token: 1 });
+
 userSchema.pre("save", function (next) {
     var user = this;
 

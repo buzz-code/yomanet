@@ -24,7 +24,7 @@ module.exports = {
             studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
         if (megama && megama.length)
             studentQuery.push({ megama: new RegExp(megama.map((item) => item.value).join("|")) });
-            if (name) studentQuery.push({ name: new RegExp(name) });
+        if (name) studentQuery.push({ name: new RegExp(name) });
 
         if (studentQuery.length > 1) {
             const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();

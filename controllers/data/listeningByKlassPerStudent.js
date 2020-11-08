@@ -28,7 +28,7 @@ module.exports = {
         }
         return { isValid: false, errorMessage: "חובה לבחור כיתה" };
     },
-    data: async function (query, page, filter) {
+    data: async function (query, page, filter, user) {
         const { fromDate, toDate } = filter;
 
         const config = {
@@ -37,7 +37,7 @@ module.exports = {
         };
         const students = await Student.find(query, null, config).lean();
 
-        const match = [{ EnterId: { $in: students.map((item) => item.identityNumber) } }];
+        const match = [{ user: user.name }, { EnterId: { $in: students.map((item) => item.identityNumber) } }];
         if (fromDate) match.push({ EnterDate: { $gte: moment.utc(fromDate).toDate() } });
         if (toDate) match.push({ EnterDate: { $lte: moment.utc(toDate).toDate() } });
 

@@ -7,6 +7,9 @@ const fileSchema = mongoose.Schema({
     user: { type: String, trim: true },
 });
 
+fileSchema.index({ user: 1 });
+fileSchema.index({ user: 1, md5: 1 });
+
 const File = mongoose.model("File", fileSchema);
 
 module.exports = { File };

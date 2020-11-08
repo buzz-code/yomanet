@@ -19,6 +19,23 @@ const yemotPlaybackSchema = mongoose.Schema({
     TimeTotal: { type: Number },
 });
 
+yemotPlaybackSchema.index({ user: 1 });
+yemotPlaybackSchema.index({ user: 1, EnterId: 1 });
+yemotPlaybackSchema.index({ user: 1, EnterDate: 1 });
+yemotPlaybackSchema.index({ user: 1, Folder: 1 });
+yemotPlaybackSchema.index({ user: 1, Folder: 1, EnterId: 1 });
+yemotPlaybackSchema.index({ user: 1, Folder: 1, EnterDate: 1 });
+yemotPlaybackSchema.index({ user: 1, EnterId: 1, EnterDate: 1 });
+yemotPlaybackSchema.index({ user: 1, Folder: 1, EnterId: 1, EnterDate: 1 });
+yemotPlaybackSchema.index({ user: 1, TimeTotal: 1 });
+yemotPlaybackSchema.index({ user: 1, EnterId: 1, TimeTotal: 1 });
+yemotPlaybackSchema.index({ user: 1, EnterDate: 1, TimeTotal: 1 });
+yemotPlaybackSchema.index({ user: 1, Folder: 1, TimeTotal: 1 });
+yemotPlaybackSchema.index({ user: 1, Folder: 1, EnterId: 1, TimeTotal: 1 });
+yemotPlaybackSchema.index({ user: 1, Folder: 1, EnterDate: 1, TimeTotal: 1 });
+yemotPlaybackSchema.index({ user: 1, EnterId: 1, EnterDate: 1, TimeTotal: 1 });
+yemotPlaybackSchema.index({ user: 1, Folder: 1, EnterId: 1, EnterDate: 1, TimeTotal: 1 });
+
 const YemotPlayback = mongoose.model("YemotPlayback", yemotPlaybackSchema);
 
 module.exports = { YemotPlayback };

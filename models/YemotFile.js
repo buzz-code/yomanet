@@ -8,6 +8,11 @@ const yemotFileSchema = mongoose.Schema({
     status: { type: String, trim: true },
 });
 
+yemotFileSchema.index({ user: 1 });
+yemotFileSchema.index({ status: 1 });
+yemotFileSchema.index({ user: 1, status: 1 });
+yemotFileSchema.index({ user: 1, fullPath: 1 });
+
 const YemotFile = mongoose.model("YemotFile", yemotFileSchema);
 
 module.exports = { YemotFile };

@@ -7,6 +7,11 @@ const lessonSchema = mongoose.Schema({
     messageName: { type: String, trim: true },
 });
 
+lessonSchema.index({ user: 1 });
+lessonSchema.index({ user: 1, extension: 1 });
+lessonSchema.index({ user: 1, messageName: 1 });
+lessonSchema.index({ user: 1, extension: 1, messageName: 1 });
+
 const Lesson = mongoose.model("Lesson", lessonSchema);
 
 module.exports = { Lesson };

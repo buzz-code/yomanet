@@ -19,6 +19,15 @@ const yemotConfBridgeSchema = mongoose.Schema({
     TimeTotal: { type: Number },
 });
 
+yemotConfBridgeSchema.index({ user: 1 });
+yemotConfBridgeSchema.index({ user: 1, EnterId: 1 });
+yemotConfBridgeSchema.index({ user: 1, EnterDate: 1 });
+yemotConfBridgeSchema.index({ user: 1, Folder: 1 });
+yemotConfBridgeSchema.index({ user: 1, Folder: 1, EnterId: 1 });
+yemotConfBridgeSchema.index({ user: 1, Folder: 1, EnterDate: 1 });
+yemotConfBridgeSchema.index({ user: 1, EnterId: 1, EnterDate: 1 });
+yemotConfBridgeSchema.index({ user: 1, Folder: 1, EnterId: 1, EnterDate: 1 });
+
 const YemotConfBridge = mongoose.model("YemotConfBridge", yemotConfBridgeSchema);
 
 module.exports = { YemotConfBridge };

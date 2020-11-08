@@ -24,6 +24,24 @@ const studentSchema = mongoose.Schema({
     },
 });
 
+studentSchema.index({ user: 1 });
+studentSchema.index({ user: 1, fullKlassName: 1 });
+studentSchema.index({ user: 1, megama: 1 });
+studentSchema.index({ user: 1, name: 1 });
+studentSchema.index({ user: 1, fullName: 1 });
+studentSchema.index({ user: 1, name: 1, fullName: 1 });
+studentSchema.index({ user: 1, name: 1, megama: 1 });
+studentSchema.index({ user: 1, fullName: 1, megama: 1 });
+studentSchema.index({ user: 1, name: 1, fullName: 1, megama: 1 });
+studentSchema.index({ user: 1, identityNumber: 1 });
+studentSchema.index({ user: 1, megama: 1, identityNumber: 1 });
+studentSchema.index({ user: 1, name: 1, identityNumber: 1 });
+studentSchema.index({ user: 1, fullName: 1, identityNumber: 1 });
+studentSchema.index({ user: 1, name: 1, fullName: 1, identityNumber: 1 });
+studentSchema.index({ user: 1, name: 1, megama: 1, identityNumber: 1 });
+studentSchema.index({ user: 1, fullName: 1, megama: 1, identityNumber: 1 });
+studentSchema.index({ user: 1, name: 1, fullName: 1, megama: 1, identityNumber: 1 });
+
 const Student = mongoose.model("Student", studentSchema);
 
 module.exports = { Student };
