@@ -10,7 +10,7 @@ export default function ItemEditPopup({ isOpen, onClose, item, headers }) {
     }, [item]);
 
     const handleClose = (isSend) => {
-        onClose(isSend, item);
+        onClose(isSend, values);
     };
 
     return (
