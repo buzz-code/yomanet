@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FETCH_DATA, GET_REPORT_DATA, SEND_DATA_BY_EMAIL, LOAD_FILE } from "./types";
+import { FETCH_DATA, GET_REPORT_DATA, SEND_DATA_BY_EMAIL, LOAD_FILE, SAVE_ITEM } from "./types";
 import { DATA_SERVER, FILES_SERVER } from "../components/Config.js";
 import { getFilterFromParams } from "./utils";
 
@@ -52,6 +52,17 @@ export function loadFile(url, fullPath) {
 
     return {
         type: LOAD_FILE,
+        payload: request,
+    };
+}
+
+export function saveItem(url, item) {
+    const request = axios
+        .post(`${DATA_SERVER}/update/${url}`, { item }, { timeout: 4 * 60 * 1000 })
+        .then((response) => response.data);
+
+    return {
+        type: SAVE_ITEM,
         payload: request,
     };
 }

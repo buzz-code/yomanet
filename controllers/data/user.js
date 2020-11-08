@@ -36,6 +36,9 @@ module.exports = {
                 return {
                     name: user.name,
                     email: user.email,
+                    yemotUsername: user.yemotUsername,
+                    yemotPassword: user.yemotPassword,
+                    yemotIsPrivate: user.yemotIsPrivate,
                     isAdmin,
                     listening,
                     conf,
@@ -52,5 +55,14 @@ module.exports = {
     },
     count: async function (query) {
         return 0;
+    },
+    save: async function (item) {
+        try {
+            await User.updateOne({ _id: item._id }, { $set: item });
+            return { isValid: true, successMessage: "נשמר בהצלחה" };
+        } catch (e) {
+            console.log("save item error", e);
+            return { isValid: false, errorMessage: "ארעה שגיאה" };
+        }
     },
 };

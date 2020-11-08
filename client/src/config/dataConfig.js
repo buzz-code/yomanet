@@ -40,5 +40,6 @@ export default [
         title: "נתוני משתמשים",
         filterFields: [],
         isAdmin: true,
+        isEditable: true,
     },
 ];
