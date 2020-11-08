@@ -34,6 +34,7 @@ module.exports = {
                 const student = await Student.countDocuments(query);
 
                 return {
+                    _id: user._id,
                     name: user.name,
                     email: user.email,
                     yemotUsername: user.yemotUsername,
