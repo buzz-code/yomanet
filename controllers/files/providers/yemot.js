@@ -1,7 +1,7 @@
 const { doYemotAction } = require("../../../helpers/yemot");
 const prettyBytes = require("pretty-bytes");
 const { YemotFile } = require("../../../models/YemotFile");
-const processYemotFile = require("../../../helpers/process-yemot-file");
+const processYemotFile = require("../process-file/process-yemot-file");
 
 module.exports = {
     listFiles: async (hook, user, subPath) => {
