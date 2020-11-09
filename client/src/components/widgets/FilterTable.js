@@ -147,6 +147,23 @@ export default function FilterTable({
                 </div>
             </div>
         ),
+        megama: (
+            <div className="form-group row">
+                <label htmlFor="megama" className="col-sm-2">
+                    מגמות
+                </label>
+                <div className="col">
+                    <TypeAhead
+                        multiple={false}
+                        id="megama"
+                        placeholder={"בחר מגמה..."}
+                        value={megama}
+                        setValue={setMegama}
+                        getOptions={getMegamaList}
+                    />
+                </div>
+            </div>
+        ),
         lesson: (
             <div className="form-group row">
                 <label htmlFor="lesson" className="col-sm-2">
