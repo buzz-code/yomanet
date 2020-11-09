@@ -59,7 +59,10 @@ module.exports = {
     },
     save: async function (item) {
         try {
-            await User.updateOne({ _id: item._id }, { $set: item });
+            const user = await User.findById(item._id);
+            Object.entries(item).forEach(([key, value]) => value && (user[key] = value));
+            console.log(user);
+            await user.save();
             return { isValid: true, successMessage: "נשמר בהצלחה" };
         } catch (e) {
             console.log("save item error", e);
