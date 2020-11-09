@@ -46,6 +46,7 @@ const userSchema = mongoose.Schema({
     provider: {
         type: String,
     },
+    isPaid: { type: Boolean, default: false },
 });
 
 userSchema.index({ email: 1 });

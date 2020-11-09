@@ -17,6 +17,7 @@ module.exports = {
         { value: "yemotUsername", label: "שם משתמש לימות המשיח", editable: true, hidden: true },
         { value: "yemotPassword", label: "סיסמא לימות המשיח", editable: true, hidden: true },
         { value: "yemotIsPrivate", label: "חיבור פרטי לימות", editable: true, hidden: true },
+        { value: "isPaid", label: "האם שילם?", editable: true, hidden: true },
         { value: "isAdmin", label: "מנהל" },
         { value: "listening", label: "האזנה" },
         { value: "conf", label: "ועידה" },
