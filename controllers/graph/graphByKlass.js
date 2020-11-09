@@ -1,3 +1,5 @@
+const moment = require("moment");
+
 module.exports = {
     url: "/graphByKlass",
     title: function (filter) {
