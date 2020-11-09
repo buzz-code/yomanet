@@ -10,7 +10,8 @@ module.exports = {
         const { klass, lesson, fromDate, toDate } = filter;
         let title = "תעודות לכיתה ";
         title += klass.map((item) => item.label).join("");
-        // if (lesson && lesson.length) title += " לשיעורים " + lesson.map((item) => item.label).join(",");
+        if (lesson && lesson.length && lesson.length <= 5)
+            title += " לשיעורים " + lesson.map((item) => item.label).join(",");
         if (fromDate) title += " מתאריך " + moment.utc(fromDate).format("DD-MM-YYYY");
         if (toDate) title += " עד תאריך " + moment.utc(toDate).format("DD-MM-YYYY");
         return title;
