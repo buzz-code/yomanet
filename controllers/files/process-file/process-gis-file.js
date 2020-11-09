@@ -38,20 +38,45 @@ const downloadFile = async (username, password, isPrivateYemot, path) => {
 };
 
 const readFile = async (path, fileType, defaultItem, options) => {
-    const wb = XLSX.read(path, { type: "file", raw: true });
-    const ws = wb.Sheets[wb.SheetNames[0]];
-    const lines = XLSX.utils.sheet_to_json(ws);
+    const rl = readline.createInterface({
+        input: fs.createReadStream(path),
+        crlfDelay: Infinity,
+    });
 
-    const arr = lines.map((item) => getItemFromLine(item, defaultItem));
+    const arr = [];
+    let index = 0;
+    for await (const line of rl) {
+        arr.push(getItemFromLine(line, defaultItem));
+        index++;
 
-    await saveAndClear(arr, fileType, options, defaultItem, arr.length);
+        if (arr.length === 3000) {
+            await saveAndClear(arr, fileType, options, defaultItem, index);
+        }
+    }
+    await saveAndClear(arr, fileType, options, defaultItem, index);
 };
 
-const getItemFromLine = (
-    { caller_id_number, caller_id_name, join_time, leave_time, length, date, conference_session_uuid, conference_uuid },
-    { user, fileName }
-) => {
-    if (!caller_id_number || !caller_id_name) {
+const getItemFromLine = (line, defaultItem) => {
+    const item = Object.values(defaultItem);
+    line.split(",").forEach((value, index) => {
+        item.push(value.replace(/"/g, ""));
+    });
+    return mapItem(item);
+};
+
+const mapItem = ([
+    user,
+    fileName,
+    caller_id_number,
+    caller_id_name,
+    join_time,
+    leave_time,
+    length,
+    date,
+    conference_session_uuid,
+    conference_uuid,
+]) => {
+    if (!caller_id_number || !caller_id_name || date === "date") {
         return null;
     }
 
