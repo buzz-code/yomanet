@@ -154,7 +154,7 @@ export default function FilterTable({
                 </label>
                 <div className="col">
                     <TypeAhead
-                        multiple={false}
+                        multiple={true}
                         id="megama"
                         placeholder={"בחר מגמה..."}
                         value={megama}
