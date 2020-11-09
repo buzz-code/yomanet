@@ -8,11 +8,13 @@ module.exports = {
         return "נתוני שיעורים";
     },
     query: async function (body, user) {
-        const { extension, messageName } = body;
+        const { extension, messageName, klass, megama } = body;
 
         const query = [{ user: user.name }];
         if (extension) query.push({ extension: new RegExp(extension) });
         if (messageName) query.push({ messageName: new RegExp(messageName) });
+        if (klass && klass.length) query.push({ megama: new RegExp(klass.map((item) => item.label).join("|")) });
+        if (megama && megama.length) query.push({ megama: new RegExp(megama.map((item) => item.value).join("|")) });
 
         return { $and: query };
     },

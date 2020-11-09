@@ -14,7 +14,7 @@ export default [
     {
         url: "lesson",
         title: "נתוני שיעורים",
-        filterFields: ["extension", "messageName"],
+        filterFields: ["extension", "messageName", "klass", "megama"],
         isAdmin: false,
     },
     {

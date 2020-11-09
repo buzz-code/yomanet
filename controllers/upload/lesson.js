@@ -7,6 +7,7 @@ module.exports = {
         const parsed = parsing.parseLesson(buffer);
         parsed.forEach((item) => {
             item.user = user.name;
+            item.megama = item.megama ? item.megama.split(",") : [];
         });
         await Lesson.deleteMany({ user: user.name });
         await Lesson.insertMany(parsed);
