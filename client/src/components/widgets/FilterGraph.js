@@ -100,7 +100,7 @@ export default function FilterGraph({ getData, reportData, params, filterFields,
         klass: (
             <div className="form-group row">
                 <label htmlFor="klass" className="col-sm-2">
-                    כיתה
+                    כיתות
                 </label>
                 <div className="col">
                     <TypeAhead
@@ -117,7 +117,7 @@ export default function FilterGraph({ getData, reportData, params, filterFields,
         lesson: (
             <div className="form-group row">
                 <label htmlFor="lesson" className="col-sm-2">
-                    שיעור
+                    שיעורים
                 </label>
                 <div className="col">
                     <TypeAhead
