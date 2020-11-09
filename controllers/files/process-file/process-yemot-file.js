@@ -1,12 +1,12 @@
-const { YemotPlayback } = require("../models/YemotPlayback");
-const { YemotFile } = require("../models/YemotFile");
-const { YemotConfBridge } = require("../models/YemotConfBridge");
+const { YemotPlayback } = require("../../../models/YemotPlayback");
+const { YemotFile } = require("../../../models/YemotFile");
+const { YemotConfBridge } = require("../../../models/YemotConfBridge");
 const readline = require("readline");
 const fs = require("fs");
 const path = require("path");
 const tmp = require("tmp");
 const moment = require("moment");
-const { doYemotAction } = require("./yemot");
+const { doYemotAction } = require("../../../helpers/yemot");
 
 const models = {
     LogPlaybackPlayStop: YemotPlayback,
