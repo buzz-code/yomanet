@@ -9,6 +9,10 @@ module.exports = {
             return { error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור לימות המשיח" };
         }
 
+        if (!user.isPaid) {
+            return { error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שעדיין לא הוסדר תשלום" };
+        }
+
         try {
             const { data } = await doYemotAction(
                 user.yemotUsername,
