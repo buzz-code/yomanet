@@ -5,6 +5,7 @@ const { getTableDataResponse } = require("../../helpers/utils");
 
 const providers = {
     ["yemot"]: require("./providers/yemot"),
+    ["gis"]: require("./providers/gis"),
     [null]: require("./providers/null"),
     [undefined]: require("./providers/null"),
 };
