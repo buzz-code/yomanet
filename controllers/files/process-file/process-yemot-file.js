@@ -88,6 +88,12 @@ function getValue(key, value, item) {
             } else {
                 return (item["ExitTime"] - item["EnterTime"]) / 1000;
             }
+        case "FileLength":
+            if (value) {
+                return moment.utc(value, "H:m:s").diff(moment.utc().startOf("day"), "seconds");
+            } else {
+                return null;
+            }
         default:
             return value;
     }

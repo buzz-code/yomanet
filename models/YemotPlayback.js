@@ -17,6 +17,7 @@ const yemotPlaybackSchema = mongoose.Schema({
     PositionStop: { type: Number },
     ExitTime: { type: Date },
     TimeTotal: { type: Number },
+    FileLength: { type: Number },
 });
 
 yemotPlaybackSchema.index({ user: 1 });

@@ -42,6 +42,7 @@ module.exports = {
         { value: "PositionPlay", label: "נקודת התחלה" },
         { value: "PositionStop", label: "נקודת יציאה" },
         { value: "TimeTotal", label: "סה''כ שניות", format: "sec2min" },
+        { value: "FileLength", label: "אורך השיעור", format: "sec2min" },
     ],
     yemotConfBridgeHeaders: [
         { value: "Folder", label: "שלוחה" },
