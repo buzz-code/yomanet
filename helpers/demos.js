@@ -597,4 +597,15 @@
 
 // main().then(console.log).catch(console.log);
 
+// const bcrypt = require("bcrypt");
+// const saltRounds = 10;
 
+// bcrypt.genSalt(saltRounds, function (err, salt) {
+//     if (err) return next(err);
+
+//     bcrypt.hash('035584675', salt, function (err, hash) {
+//         if (err) return next(err);
+//        console.log(hash)
+//         next();
+//     });
+// });
