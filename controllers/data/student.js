@@ -1,7 +1,7 @@
 const constants = require("../../helpers/constants");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
-const queryUtil = require("../../helpers/queryUtil");
+const queryUtil = require("../../helpers/dataUtils/queryUtil");
 
 module.exports = {
     url: "/student",

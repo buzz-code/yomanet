@@ -1,7 +1,6 @@
 const { getDateList } = require("../../../helpers/utils");
 const { YemotPlayback } = require("../../../models/YemotPlayback");
-const { Student } = require("../../../models/Student");
-const queryUtil = require("../../../helpers/queryUtil");
+const queryUtil = require("../../../helpers/dataUtils/queryUtil");
 
 module.exports = {
     type: "line",

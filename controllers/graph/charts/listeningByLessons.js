@@ -1,8 +1,7 @@
 const { getDateList } = require("../../../helpers/utils");
 const { YemotPlayback } = require("../../../models/YemotPlayback");
 const { Lesson } = require("../../../models/Lesson");
-const { Student } = require("../../../models/Student");
-const queryUtil = require("../../../helpers/queryUtil");
+const queryUtil = require("../../../helpers/dataUtils/queryUtil");
 
 module.exports = {
     type: "bar",

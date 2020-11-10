@@ -1,8 +1,8 @@
 const constants = require("../../helpers/constants");
 const { YemotPlayback } = require("../../models/YemotPlayback");
 const { getPagingConfig } = require("../../helpers/utils");
-const queryUtil = require("../../helpers/queryUtil");
-const { setExtensionNames } = require("./dataUtils/utils");
+const queryUtil = require("../../helpers/dataUtils/queryUtil");
+const { setExtensionNames } = require("../../helpers/dataUtils/utils");
 
 module.exports = {
     url: "/listening",

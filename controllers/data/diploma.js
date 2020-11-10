@@ -1,9 +1,8 @@
 const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Student } = require("../../models/Student");
-const titleUtil = require("../../helpers/titleUtil");
-const queryUtil = require("../../helpers/queryUtil");
-const { getLessonByExt, getExtensions, getDataById } = require("./dataUtils/utils");
-const { getQueryWithStudentIds } = require("../../helpers/queryUtil");
+const titleUtil = require("../../helpers/dataUtils/titleUtil");
+const queryUtil = require("../../helpers/dataUtils/queryUtil");
+const { getLessonByExt, getExtensions, getDataById } = require("../../helpers/dataUtils/utils");
 
 module.exports = {
     url: "/diploma",
@@ -26,7 +25,7 @@ module.exports = {
         return { isValid: false, errorMessage: "חובה לבחור כיתה" };
     },
     data: async function (queries, page) {
-        const { query, students } = await getQueryWithStudentIds(queries, page);
+        const { query, students } = await queryUtil.getQueryWithStudentIds(queries, page);
 
         const aggregate = [
             { $match: { $and: query } },

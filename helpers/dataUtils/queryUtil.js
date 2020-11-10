@@ -1,6 +1,6 @@
 const moment = require("moment");
-const { Student } = require("../models/Student");
-const { getPagingConfig } = require("./utils");
+const { Student } = require("../../models/Student");
+const { getPagingConfig } = require("../utils");
 
 function getQuery(user, filter, ...queryParts) {
     const query = [{ user: user.name }];

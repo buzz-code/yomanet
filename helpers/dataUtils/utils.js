@@ -1,4 +1,4 @@
-const { Lesson } = require("../../../models/Lesson");
+const { Lesson } = require("../../models/Lesson");
 
 function getExtensions(data) {
     const extensions = new Set();

@@ -1,5 +1,5 @@
 const moment = require("moment");
-const titleUtil = require("../../helpers/titleUtil");
+const titleUtil = require("../../helpers/dataUtils/titleUtil");
 
 module.exports = {
     url: "/",

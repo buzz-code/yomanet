@@ -2,8 +2,8 @@ const moment = require("moment");
 const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
-const aggregateByKlassPerStudent = require("./dataUtils/aggregateByKlassPerStudent");
-const titleUtil = require("../../helpers/titleUtil");
+const aggregateByKlassPerStudent = require("../../helpers/dataUtils/aggregateByKlassPerStudent");
+const titleUtil = require("../../helpers/dataUtils/titleUtil");
 
 module.exports = {
     url: "/listeningByKlassPerStudent",
