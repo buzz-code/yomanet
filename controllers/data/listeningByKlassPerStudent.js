@@ -2,6 +2,7 @@ const moment = require("moment");
 const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
+const aggregateByKlassPerStudent = require("./dataUtils/aggregateByKlassPerStudent");
 
 module.exports = {
     url: "/listeningByKlassPerStudent",
@@ -41,17 +42,7 @@ module.exports = {
         if (fromDate) match.push({ EnterDate: { $gte: moment.utc(fromDate).toDate() } });
         if (toDate) match.push({ EnterDate: { $lte: moment.utc(toDate).toDate() } });
 
-        const aggregate = [
-            { $match: { $and: match } },
-            {
-                $group: {
-                    _id: { EnterId: "$EnterId" },
-                    TimeTotal: { $sum: "$TimeTotal" },
-                },
-            },
-            { $addFields: { EnterId: "$_id.EnterId" } },
-        ];
-        const results = await YemotPlayback.aggregate(aggregate);
+        const results = await YemotPlayback.aggregate(aggregateByKlassPerStudent(match));
 
         return students
             .map((student) => results.find((item) => student.identityNumber === item.EnterId))

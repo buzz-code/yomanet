@@ -4,7 +4,7 @@ const { YemotConfBridge } = require("../../models/YemotConfBridge");
 const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
-const aggregateByKlass = require("./dataUtils/aggregateByKlass");
+const aggregateByKlassOrMegama = require("./dataUtils/aggregateByKlassOrMegama");
 
 module.exports = {
     url: "/confByKlass",
@@ -45,7 +45,7 @@ module.exports = {
         }).lean();
         query.push({ EnterId: { $in: students.map((item) => item.identityNumber) } });
 
-        const confs = await YemotConfBridge.aggregate(aggregateByKlass(query));
+        const confs = await YemotConfBridge.aggregate(aggregateByKlassOrMegama(query));
         const confById = {};
         confs.map((item) => (confById[item.EnterId] = item));
 

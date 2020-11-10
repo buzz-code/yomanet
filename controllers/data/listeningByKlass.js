@@ -4,7 +4,7 @@ const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
-const aggregateByKlass = require("./dataUtils/aggregateByKlass");
+const aggregateByKlassOrMegama = require("./dataUtils/aggregateByKlassOrMegama");
 
 module.exports = {
     url: "/listeningByKlass",
@@ -45,7 +45,7 @@ module.exports = {
         }).lean();
         query.push({ EnterId: { $in: students.map((item) => item.identityNumber) } });
 
-        const listenings = await YemotPlayback.aggregate(aggregateByKlass(query));
+        const listenings = await YemotPlayback.aggregate(aggregateByKlassOrMegama(query));
         const listeningById = {};
         listenings.map((item) => (listeningById[item.EnterId] = item));
 

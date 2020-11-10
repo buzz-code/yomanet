@@ -4,6 +4,7 @@ const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
+const aggregateByKlassAndLesson = require("./dataUtils/aggregateByKlassAndLesson");
 
 module.exports = {
     url: "/listeningByKlassAndLesson",
@@ -46,26 +47,7 @@ module.exports = {
         }).lean();
         query.push({ EnterId: { $in: students.map((item) => item.identityNumber) } });
 
-        const aggregate = [
-            { $match: { $and: query } },
-            {
-                $group: {
-                    _id: { EnterId: "$EnterId", Folder: "$Folder", Current: "$Current" },
-                    TimeTotal: { $sum: "$TimeTotal" },
-                },
-            },
-            {
-                $group: {
-                    _id: { EnterId: "$_id.EnterId", Folder: "$_id.Folder" },
-                    items: { $addToSet: { Current: "$_id.Current", TimeTotal: { $sum: "$TimeTotal" } } },
-                },
-            },
-            { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.Current", "$items.TimeTotal"] } } } } },
-            { $addFields: { "tmp.EnterId": "$_id.EnterId", "tmp.Folder": "$_id.Folder" } },
-            { $replaceRoot: { newRoot: "$tmp" } },
-        ];
-
-        const listenings = await YemotPlayback.aggregate(aggregate);
+        const listenings = await YemotPlayback.aggregate(aggregateByKlassAndLesson(query));
         const listeningById = {};
         listenings.map((item) => (listeningById[item.EnterId] = item));
 
