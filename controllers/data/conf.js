@@ -11,16 +11,9 @@ module.exports = {
     title: function () {
         return "נתוני ועידה";
     },
-    query: async function (body, user) {
-        const { fromDate, toDate, klass, megama, name } = body;
-
-        const query = queryUtil.getQuery(user);
-        const studentQuery = queryUtil.getQuery(user);
-
-        queryUtil.dates(filter, query);
-        queryUtil.name(filter, studentQuery);
-        queryUtil.klass(filter, studentQuery);
-        queryUtil.megama(filter, studentQuery);
+    query: async function (filter, user) {
+        const query = queryUtil.getQuery(user, filter, queryUtil.dates);
+        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.name, queryUtil.klass, queryUtil.megama);
 
         if (studentQuery.length > 1) {
             const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();

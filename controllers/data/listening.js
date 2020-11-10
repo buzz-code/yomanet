@@ -11,18 +11,9 @@ module.exports = {
     title: function () {
         return "נתוני האזנה";
     },
-    query: async function (body, user) {
-        const { fromDate, toDate, klass, lesson, megama, name, fromSeconds, toSeconds } = body;
-
-        const query = queryUtil.getQuery(user);
-        const studentQuery = queryUtil.getQuery(user);
-        queryUtil.dates(filter, query);
-        if (fromSeconds) query.push({ TimeTotal: { $gte: Number(fromSeconds) } });
-        if (toSeconds) query.push({ TimeTotal: { ...query.seconds, $lte: Number(toSeconds) } });
-        queryUtil.lesson(filter, query);
-        queryUtil.klass(filter, studentQuery);
-        queryUtil.megama(filter, studentQuery);
-        queryUtil.name(filter, studentQuery);
+    query: async function (filter, user) {
+        const query = queryUtil.getQuery(user, filter, queryUtil.dates, queryUtil.seconds, queryUtil.lesson);
+        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.megama, queryUtil.name);
 
         if (studentQuery.length > 1) {
             const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();

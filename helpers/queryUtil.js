@@ -1,5 +1,9 @@
-function getQuery(user) {
-    return [{ user: user.name }];
+const moment = require("moment");
+
+function getQuery(user, filter, ...queryParts) {
+    const query = [{ user: user.name }];
+    queryParts.forEach((item) => item(filter, query));
+    return query;
 }
 
 function klass({ klass }, query) {
@@ -24,4 +28,9 @@ function dates({ fromDate, toDate }, query) {
     if (toDate) query.push({ EnterDate: { $lte: moment.utc(toDate).toDate() } });
 }
 
-module.exports = { getQuery, klass, megama, lesson, name, dates };
+function seconds({ fromSeconds, toSeconds }, query) {
+    if (fromSeconds) query.push({ TimeTotal: { $gte: Number(fromSeconds) } });
+    if (toSeconds) query.push({ TimeTotal: { ...query.seconds, $lte: Number(toSeconds) } });
+}
+
+module.exports = { getQuery, klass, megama, lesson, name, seconds, dates };

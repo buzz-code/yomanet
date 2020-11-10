@@ -13,14 +13,9 @@ module.exports = {
     title: function (filter) {
         return titleUtil.getTitle("דוח האזנה", filter, titleUtil.singleKlass, titleUtil.singleLesson, titleUtil.dates);
     },
-    query: async function (body, user) {
-        const { klass, lesson, fromDate, toDate } = body;
-
-        const query = queryUtil.getQuery(user);
-        const studentQuery = queryUtil.getQuery(user);
-        queryUtil.lesson(filter, query);
-        queryUtil.klass(filter, studentQuery);
-        queryUtil.dates(filter, query);
+    query: async function (filter, user) {
+        const query = queryUtil.getQuery(user, filter, queryUtil.lesson, queryUtil.dates);
+        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass);
 
         return { query, studentQuery };
     },

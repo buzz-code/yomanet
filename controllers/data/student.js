@@ -2,19 +2,17 @@ const constants = require("../../helpers/constants");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
 const queryUtil = require("../../helpers/queryUtil");
-const { file } = require("tmp");
 
 module.exports = {
     url: "/student",
     title: function () {
         return "נתוני תלמידים";
     },
-    query: async function (body, user) {
-        const { identityNumber, name, klass, megama } = body;
+    query: async function (filter, user) {
+        const { identityNumber, name, klass, megama } = filter;
 
-        const query = queryUtil.getQuery(user);
+        const query = queryUtil.getQuery(user, filter, queryUtil.name);
         if (identityNumber) query.push({ identityNumber: new RegExp(identityNumber) });
-        queryUtil.name(file, query);
         if (klass && klass.length)
             query.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
         if (megama && megama.length) query.push({ megama: new RegExp(megama.map((item) => item.value).join("|")) });
