@@ -4,6 +4,8 @@ const titleUtil = require("../../helpers/dataUtils/titleUtil");
 const queryUtil = require("../../helpers/dataUtils/queryUtil");
 const { getDataById } = require("../../helpers/dataUtils/utils");
 const { getAggregateByKlassAndLesson } = require("../../helpers/dataUtils/aggregateUtil");
+const { LessonInstance } = require("../../models/LessonInstance");
+const { getSec2Min } = require("../../helpers/format");
 
 module.exports = {
     url: "/listeningByKlassAndLesson",
@@ -36,7 +38,7 @@ module.exports = {
             ...dataById[item.identityNumber],
         }));
     },
-    headers: async function (data, query, body) {
+    headers: async function (data, query, filter, user) {
         const keys = new Set();
         data.forEach((item) => {
             for (const key in item) {
@@ -44,13 +46,28 @@ module.exports = {
             }
         });
 
+        const fileLengths = await LessonInstance.find(
+            {
+                user: user.name,
+                Folder: filter.lesson[0].value,
+                Current: { $in: [...keys] },
+            },
+            ["Current", "FileLength"]
+        ).lean();
+        const fileLengthByKey = {};
+        fileLengths.forEach((item) => (fileLengthByKey[item.Current] = item.FileLength));
+
         const headers = [
             { label: "שם התלמידה", value: "name", format: "nameWOKlass" },
             { label: "שם השיעור", value: "extension" },
             ...[...keys]
-                .filter((item) => item !== "name" && item !== "Folder" && item !== "EnterId")
+                .filter((item) => item !== "name" && item !== "extension")
                 .sort()
-                .map((item) => ({ value: item, label: item, format: "sec2min" })),
+                .map((item) => ({
+                    value: item,
+                    label: `${item} - ${getSec2Min(fileLengthByKey[item])}`,
+                    format: "sec2min",
+                })),
         ];
 
         return headers;
