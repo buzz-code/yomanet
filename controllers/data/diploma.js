@@ -3,7 +3,7 @@ const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
-const titleUtil = require("./dataUtils/titleUtil");
+const titleUtil = require("../../helpers/titleUtil");
 
 module.exports = {
     url: "/diploma",

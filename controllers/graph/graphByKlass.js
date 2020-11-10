@@ -1,14 +1,10 @@
 const moment = require("moment");
+const titleUtil = require("../../helpers/titleUtil");
 
 module.exports = {
     url: "/graphByKlass",
     title: function (filter) {
-        const { klass, fromDate, toDate } = filter;
-        let title = "גרפים לכיתה ";
-        title += klass.map((item) => item.label).join("");
-        if (fromDate) title += " מתאריך " + moment.utc(fromDate).format("DD-MM-YYYY");
-        if (toDate) title += " עד תאריך " + moment.utc(toDate).format("DD-MM-YYYY");
-        return title;
+        return titleUtil.getTitle("גרפים כללים", filter, titleUtil.singleKlass, titleUtil.dates);
     },
     validate: function (filter) {
         const { klass } = filter;

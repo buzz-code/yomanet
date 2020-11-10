@@ -3,7 +3,7 @@ const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
 const aggregateByKlassPerStudent = require("./dataUtils/aggregateByKlassPerStudent");
-const titleUtil = require("./dataUtils/titleUtil");
+const titleUtil = require("../../helpers/titleUtil");
 
 module.exports = {
     url: "/listeningByKlassPerStudent",
