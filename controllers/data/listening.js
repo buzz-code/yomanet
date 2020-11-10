@@ -15,10 +15,7 @@ module.exports = {
         const query = queryUtil.getQuery(user, filter, queryUtil.dates, queryUtil.seconds, queryUtil.lesson);
         const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.megama, queryUtil.name);
 
-        if (studentQuery.length > 1) {
-            const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();
-            query.push({ EnterId: { $in: studentIds.map((item) => item.identityNumber) } });
-        }
+        await queryUtil.filterStudents(query, studentQuery);
 
         return { $and: query };
     },

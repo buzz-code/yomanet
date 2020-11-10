@@ -33,4 +33,11 @@ function seconds({ fromSeconds, toSeconds }, query) {
     if (toSeconds) query.push({ TimeTotal: { ...query.seconds, $lte: Number(toSeconds) } });
 }
 
-module.exports = { getQuery, klass, megama, lesson, name, seconds, dates };
+async function filterStudents(query, studentQuery) {
+    if (studentQuery.length > 1) {
+        const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();
+        query.push({ EnterId: { $in: studentIds.map((item) => item.identityNumber) } });
+    }
+}
+
+module.exports = { getQuery, klass, megama, lesson, name, seconds, dates, filterStudents };

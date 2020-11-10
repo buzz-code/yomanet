@@ -24,10 +24,7 @@ module.exports = {
         }
         queryUtil.klass(filter, studentQuery);
 
-        if (studentQuery.length > 1) {
-            const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();
-            query.push({ EnterId: { $in: studentIds.map((item) => item.identityNumber) } });
-        }
+        await queryUtil.filterStudents(query, studentQuery);
 
         const days = getDateList(fromDate, toDate);
         if (days.length === 0) {
