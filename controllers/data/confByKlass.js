@@ -4,6 +4,7 @@ const { YemotConfBridge } = require("../../models/YemotConfBridge");
 const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
+const aggregateByKlass = require("./dataUtils/aggregateByKlass");
 
 module.exports = {
     url: "/confByKlass",
@@ -44,26 +45,7 @@ module.exports = {
         }).lean();
         query.push({ EnterId: { $in: students.map((item) => item.identityNumber) } });
 
-        const aggregate = [
-            { $match: { $and: query } },
-            {
-                $group: {
-                    _id: { EnterId: "$EnterId", Folder: "$Folder" },
-                    TimeTotal: { $sum: "$TimeTotal" },
-                },
-            },
-            {
-                $group: {
-                    _id: { EnterId: "$_id.EnterId" },
-                    items: { $addToSet: { Folder: "$_id.Folder", TimeTotal: { $sum: "$TimeTotal" } } },
-                },
-            },
-            { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.Folder", "$items.TimeTotal"] } } } } },
-            { $addFields: { "tmp.EnterId": "$_id.EnterId" } },
-            { $replaceRoot: { newRoot: "$tmp" } },
-        ];
-
-        const confs = await YemotConfBridge.aggregate(aggregate);
+        const confs = await YemotConfBridge.aggregate(aggregateByKlass(query));
         const confById = {};
         confs.map((item) => (confById[item.EnterId] = item));
 
