@@ -5,18 +5,12 @@ const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
 const aggregateByKlassOrMegama = require("./dataUtils/aggregateByKlassOrMegama");
+const titleUtil = require("./dataUtils/titleUtil");
 
 module.exports = {
     url: "/confByKlass",
     title: function (filter) {
-        const { klass, lesson, fromDate, toDate } = filter;
-        let title = "דוח ועידה לכיתה ";
-        title += klass.map((item) => item.label).join("");
-        if (lesson && lesson.length && lesson.length <= 5)
-            title += " לשיעורים " + lesson.map((item) => item.label).join(",");
-        if (fromDate) title += " מתאריך " + moment.utc(fromDate).format("DD-MM-YYYY");
-        if (toDate) title += " עד תאריך " + moment.utc(toDate).format("DD-MM-YYYY");
-        return title;
+        return titleUtil.getTitle("דוח ועידה", filter, titleUtil.singleKlass, titleUtil.lesson, titleUtil.dates);
     },
     query: async function (body, user) {
         const { klass, lesson, fromDate, toDate } = body;

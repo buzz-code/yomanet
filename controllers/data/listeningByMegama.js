@@ -5,18 +5,12 @@ const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
 const aggregateByKlassOrMegama = require("./dataUtils/aggregateByKlassOrMegama");
+const titleUtil = require("./dataUtils/titleUtil");
 
 module.exports = {
     url: "/listeningByMegama",
     title: function (filter) {
-        const { megama, lesson, fromDate, toDate } = filter;
-        let title = "דוח האזנה למגמה ";
-        title += megama.map((item) => item.label).join("");
-        if (lesson && lesson.length && lesson.length <= 5)
-            title += " לשיעורים " + lesson.map((item) => item.label).join(",");
-        if (fromDate) title += " מתאריך " + moment.utc(fromDate).format("DD-MM-YYYY");
-        if (toDate) title += " עד תאריך " + moment.utc(toDate).format("DD-MM-YYYY");
-        return title;
+        return titleUtil.getTitle("דוח האזנה", filter, titleUtil.singleMegama, titleUtil.lesson, titleUtil.dates);
     },
     query: async function (body, user) {
         const { megama, lesson, fromDate, toDate } = body;

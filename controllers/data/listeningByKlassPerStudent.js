@@ -3,16 +3,12 @@ const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
 const aggregateByKlassPerStudent = require("./dataUtils/aggregateByKlassPerStudent");
+const titleUtil = require("./dataUtils/titleUtil");
 
 module.exports = {
     url: "/listeningByKlassPerStudent",
     title: function (filter) {
-        const { klass, fromDate, toDate } = filter;
-        let title = "דוח האזנה כללי לכיתה ";
-        title += klass.map((item) => item.label).join("");
-        if (fromDate) title += " מתאריך " + moment.utc(fromDate).format("DD-MM-YYYY");
-        if (toDate) title += " עד תאריך " + moment.utc(toDate).format("DD-MM-YYYY");
-        return title;
+        return titleUtil.getTitle("דוח האזנה כללי", filter, titleUtil.singleKlass, titleUtil.dates);
     },
     query: async function (body, user) {
         const { klass } = body;
