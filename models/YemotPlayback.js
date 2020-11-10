@@ -36,6 +36,7 @@ yemotPlaybackSchema.index({ user: 1, Folder: 1, EnterId: 1, TimeTotal: 1 });
 yemotPlaybackSchema.index({ user: 1, Folder: 1, EnterDate: 1, TimeTotal: 1 });
 yemotPlaybackSchema.index({ user: 1, EnterId: 1, EnterDate: 1, TimeTotal: 1 });
 yemotPlaybackSchema.index({ user: 1, Folder: 1, EnterId: 1, EnterDate: 1, TimeTotal: 1 });
+yemotPlaybackSchema.index({ user: 1, FileLength: 1 });
 
 const YemotPlayback = mongoose.model("YemotPlayback", yemotPlaybackSchema);
 
