@@ -3,6 +3,7 @@ const { Student } = require("../../models/Student");
 const titleUtil = require("../../helpers/dataUtils/titleUtil");
 const queryUtil = require("../../helpers/dataUtils/queryUtil");
 const { getLessonByExt, getExtensions, getDataById } = require("../../helpers/dataUtils/utils");
+const { getAggregateForDiploma } = require("../../helpers/dataUtils/aggregateUtil");
 
 module.exports = {
     url: "/diploma",
@@ -27,44 +28,7 @@ module.exports = {
     data: async function (queries, page) {
         const { query, students } = await queryUtil.getQueryWithStudentIds(queries, page);
 
-        const aggregate = [
-            { $match: { $and: query } },
-            {
-                $group: {
-                    _id: { EnterId: "$EnterId", Folder: "$Folder", Current: "$Current" },
-                    TimeTotal: { $sum: "$TimeTotal" },
-                },
-            },
-            {
-                $group: {
-                    _id: {
-                        EnterId: "$_id.EnterId",
-                        Folder: "$_id.Folder",
-                    },
-                    TimeTotal: { $sum: "$TimeTotal" },
-                    Count: { $sum: 1 },
-                },
-            },
-            {
-                $group: {
-                    _id: { EnterId: "$_id.EnterId" },
-                    items: {
-                        $addToSet: {
-                            Folder: "$_id.Folder",
-                            Stats: {
-                                TimeTotal: "$TimeTotal",
-                                Count: "$Count",
-                            },
-                        },
-                    },
-                },
-            },
-            { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.Folder", "$items.Stats"] } } } } },
-            { $addFields: { "tmp.EnterId": "$_id.EnterId" } },
-            { $replaceRoot: { newRoot: "$tmp" } },
-        ];
-
-        const dataById = await getDataById(YemotPlayback, aggregate);
+        const dataById = await getDataById(YemotPlayback, getAggregateForDiploma(query));
 
         return students.map((item) => ({
             name: item.name,

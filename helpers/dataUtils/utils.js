@@ -40,4 +40,4 @@ async function getDataById(model, aggregate) {
     return dataById;
 }
 
-module.exports = { getLessonByExt, getExtensionHeaders, setExtensionNames, getDataById };
+module.exports = { getExtensions, getLessonByExt, getExtensionHeaders, setExtensionNames, getDataById };

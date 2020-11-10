@@ -1,9 +1,9 @@
 const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Student } = require("../../models/Student");
-const aggregateByKlassAndLesson = require("../../helpers/dataUtils/aggregateByKlassAndLesson");
 const titleUtil = require("../../helpers/dataUtils/titleUtil");
 const queryUtil = require("../../helpers/dataUtils/queryUtil");
 const { getDataById } = require("../../helpers/dataUtils/utils");
+const { getAggregateByKlassAndLesson } = require("../../helpers/dataUtils/aggregateUtil");
 
 module.exports = {
     url: "/listeningByKlassAndLesson",
@@ -28,7 +28,7 @@ module.exports = {
     data: async function (queries, page, filter) {
         const { query, students } = await queryUtil.getQueryWithStudentIds(queries, page);
 
-        const dataById = await getDataById(YemotPlayback, aggregateByKlassAndLesson(query));
+        const dataById = await getDataById(YemotPlayback, getAggregateByKlassAndLesson(query));
 
         return students.map((item) => ({
             name: item.name,

@@ -1,9 +1,9 @@
 const { YemotConfBridge } = require("../../models/YemotConfBridge");
 const { Student } = require("../../models/Student");
-const aggregateByKlassOrMegama = require("../../helpers/dataUtils/aggregateByKlassOrMegama");
 const titleUtil = require("../../helpers/dataUtils/titleUtil");
 const queryUtil = require("../../helpers/dataUtils/queryUtil");
 const { getExtensionHeaders, getDataById } = require("../../helpers/dataUtils/utils");
+const { getAggregateByKlassOrMegama } = require("../../helpers/dataUtils/aggregateUtil");
 
 module.exports = {
     url: "/confByMegama",
@@ -25,7 +25,7 @@ module.exports = {
     data: async function (queries, page) {
         const { query, students } = await queryUtil.getQueryWithStudentIds(queries, page);
 
-        const dataById = await getDataById(YemotConfBridge, aggregateByKlassOrMegama(query));
+        const dataById = await getDataById(YemotConfBridge, getAggregateByKlassOrMegama(query));
 
         return students.map((item) => ({
             name: item.name,

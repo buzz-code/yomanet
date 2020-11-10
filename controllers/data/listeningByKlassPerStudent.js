@@ -2,8 +2,8 @@ const moment = require("moment");
 const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
-const aggregateByKlassPerStudent = require("../../helpers/dataUtils/aggregateByKlassPerStudent");
 const titleUtil = require("../../helpers/dataUtils/titleUtil");
+const { getAggregateByKlassPerStudent } = require("../../helpers/dataUtils/aggregateUtil");
 
 module.exports = {
     url: "/listeningByKlassPerStudent",
@@ -38,7 +38,7 @@ module.exports = {
         if (fromDate) match.push({ EnterDate: { $gte: moment.utc(fromDate).toDate() } });
         if (toDate) match.push({ EnterDate: { $lte: moment.utc(toDate).toDate() } });
 
-        const results = await YemotPlayback.aggregate(aggregateByKlassPerStudent(match));
+        const results = await YemotPlayback.aggregate(getAggregateByKlassPerStudent(match));
 
         return students
             .map((student) => results.find((item) => student.identityNumber === item.EnterId))
