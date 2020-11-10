@@ -2,21 +2,21 @@ function getQuery(user) {
     return [{ user: user.name }];
 }
 
-function klass({ klass }, studentQuery) {
+function klass({ klass }, query) {
     if (klass && klass.length)
-        studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+        query.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
 }
 
-function megama({ megama }, studentQuery) {
-    if (megama && megama.length) studentQuery.push({ megama: new RegExp(megama.map((item) => item.value).join("|")) });
+function megama({ megama }, query) {
+    if (megama && megama.length) query.push({ megama: new RegExp(megama.map((item) => item.value).join("|")) });
 }
 
 function lesson({ lesson }, query) {
     if (lesson && lesson.length) query.push({ Folder: new RegExp(lesson.map((item) => item.value).join("|")) });
 }
 
-function name({ name }, studentQuery) {
-    if (name) studentQuery.push({ name: new RegExp(name) });
+function name({ name }, query) {
+    if (name) query.push({ name: new RegExp(name) });
 }
 
 function dates({ fromDate, toDate }, query) {

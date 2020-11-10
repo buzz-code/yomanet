@@ -1,6 +1,8 @@
 const constants = require("../../helpers/constants");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
+const queryUtil = require("../../helpers/queryUtil");
+const { file } = require("tmp");
 
 module.exports = {
     url: "/student",
@@ -12,7 +14,7 @@ module.exports = {
 
         const query = queryUtil.getQuery(user);
         if (identityNumber) query.push({ identityNumber: new RegExp(identityNumber) });
-        if (name) query.push({ name: new RegExp(name) });
+        queryUtil.name(file, query);
         if (klass && klass.length)
             query.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
         if (megama && megama.length) query.push({ megama: new RegExp(megama.map((item) => item.value).join("|")) });
