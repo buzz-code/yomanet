@@ -2,6 +2,7 @@ const { getDateList } = require("../../../helpers/utils");
 const { YemotPlayback } = require("../../../models/YemotPlayback");
 const { Lesson } = require("../../../models/Lesson");
 const { Student } = require("../../../models/Student");
+const queryUtil = require("../../../helpers/queryUtil");
 
 module.exports = {
     type: "bar",
@@ -21,8 +22,7 @@ module.exports = {
             query.push({ user });
             studentQuery.push({ user });
         }
-        if (klass && klass.length)
-            studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+        queryUtil.klass(filter, studentQuery);
 
         if (studentQuery.length > 1) {
             const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();

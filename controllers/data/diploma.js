@@ -4,6 +4,7 @@ const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
 const titleUtil = require("../../helpers/titleUtil");
+const queryUtil = require("../../helpers/queryUtil");
 
 module.exports = {
     url: "/diploma",
@@ -13,14 +14,12 @@ module.exports = {
     query: async function (body, user) {
         const { klass, lesson, name, fromDate, toDate } = body;
 
-        const query = [{ user: user.name }];
-        const studentQuery = [{ user: user.name }];
-        if (klass && klass.length)
-            studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
-        if (name) studentQuery.push({ name: new RegExp(name) });
-        if (fromDate) query.push({ EnterDate: { $gte: moment.utc(fromDate).toDate() } });
-        if (toDate) query.push({ EnterDate: { $lte: moment.utc(toDate).toDate() } });
-        if (lesson && lesson.length) query.push({ Folder: new RegExp(lesson.map((item) => item.value).join("|")) });
+        const query = queryUtil.getQuery(user);
+        const studentQuery = queryUtil.getQuery(user);
+        queryUtil.klass(filter, studentQuery);
+        queryUtil.name(filter, studentQuery);
+        queryUtil.dates(filter, query);
+        queryUtil.lesson(filter, query);
 
         return { query, studentQuery };
     },

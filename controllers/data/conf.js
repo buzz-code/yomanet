@@ -4,6 +4,7 @@ const { YemotConfBridge } = require("../../models/YemotConfBridge");
 const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
+const queryUtil = require("../../helpers/queryUtil");
 
 module.exports = {
     url: "/conf",
@@ -13,16 +14,13 @@ module.exports = {
     query: async function (body, user) {
         const { fromDate, toDate, klass, megama, name } = body;
 
-        const query = [{ user: user.name }];
-        const studentQuery = [{ user: user.name }];
+        const query = queryUtil.getQuery(user);
+        const studentQuery = queryUtil.getQuery(user);
 
-        if (fromDate) query.push({ EnterDate: { $gte: moment.utc(fromDate).toDate() } });
-        if (toDate) query.push({ EnterDate: { $lte: moment.utc(toDate).toDate() } });
-        if (name) studentQuery.push({ name: new RegExp(name) });
-        if (klass && klass.length)
-            studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
-        if (megama && megama.length)
-            studentQuery.push({ megama: new RegExp(megama.map((item) => item.value).join("|")) });
+        queryUtil.dates(filter, query);
+        queryUtil.name(filter, studentQuery);
+        queryUtil.klass(filter, studentQuery);
+        queryUtil.megama(filter, studentQuery);
 
         if (studentQuery.length > 1) {
             const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();

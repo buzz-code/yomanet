@@ -4,6 +4,7 @@ const { Lesson } = require("../../models/Lesson");
 const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
+const queryUtil = require("../../helpers/queryUtil");
 
 module.exports = {
     url: "/listening",
@@ -13,18 +14,15 @@ module.exports = {
     query: async function (body, user) {
         const { fromDate, toDate, klass, lesson, megama, name, fromSeconds, toSeconds } = body;
 
-        const query = [{ user: user.name }];
-        const studentQuery = [{ user: user.name }];
-        if (fromDate) query.push({ EnterDate: { $gte: moment.utc(fromDate).toDate() } });
-        if (toDate) query.push({ EnterDate: { $lte: moment.utc(toDate).toDate() } });
+        const query = queryUtil.getQuery(user);
+        const studentQuery = queryUtil.getQuery(user);
+        queryUtil.dates(filter, query);
         if (fromSeconds) query.push({ TimeTotal: { $gte: Number(fromSeconds) } });
         if (toSeconds) query.push({ TimeTotal: { ...query.seconds, $lte: Number(toSeconds) } });
-        if (lesson && lesson.length) query.push({ Folder: new RegExp(lesson.map((item) => item.value).join("|")) });
-        if (klass && klass.length)
-            studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
-        if (megama && megama.length)
-            studentQuery.push({ megama: new RegExp(megama.map((item) => item.value).join("|")) });
-        if (name) studentQuery.push({ name: new RegExp(name) });
+        queryUtil.lesson(filter, query);
+        queryUtil.klass(filter, studentQuery);
+        queryUtil.megama(filter, studentQuery);
+        queryUtil.name(filter, studentQuery);
 
         if (studentQuery.length > 1) {
             const studentIds = await Student.find({ $and: studentQuery }, ["identityNumber"]).lean();

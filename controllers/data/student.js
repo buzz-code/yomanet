@@ -10,7 +10,7 @@ module.exports = {
     query: async function (body, user) {
         const { identityNumber, name, klass, megama } = body;
 
-        const query = [{ user: user.name }];
+        const query = queryUtil.getQuery(user);
         if (identityNumber) query.push({ identityNumber: new RegExp(identityNumber) });
         if (name) query.push({ name: new RegExp(name) });
         if (klass && klass.length)

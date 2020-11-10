@@ -8,7 +8,7 @@ module.exports = {
         return "קבצים שהועלו";
     },
     query: async function (body, user) {
-        const query = [{ user: user.name }];
+        const query = queryUtil.getQuery(user);
 
         return { $and: query };
     },

@@ -6,6 +6,7 @@ const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
 const aggregateByKlassAndLesson = require("./dataUtils/aggregateByKlassAndLesson");
 const titleUtil = require("../../helpers/titleUtil");
+const queryUtil = require("../../helpers/queryUtil");
 
 module.exports = {
     url: "/listeningByKlassAndLesson",
@@ -15,13 +16,11 @@ module.exports = {
     query: async function (body, user) {
         const { klass, lesson, fromDate, toDate } = body;
 
-        const query = [{ user: user.name }];
-        const studentQuery = [{ user: user.name }];
-        if (lesson && lesson.length) query.push({ Folder: new RegExp(lesson.map((item) => item.value).join("|")) });
-        if (klass && klass.length)
-            studentQuery.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
-        if (fromDate) query.push({ EnterDate: { $gte: moment.utc(fromDate).toDate() } });
-        if (toDate) query.push({ EnterDate: { $lte: moment.utc(toDate).toDate() } });
+        const query = queryUtil.getQuery(user);
+        const studentQuery = queryUtil.getQuery(user);
+        queryUtil.lesson(filter, query);
+        queryUtil.klass(filter, studentQuery);
+        queryUtil.dates(filter, query);
 
         return { query, studentQuery };
     },

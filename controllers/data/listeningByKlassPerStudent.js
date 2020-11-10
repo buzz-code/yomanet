@@ -13,7 +13,7 @@ module.exports = {
     query: async function (body, user) {
         const { klass } = body;
 
-        const query = [{ user: user.name }];
+        const query = queryUtil.getQuery(user);
         if (klass && klass.length)
             query.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
 
