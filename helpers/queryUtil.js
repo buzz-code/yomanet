@@ -1,5 +1,6 @@
 const moment = require("moment");
 const { Student } = require("../models/Student");
+const { getPagingConfig } = require("./utils");
 
 function getQuery(user, filter, ...queryParts) {
     const query = [{ user: user.name }];
@@ -41,4 +42,14 @@ async function filterStudents(query, studentQuery) {
     }
 }
 
-module.exports = { getQuery, klass, megama, lesson, name, seconds, dates, filterStudents };
+async function getQueryWithStudentIds(queries, page) {
+    const { query, studentQuery } = queries;
+    const students = await Student.find({ $and: studentQuery }, ["identityNumber", "name"], {
+        ...getPagingConfig(page),
+        sort: { name: 1 },
+    }).lean();
+    query.push({ EnterId: { $in: students.map((item) => item.identityNumber) } });
+    return { query, students };
+}
+
+module.exports = { getQuery, klass, megama, lesson, name, seconds, dates, filterStudents, getQueryWithStudentIds };

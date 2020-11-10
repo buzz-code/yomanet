@@ -1,10 +1,10 @@
 const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Student } = require("../../models/Student");
-const { getPagingConfig } = require("../../helpers/utils");
 const aggregateByKlassOrMegama = require("./dataUtils/aggregateByKlassOrMegama");
 const titleUtil = require("../../helpers/titleUtil");
 const queryUtil = require("../../helpers/queryUtil");
-const { getExtensionHeaders } = require("./dataUtils/utils");
+const { getExtensionHeaders, getDataById } = require("./dataUtils/utils");
+const { getQueryWithStudentIds } = require("../../helpers/queryUtil");
 
 module.exports = {
     url: "/listeningByMegama",
@@ -24,20 +24,13 @@ module.exports = {
         return { isValid: false, errorMessage: "חובה לבחור מגמה" };
     },
     data: async function (queries, page) {
-        const { query, studentQuery } = queries;
-        const students = await Student.find({ $and: studentQuery }, ["identityNumber", "name"], {
-            ...getPagingConfig(page),
-            sort: { name: 1 },
-        }).lean();
-        query.push({ EnterId: { $in: students.map((item) => item.identityNumber) } });
+        const { query, students } = await getQueryWithStudentIds(queries, page);
 
-        const listenings = await YemotPlayback.aggregate(aggregateByKlassOrMegama(query));
-        const listeningById = {};
-        listenings.map((item) => (listeningById[item.EnterId] = item));
+        const dataById = await getDataById(YemotPlayback, aggregateByKlassOrMegama(query));
 
         return students.map((item) => ({
             name: item.name,
-            ...listeningById[item.identityNumber],
+            ...dataById[item.identityNumber],
         }));
     },
     headers: async function (data, query, filter, user) {

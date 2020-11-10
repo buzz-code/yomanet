@@ -1,9 +1,10 @@
 const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Student } = require("../../models/Student");
-const { getPagingConfig } = require("../../helpers/utils");
 const aggregateByKlassAndLesson = require("./dataUtils/aggregateByKlassAndLesson");
 const titleUtil = require("../../helpers/titleUtil");
 const queryUtil = require("../../helpers/queryUtil");
+const { getQueryWithStudentIds } = require("../../helpers/queryUtil");
+const { getDataById } = require("./dataUtils/utils");
 
 module.exports = {
     url: "/listeningByKlassAndLesson",
@@ -26,21 +27,14 @@ module.exports = {
         };
     },
     data: async function (queries, page, filter) {
-        const { query, studentQuery } = queries;
-        const students = await Student.find({ $and: studentQuery }, ["identityNumber", "name"], {
-            ...getPagingConfig(page),
-            sort: { name: 1 },
-        }).lean();
-        query.push({ EnterId: { $in: students.map((item) => item.identityNumber) } });
+        const { query, students } = await getQueryWithStudentIds(queries, page);
 
-        const listenings = await YemotPlayback.aggregate(aggregateByKlassAndLesson(query));
-        const listeningById = {};
-        listenings.map((item) => (listeningById[item.EnterId] = item));
+        const dataById = await getDataById(YemotPlayback, aggregateByKlassAndLesson(query));
 
         return students.map((item) => ({
             name: item.name,
-            ...listeningById[item.identityNumber],
             extension: filter.lesson[0].label,
+            ...dataById[item.identityNumber],
         }));
     },
     headers: async function (data, query, body) {

@@ -1,10 +1,10 @@
 const { YemotConfBridge } = require("../../models/YemotConfBridge");
 const { Student } = require("../../models/Student");
-const { getPagingConfig } = require("../../helpers/utils");
 const aggregateByKlassOrMegama = require("./dataUtils/aggregateByKlassOrMegama");
 const titleUtil = require("../../helpers/titleUtil");
 const queryUtil = require("../../helpers/queryUtil");
-const { getExtensionHeaders } = require("./dataUtils/utils");
+const { getExtensionHeaders, getDataById } = require("./dataUtils/utils");
+const { getQueryWithStudentIds } = require("../../helpers/queryUtil");
 
 module.exports = {
     url: "/confByMegama",
@@ -24,20 +24,13 @@ module.exports = {
         return { isValid: false, errorMessage: "חובה לבחור מגמה" };
     },
     data: async function (queries, page) {
-        const { query, studentQuery } = queries;
-        const students = await Student.find({ $and: studentQuery }, ["identityNumber", "name"], {
-            ...getPagingConfig(page),
-            sort: { name: 1 },
-        }).lean();
-        query.push({ EnterId: { $in: students.map((item) => item.identityNumber) } });
+        const { query, students } = await getQueryWithStudentIds(queries, page);
 
-        const confs = await YemotConfBridge.aggregate(aggregateByKlassOrMegama(query));
-        const confById = {};
-        confs.map((item) => (confById[item.EnterId] = item));
+        const dataById = await getDataById(YemotConfBridge, aggregateByKlassOrMegama(query));
 
         return students.map((item) => ({
             name: item.name,
-            ...confById[item.identityNumber],
+            ...dataById[item.identityNumber],
         }));
     },
     headers: async function (data, query, filter, user) {

@@ -33,4 +33,11 @@ async function setExtensionNames(results) {
     results.forEach((item) => (item.Folder = lessonByExt[item.Folder] || item.Folder));
 }
 
-module.exports = { getLessonByExt, getExtensionHeaders, setExtensionNames };
+async function getDataById(model, aggregate) {
+    const data = await model.aggregate(aggregate);
+    const dataById = {};
+    data.map((item) => (dataById[item.EnterId] = item));
+    return dataById;
+}
+
+module.exports = { getLessonByExt, getExtensionHeaders, setExtensionNames, getDataById };
