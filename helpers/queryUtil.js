@@ -1,4 +1,5 @@
 const moment = require("moment");
+const { Student } = require("../models/Student");
 
 function getQuery(user, filter, ...queryParts) {
     const query = [{ user: user.name }];

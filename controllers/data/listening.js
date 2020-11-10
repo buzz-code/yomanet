@@ -1,11 +1,8 @@
 const constants = require("../../helpers/constants");
-const moment = require("moment");
-const { Lesson } = require("../../models/Lesson");
 const { YemotPlayback } = require("../../models/YemotPlayback");
-const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
 const queryUtil = require("../../helpers/queryUtil");
-const { getLessonByExt } = require("./dataUtils/utils");
+const { setExtensionNames } = require("./dataUtils/utils");
 
 module.exports = {
     url: "/listening",
@@ -26,9 +23,7 @@ module.exports = {
     data: async function (query, page, filter, user) {
         const results = await YemotPlayback.find(query, null, getPagingConfig(page)).lean();
 
-        const extensions = new Set(results.map((item) => item.extension));
-        const lessonByExt = await getLessonByExt(user, extensions);
-        results.forEach((item) => (item.Folder = lessonByExt[item.Folder] || item.Folder));
+        await setExtensionNames(results);
 
         return results;
     },
