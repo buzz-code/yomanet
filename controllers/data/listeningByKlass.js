@@ -7,6 +7,7 @@ const { getPagingConfig } = require("../../helpers/utils");
 const aggregateByKlassOrMegama = require("./dataUtils/aggregateByKlassOrMegama");
 const titleUtil = require("../../helpers/titleUtil");
 const queryUtil = require("../../helpers/queryUtil");
+const { getExtensionHeaders } = require("./dataUtils/utils");
 
 module.exports = {
     url: "/listeningByKlass",
@@ -43,23 +44,9 @@ module.exports = {
         }));
     },
     headers: async function (data, query, filter, user) {
-        const keys = new Set();
-        data.forEach((item) => {
-            for (const key in item) {
-                keys.add(key);
-            }
-        });
-
-        const lessons = await Lesson.find({ user: user.name, extension: { $in: [...keys] } }).lean();
-        const lessonByExt = {};
-        lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
-
         const headers = [
             { label: "שם התלמידה", value: "name", format: "nameWOKlass" },
-            ...[...keys]
-                .filter((item) => item !== "name" && item !== "EnterId")
-                .sort()
-                .map((item) => ({ value: item, label: lessonByExt[item] || item, format: "sec2min" })),
+            ...getExtensionHeaders(user, data),
         ];
 
         return headers;

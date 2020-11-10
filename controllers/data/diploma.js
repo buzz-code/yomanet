@@ -5,6 +5,7 @@ const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
 const titleUtil = require("../../helpers/titleUtil");
 const queryUtil = require("../../helpers/queryUtil");
+const { getLessonByExt, getExtensions } = require("./dataUtils/utils");
 
 module.exports = {
     url: "/diploma",
@@ -81,22 +82,14 @@ module.exports = {
         }));
     },
     headers: async function (data, query, filter, user) {
-        const keys = new Set();
-        data.forEach((item) => {
-            for (const key in item) {
-                keys.add(key);
-            }
-        });
-
-        const lessons = await Lesson.find({ user: user.name, extension: { $in: [...keys] } }).lean();
-        const lessonByExt = {};
-        lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
+        const extensions = getExtensions(data);
+        const lessonByExt = await getLessonByExt(user, extensions);
 
         if (filter.lesson && filter.lesson.length) {
             filter.lesson.forEach((item) => (lessonByExt[item.value] = item.label));
         }
 
-        const headers = [...keys]
+        const headers = [...extensions]
             .filter((item) => item !== "name" && item !== "EnterId")
             .sort()
             .map((item) => ({ value: item, label: lessonByExt[item] || item, format: "sec2min" }));

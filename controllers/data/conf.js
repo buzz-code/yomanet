@@ -5,6 +5,7 @@ const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
 const queryUtil = require("../../helpers/queryUtil");
+const { getLessonByExt } = require("./dataUtils/utils");
 
 module.exports = {
     url: "/conf",
@@ -26,9 +27,7 @@ module.exports = {
         const results = await YemotConfBridge.find(query, null, getPagingConfig(page)).lean();
 
         const extensions = new Set(results.map((item) => item.extension));
-        const lessons = await Lesson.find({ user: user.name, extension: { $in: [...extensions] } }).lean();
-        const lessonByExt = {};
-        lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
+        const lessonByExt = await getLessonByExt(user, extensions);
         results.forEach((item) => (item.Folder = lessonByExt[item.Folder] || item.Folder));
 
         return results;
