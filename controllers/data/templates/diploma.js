@@ -1,14 +1,13 @@
-const { YemotPlayback } = require("../../models/YemotPlayback");
-const { Student } = require("../../models/Student");
-const titleUtil = require("../../helpers/dataUtils/titleUtil");
-const queryUtil = require("../../helpers/dataUtils/queryUtil");
-const { getLessonByExt, getExtensions, getDataById } = require("../../helpers/dataUtils/utils");
-const { getAggregateForDiploma } = require("../../helpers/dataUtils/aggregateUtil");
+const { Student } = require("../../../models/Student");
+const titleUtil = require("../../../helpers/dataUtils/titleUtil");
+const queryUtil = require("../../../helpers/dataUtils/queryUtil");
+const { getLessonByExt, getExtensions, getDataById } = require("../../../helpers/dataUtils/utils");
+const { getAggregateForDiploma } = require("../../../helpers/dataUtils/aggregateUtil");
 
-module.exports = {
-    url: "/diploma",
+module.exports = (model, url, title) => ({
+    url,
     title: function (filter) {
-        return titleUtil.getTitle("תעודות", filter, titleUtil.singleKlass, titleUtil.lesson, titleUtil.dates);
+        return titleUtil.getTitle(title, filter, titleUtil.singleKlass, titleUtil.lesson, titleUtil.dates);
     },
     query: async function (filter, user) {
         const query = queryUtil.getQuery(user, filter, queryUtil.dates, queryUtil.lesson);
@@ -28,7 +27,7 @@ module.exports = {
     data: async function (queries, page) {
         const { query, students } = await queryUtil.getQueryWithStudentIds(queries, page);
 
-        const dataById = await getDataById(YemotPlayback, getAggregateForDiploma(query));
+        const dataById = await getDataById(model, getAggregateForDiploma(query));
 
         return students.map((item) => ({
             name: item.name,
@@ -54,4 +53,4 @@ module.exports = {
         const { studentQuery } = queries;
         return await Student.countDocuments({ $and: studentQuery });
     },
-};
+});

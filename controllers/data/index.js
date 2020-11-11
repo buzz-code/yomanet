@@ -80,6 +80,7 @@ registerHook(require("./confByKlass"));
 registerHook(require("./listeningByKlassPerStudent"));
 registerHook(require("./listeningByMegama"));
 registerHook(require("./confByMegama"));
-registerHook(require("./diploma"));
+registerHook(require("./listeningDiploma"));
+registerHook(require("./confDiploma"));
 
 module.exports = router;
