@@ -4,6 +4,7 @@ const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../../helpers/utils");
 const titleUtil = require("../../helpers/dataUtils/titleUtil");
 const { getAggregateByKlassPerStudent } = require("../../helpers/dataUtils/aggregateUtil");
+const queryUtil = require("../../helpers/dataUtils/queryUtil");
 
 module.exports = {
     url: "/listeningByKlassPerStudent",
