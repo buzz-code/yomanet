@@ -6,13 +6,13 @@ function getTitle(prefix, filter, ...titleParts) {
 
 function singleKlass({ klass }) {
     let title = " לכיתה ";
-    title += klass.map((item) => item.label).join("");
+    if (klass && klass.length) title += klass.map((item) => item.label).join("");
     return title;
 }
 
 function singleMegama({ megama }) {
     let title = " למגמה ";
-    title += megama.map((item) => item.label).join("");
+    if (megama && megama.length) title += megama.map((item) => item.label).join("");
     return title;
 }
 

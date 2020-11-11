@@ -7,11 +7,18 @@ const { getAggregateForDiploma } = require("../../../helpers/dataUtils/aggregate
 module.exports = (model, url, title) => ({
     url,
     title: function (filter) {
-        return titleUtil.getTitle(title, filter, titleUtil.singleKlass, titleUtil.lesson, titleUtil.dates);
+        return titleUtil.getTitle(
+            title,
+            filter,
+            titleUtil.singleKlass,
+            titleUtil.singleMegama,
+            titleUtil.lesson,
+            titleUtil.dates
+        );
     },
     query: async function (filter, user) {
         const query = queryUtil.getQuery(user, filter, queryUtil.dates, queryUtil.lesson);
-        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.name);
+        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.megama, queryUtil.name);
         const lessonQuery = queryUtil.getQuery(user, filter, queryUtil.allLessons);
 
         await queryUtil.filterLessons(query, lessonQuery);
@@ -19,13 +26,16 @@ module.exports = (model, url, title) => ({
         return { query, studentQuery };
     },
     validate: async function (query, user, filter) {
-        if (filter.klass && filter.klass.length) {
+        if ((filter.klass && filter.klass.length) || (filter.megama && filter.megama.length)) {
+            if (filter.klass && filter.klass.length && filter.megama && filter.megama.length) {
+                return { isValid: false, errorMessage: "ניתן לסנן לפי כיתה או לפי מגמה, אך לא שניהם" };
+            }
             if (filter.format !== "PDF") {
                 return { isValid: false, errorMessage: "להנפקת תעודות לחצו על הכפתור Pdf" };
             }
             return { isValid: true, errorMessage: null };
         }
-        return { isValid: false, errorMessage: "חובה לבחור כיתה" };
+        return { isValid: false, errorMessage: "חובה לבחור כיתה או מגמה" };
     },
     data: async function (queries, page) {
         const { query, students } = await queryUtil.getQueryWithStudentIds(queries, page);

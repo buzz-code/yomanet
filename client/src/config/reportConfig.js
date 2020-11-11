@@ -38,7 +38,7 @@ export default [
     {
         url: "listeningDiploma",
         title: "הנפקת תעודות לתלמידות",
-        filterFields: ["singleKlass", "lessonWithAll", "name", "dateRange"],
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "name", "dateRange"],
         isAdmin: false,
         filterProps: {
             isHideEmailButton: true,
@@ -48,7 +48,7 @@ export default [
     {
         url: "confDiploma",
         title: "הנפקת תעודות לתלמידות - ועידה",
-        filterFields: ["singleKlass", "lessonWithAll", "name", "dateRange"],
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "name", "dateRange"],
         isAdmin: false,
         filterProps: {
             isHideEmailButton: true,
