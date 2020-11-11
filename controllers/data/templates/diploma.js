@@ -46,7 +46,7 @@ module.exports = (model, url, title) => ({
         }
 
         const headers = [...extensions]
-            .filter((item) => item !== "name")
+            .filter((item) => item !== "name" && item !== "EnterId")
             .sort()
             .map((item) => ({ value: item, label: lessonByExt[item] || item, format: "sec2min" }));
 

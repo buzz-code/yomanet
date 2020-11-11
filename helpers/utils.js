@@ -26,7 +26,7 @@ const getTableDataResponse = (res, results, totalCount, headers, params) => {
 const createReport = async (res, url, format, title, results, headers) => {
     let report = null;
     if (format === "PDF") {
-        if (url !== "/diploma") {
+        if (url.indexOf("Diploma") === -1) {
             report = await getPdfReportObject(title, results, headers);
         } else {
             report = await getDiplomaReportObject(title, results, headers);
