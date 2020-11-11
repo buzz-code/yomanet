@@ -12,6 +12,9 @@ module.exports = (model, url, title) => ({
     query: async function (filter, user) {
         const query = queryUtil.getQuery(user, filter, queryUtil.dates, queryUtil.lesson);
         const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass);
+        const lessonQuery = queryUtil.getQuery(user, filter, queryUtil.allLessons);
+
+        await queryUtil.filterLessons(query, lessonQuery);
 
         return { query, studentQuery };
     },

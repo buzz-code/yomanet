@@ -2,13 +2,13 @@ export default [
     {
         url: "listeningByKlass",
         title: "דוח האזנה לפי כיתה",
-        filterFields: ["singleKlass", "lesson", "dateRange"],
+        filterFields: ["singleKlass", "lessonWithAll", "dateRange"],
         isAdmin: false,
     },
     {
         url: "listeningByMegama",
         title: "דוח האזנה לפי מגמה",
-        filterFields: ["singleMegama", "lesson", "dateRange"],
+        filterFields: ["singleMegama", "lessonWithAll", "dateRange"],
         isAdmin: false,
     },
     {
@@ -26,19 +26,19 @@ export default [
     {
         url: "confByKlass",
         title: "דוח ועידה לפי כיתה",
-        filterFields: ["singleKlass", "lesson", "dateRange"],
+        filterFields: ["singleKlass", "lessonWithAll", "dateRange"],
         isAdmin: false,
     },
     {
         url: "confByMegama",
         title: "דוח ועידה לפי מגמה",
-        filterFields: ["singleMegama", "lesson", "dateRange"],
+        filterFields: ["singleMegama", "lessonWithAll", "dateRange"],
         isAdmin: false,
     },
     {
         url: "listeningDiploma",
         title: "הנפקת תעודות לתלמידות",
-        filterFields: ["singleKlass", "lesson", "name", "dateRange"],
+        filterFields: ["singleKlass", "lessonWithAll", "name", "dateRange"],
         isAdmin: false,
         filterProps: {
             isHideEmailButton: true,
@@ -48,7 +48,7 @@ export default [
     {
         url: "confDiploma",
         title: "הנפקת תעודות לתלמידות - ועידה",
-        filterFields: ["singleKlass", "lesson", "name", "dateRange"],
+        filterFields: ["singleKlass", "lessonWithAll", "name", "dateRange"],
         isAdmin: false,
         filterProps: {
             isHideEmailButton: true,

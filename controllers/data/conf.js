@@ -12,8 +12,10 @@ module.exports = {
     query: async function (filter, user) {
         const query = queryUtil.getQuery(user, filter, queryUtil.dates);
         const studentQuery = queryUtil.getQuery(user, filter, queryUtil.name, queryUtil.klass, queryUtil.megama);
+        const lessonQuery = queryUtil.getQuery(user, filter, queryUtil.allLessons);
 
         await queryUtil.filterStudents(query, studentQuery);
+        await queryUtil.filterLessons(query, lessonQuery);
 
         return { $and: query };
     },
