@@ -18,7 +18,7 @@ function megama({ megama }, query) {
 }
 
 function lesson({ lesson }, query) {
-    if (lesson && lesson.length) query.push({ Folder: new RegExp(lesson.map((item) => item.value).join("|")) });
+    if (lesson && lesson.length) query.push({ Folder: new RegExp(`^(${lesson.map((item) => item.value).join("|")})$`) });
 }
 
 function name({ name }, query) {
