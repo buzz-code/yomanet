@@ -74,12 +74,10 @@ registerHook(require("./student"));
 registerHook(require("./conf"));
 registerHook(require("./user"));
 registerHook(require("./file"));
-registerHook(require("./dataByKlass").listeningByKlass);
-registerHook(require("./dataByKlass").confByKlass);
+registerHook(require("./dataByKlassOrMegama").listeningByKlassOrMegama);
+registerHook(require("./dataByKlassOrMegama").confByKlassOrMegama);
 registerHook(require("./listeningByKlassAndLesson"));
 registerHook(require("./listeningByKlassPerStudent"));
-registerHook(require("./dataByMegama").listeningByMegama);
-registerHook(require("./dataByMegama").confByMegama);
 registerHook(require("./diploma").listenDiploma);
 registerHook(require("./diploma").confDiploma);
 
