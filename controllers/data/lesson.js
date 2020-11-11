@@ -13,8 +13,10 @@ module.exports = {
         const query = queryUtil.getQuery(user);
         if (extension) query.push({ extension: new RegExp(extension) });
         if (messageName) query.push({ messageName: new RegExp(messageName) });
-        if (klass && klass.length) query.push({ megama: new RegExp(klass.map((item) => item.label).join("|")) });
-        if (megama && megama.length) query.push({ megama: new RegExp(megama.map((item) => item.value).join("|")) });
+        if (klass && klass.length)
+            query.push({ megama: new RegExp(`^(${klass.map((item) => item.label).join("|")})$`) });
+        if (megama && megama.length)
+            query.push({ megama: new RegExp(`^(${megama.map((item) => item.value).join("|")})$`) });
 
         return { $and: query };
     },

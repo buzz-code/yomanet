@@ -9,7 +9,7 @@ router.post("/lesson", auth, async function (req, res) {
 
     const query = [{ user: req.user.name }];
     if (term) query.push({ messageName: new RegExp(term) });
-    if (klass) query.push({ messageName: new RegExp(klass) });
+    // if (klass) query.push({ messageName: new RegExp(klass) });
     console.log("list query for url: /lesson", query);
 
     const results = await Lesson.find({ $and: query }, ["extension", "messageName"], {

@@ -15,7 +15,8 @@ module.exports = {
         if (identityNumber) query.push({ identityNumber: new RegExp(identityNumber) });
         if (klass && klass.length)
             query.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
-        if (megama && megama.length) query.push({ megama: new RegExp(megama.map((item) => item.value).join("|")) });
+        if (megama && megama.length)
+            query.push({ megama: new RegExp(`^(${megama.map((item) => item.value).join("|")})$`) });
 
         return { $and: query };
     },

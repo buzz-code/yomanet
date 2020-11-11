@@ -14,11 +14,13 @@ function klass({ klass }, query) {
 }
 
 function megama({ megama }, query) {
-    if (megama && megama.length) query.push({ megama: new RegExp(megama.map((item) => item.value).join("|")) });
+    if (megama && megama.length)
+        query.push({ megama: new RegExp(`^(${megama.map((item) => item.value).join("|")})$`) });
 }
 
 function lesson({ lesson }, query) {
-    if (lesson && lesson.length) query.push({ Folder: new RegExp(`^(${lesson.map((item) => item.value).join("|")})$`) });
+    if (lesson && lesson.length)
+        query.push({ Folder: new RegExp(`^(${lesson.map((item) => item.value).join("|")})$`) });
 }
 
 function name({ name }, query) {
