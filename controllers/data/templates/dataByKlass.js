@@ -32,11 +32,8 @@ module.exports = (model, url, title) => ({
         }));
     },
     headers: async function (data, query, filter, user) {
-        const headers = [
-            { label: "שם התלמידה", value: "name", format: "nameWOKlass" },
-            ...getExtensionHeaders(user, data),
-        ];
-
+        const extensionHeaders = await getExtensionHeaders(user, data);
+        const headers = [{ label: "שם התלמידה", value: "name", format: "nameWOKlass" }, ...extensionHeaders];
         return headers;
     },
     count: async function (queries) {
