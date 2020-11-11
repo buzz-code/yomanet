@@ -36,8 +36,18 @@ export default [
         isAdmin: false,
     },
     {
-        url: "diploma",
+        url: "listeningDiploma",
         title: "הנפקת תעודות לתלמידות",
+        filterFields: ["singleKlass", "lesson", "name", "dateRange"],
+        isAdmin: false,
+        filterProps: {
+            isHideEmailButton: true,
+            isHideExcelButton: true,
+        },
+    },
+    {
+        url: "confDiploma",
+        title: "הנפקת תעודות לתלמידות - ועידה",
         filterFields: ["singleKlass", "lesson", "name", "dateRange"],
         isAdmin: false,
         filterProps: {
