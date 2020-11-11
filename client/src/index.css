@@ -105,3 +105,8 @@ h2 {
 .instruction table {
     font-size: 0.9rem;
 }
+
+.form-check-inline {
+    margin-left: .75rem;
+    margin-right: 0;
+}

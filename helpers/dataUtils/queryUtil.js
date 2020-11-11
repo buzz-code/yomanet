@@ -1,4 +1,5 @@
 const moment = require("moment");
+const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { getPagingConfig } = require("../utils");
 
@@ -23,6 +24,15 @@ function lesson({ lesson }, query) {
         query.push({ Folder: new RegExp(`^(${lesson.map((item) => item.value).join("|")})$`) });
 }
 
+function allLessons({ allLessons, klass, megama }, query) {
+    if (allLessons) {
+        if (klass && klass.length)
+            query.push({ megama: new RegExp(`^(${klass.map((item) => item.label).join("|")})$`) });
+        if (megama && megama.length)
+            query.push({ megama: new RegExp(`^(${megama.map((item) => item.value).join("|")})$`) });
+    }
+}
+
 function name({ name }, query) {
     if (name) query.push({ name: new RegExp(name) });
 }
@@ -44,6 +54,13 @@ async function filterStudents(query, studentQuery) {
     }
 }
 
+async function filterLessons(query, lessonQuery) {
+    if (lessonQuery.length > 1) {
+        const extensions = await Lesson.find({ $and: lessonQuery }, ["extension"]).lean();
+        query.push({ Folder: { $in: extensions.map((item) => item.extension) } });
+    }
+}
+
 async function getQueryWithStudentIds(queries, page) {
     const { query, studentQuery } = queries;
     const students = await Student.find({ $and: studentQuery }, ["identityNumber", "name"], {
@@ -54,4 +71,16 @@ async function getQueryWithStudentIds(queries, page) {
     return { query, students };
 }
 
-module.exports = { getQuery, klass, megama, lesson, name, seconds, dates, filterStudents, getQueryWithStudentIds };
+module.exports = {
+    getQuery,
+    klass,
+    megama,
+    lesson,
+    allLessons,
+    name,
+    seconds,
+    dates,
+    filterStudents,
+    filterLessons,
+    getQueryWithStudentIds,
+};

@@ -20,6 +20,7 @@ export default function FilterTable({
     const [klass, setKlass] = useState([]);
     const [megama, setMegama] = useState([]);
     const [lesson, setLesson] = useState([]);
+    const [allLessons, setAllLessons] = useState(false);
     const [fromSeconds, setFromSeconds] = useState("");
     const [toSeconds, setToSeconds] = useState("");
     const [extension, setExtension] = useState("");
@@ -36,6 +37,7 @@ export default function FilterTable({
             klass,
             megama,
             lesson,
+            allLessons,
             fromSeconds,
             toSeconds,
             extension,
@@ -53,6 +55,7 @@ export default function FilterTable({
         setKlass(params.klass || []);
         setMegama(params.megama || []);
         setLesson(params.lesson || []);
+        setAllLessons(params.allLessons || false);
         setFromSeconds(params.fromSeconds || "");
         setToSeconds(params.toSeconds || "");
         setExtension(params.extension || "");
@@ -178,6 +181,37 @@ export default function FilterTable({
                         setValue={setLesson}
                         getOptions={(query) => getLessonList(query)}
                     />
+                </div>
+            </div>
+        ),
+        lessonWithAll: (
+            <div className="form-group row">
+                <label htmlFor="lesson" className="col-sm-2">
+                    שיעורים
+                </label>
+                <div className="col">
+                    <TypeAhead
+                        id="lesson"
+                        multiple={true}
+                        disabled={allLessons}
+                        placeholder={"בחר שיעור..."}
+                        value={lesson}
+                        setValue={setLesson}
+                        getOptions={(query) => getLessonList(query)}
+                    />
+                </div>
+                <div className="col-sm-3 d-flex align-items-center">
+                    <input
+                        type="checkbox"
+                        id="rememberMe"
+                        name="rememberMe"
+                        className="form-check-inline"
+                        value={allLessons}
+                        onChange={(e) => setAllLessons(e.target.checked)}
+                    />
+                    <label htmlFor="rememberMe" className="d-inline m-0">
+                        בחר את כל השיעורים המתאימים
+                    </label>
                 </div>
             </div>
         ),
