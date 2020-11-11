@@ -23,7 +23,7 @@ module.exports = {
     data: async function (query, page, filter, user) {
         const results = await YemotConfBridge.find(query, null, getPagingConfig(page)).lean();
 
-        await setExtensionNames(results);
+        await setExtensionNames(results, user);
 
         return results;
     },

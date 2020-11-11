@@ -27,7 +27,7 @@ async function getExtensionHeaders(user, data) {
         .map((item) => ({ value: item, label: lessonByExt[item] || item, format: "sec2min" }));
 }
 
-async function setExtensionNames(results) {
+async function setExtensionNames(results, user) {
     const extensions = new Set(results.map((item) => item.extension));
     const lessonByExt = await getLessonByExt(user, extensions);
     results.forEach((item) => (item.Folder = lessonByExt[item.Folder] || item.Folder));
