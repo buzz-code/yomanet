@@ -15,7 +15,6 @@ function registerHook(hook) {
         const filter = JSON.parse(req.query.filter);
         const { subPath } = filter;
 
-        console.log(req.user.provider);
         const { error, errorMessage, results } = await providers[req.user.provider].listFiles(hook, req.user, subPath);
         if (error) {
             res.send({ error, errorMessage });

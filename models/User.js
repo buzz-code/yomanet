@@ -34,6 +34,9 @@ const userSchema = mongoose.Schema({
         type: String,
         trime: true,
     },
+    provider: {
+        type: String,
+    },
     yemotUsername: {
         type: String,
         trime: true,
@@ -43,8 +46,13 @@ const userSchema = mongoose.Schema({
         trime: true,
     },
     yemotIsPrivate: { type: Boolean, default: false },
-    provider: {
+    gisUsername: {
         type: String,
+        trime: true,
+    },
+    gisPassword: {
+        type: String,
+        trime: true,
     },
     isPaid: { type: Boolean, default: false },
 });

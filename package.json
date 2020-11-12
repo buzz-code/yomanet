@@ -11,6 +11,7 @@
   "author": "buzz-code",
   "dependencies": {
     "axios": "^0.21.0",
+    "basic-ftp": "^4.6.3",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "content-disposition": "^0.5.3",

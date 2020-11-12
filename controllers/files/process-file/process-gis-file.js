@@ -7,7 +7,7 @@ const path = require("path");
 const tmp = require("tmp");
 const moment = require("moment");
 const XLSX = require("xlsx");
-const { doYemotAction } = require("../../../helpers/yemot");
+const { getFtpClient } = require("../../../helpers/ftp");
 const constants = require("../../../helpers/constants");
 
 const models = {
@@ -15,26 +15,12 @@ const models = {
     LogConfBridgeEnterExit: YemotConfBridge,
 };
 
-const downloadFile = async (username, password, isPrivateYemot, path) => {
-    const { data } = await doYemotAction(
-        username,
-        password,
-        isPrivateYemot,
-        "DownloadFile",
-        { path },
-        { responseType: "stream" }
-    );
-
+const downloadFile = async (username, password, path) => {
+    const client = await getFtpClient("gis", username, password);
     const name = tmp.tmpNameSync();
-    data.pipe(fs.createWriteStream(name));
-    return new Promise((resolve, reject) => {
-        data.on("end", function () {
-            resolve(name);
-        });
-        data.on("err", function (err) {
-            reject(err);
-        });
-    });
+    await client.downloadTo(name, path);
+    client.close();
+    return name;
 };
 
 const readFile = async (path, fileType, defaultItem, options) => {
@@ -125,7 +111,7 @@ async function uploadFile(user, fullPath, fileType) {
         const opts = {}; //{ session };
         console.log("start processing gis file", defaultItem);
 
-        const tempPath = fullPath; // await downloadFile(user.yemotUsername, user.yemotPassword, user.yemotIsPrivate, fullPath);
+        const tempPath = await downloadFile(user.gisUsername, user.gisPassword, fullPath);
         await readFile(tempPath, fileType, defaultItem, opts);
         await YemotFile.findOneAndUpdate({ user: user.name, fullPath }, { $set: { status: "נטען בהצלחה" } }, opts);
         console.log("finish processing gis file", defaultItem);

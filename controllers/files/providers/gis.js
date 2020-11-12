@@ -1,57 +1,37 @@
 const { YemotFile } = require("../../../models/YemotFile");
 const processGisFile = require("../process-file/process-gis-file");
+const { getFtpClient } = require("../../../helpers/ftp");
+const prettyBytes = require("pretty-bytes");
 
 module.exports = {
     listFiles: async (hook, user, subPath) => {
-        // if (!user.yemotUsername || !user.yemotPassword) {
-        //     return { error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור לימות המשיח" };
-        // }
+        if (!user.gisUsername || !user.gisPassword) {
+            return { error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור למערכת של GIS" };
+        }
 
         if (!user.isPaid) {
             return { error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שעדיין לא הוסדר תשלום" };
         }
 
         try {
-            // const { data } = await doYemotAction(
-            //     user.yemotUsername,
-            //     user.yemotPassword,
-            //     user.yemotIsPrivate,
-            //     "GetIvrTree",
-            //     { path: hook.yemotPath + "/" + (subPath || "") }
-            // );
+            const client = await getFtpClient("gis", user.gisUsername, user.gisPassword);
+            const files = await client.list();
             const loadedFiles = await YemotFile.find({ user: user.name }).lean();
-
-            // const results = data.items
-            //     .filter((item) => (item.exists && hook.dirRegex.test(item.name)) || hook.fileRegex.test(item.name))
-            //     .map((item) => {
-            //         const isFile = item.fileType !== "DIR";
-            //         const resItem = {
-            //             name: item.name,
-            //             fullPath: item.what,
-            //             isFile,
-            //         };
-            //         if (isFile) {
-            //             const loadedFile = isFile && loadedFiles.find((file) => file.fullPath === item.what);
-            //             resItem.size = prettyBytes(item.size);
-            //             resItem.mtime = item.mtime;
-            //             resItem.status = loadedFile ? loadedFile.status : "טרם נטען";
-            //         }
-            //         return resItem;
-            //     })
-            //     .reverse();
-
-            const loadedFile = loadedFiles.find((file) => file.fullPath === "gis.csv");
-            const results = [
-                {
-                    name: "קובץ לדוגמא",
-                    fullPath: "gis.csv",
-                    isFile: true,
-                    size: "7.3 MB",
-                    mtime: "09/11/2020 20:49",
-                    status: loadedFile ? loadedFile.status : "טרם נטען",
-                },
-            ];
-
+            const results = files
+                .filter((item) => hook.dirRegex.test(item.name) || hook.fileRegex.test(item.name))
+                .map((item) => {
+                    const loadedFile = loadedFiles.find((file) => file.fullPath === item.what);
+                    const resItem = {
+                        name: item.name,
+                        fullPath: item.name,
+                        isFile: true,
+                        size: prettyBytes(item.size),
+                        mtime: item.rawModifiedAt,
+                        status: loadedFile ? loadedFile.status : "טרם נטען",
+                    };
+                    return resItem;
+                });
+            client.close();
             return { error: false, results };
         } catch (err) {
             console.log("gis file list error", user.name, err);
@@ -59,9 +39,9 @@ module.exports = {
         }
     },
     processFile: async (hook, user, fullPath) => {
-        // if (!user.yemotUsername || !user.yemotPassword) {
-        //     return { error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור לימות המשיח" };
-        // }
+        if (!user.gisUsername || !user.gisPassword) {
+            return { error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור למערכת של GIS" };
+        }
         const currentlyProcessing = await YemotFile.countDocuments({ user: user.name, status: "בטעינה" });
         if (currentlyProcessing >= 3) {
             return { error: true, errorMessage: "לא ניתן לשאוב יותר מ3 קבצים בו זמנית" };

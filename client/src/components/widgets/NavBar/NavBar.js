@@ -42,7 +42,7 @@ function NavBar(props) {
             })),
         },
         {
-            label: "קבצי ימות המשיח",
+            label: "טעינת קבצים ישירות מהמערכת",
             value: "/files",
             children: yemotFilesConfig.map((item) => ({
                 label: item.title,
