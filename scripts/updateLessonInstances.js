@@ -1,6 +1,6 @@
 const { User } = require("../models/User");
 const mongoose = require("mongoose");
-const { mongoURI } = require("./../config/dev");
+const mongoURI = "mongodb://USERNAME:PASSWORD@localhost:PORT/vocal?authSource=admin";
 const { YemotPlayback } = require("../models/YemotPlayback");
 const { LessonInstance } = require("../models/LessonInstance");
 
