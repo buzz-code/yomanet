@@ -62,6 +62,10 @@ function NavBar(props) {
             label: "הוראות שימוש",
             value: "/instruction",
         },
+        {
+            label: "פיתוחים עתידיים",
+            value: "https://trello.com/b/3uKjhz1Q/",
+        },
         // {
         //     label: "מה חדש?",
         //     value: "/whats-new",
