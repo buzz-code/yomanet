@@ -61,7 +61,7 @@ module.exports = {
             { label: "שם התלמידה", value: "name", format: "nameWOKlass" },
             { label: "שם השיעור", value: "extension" },
             ...[...keys]
-                .filter((item) => item !== "name" && item !== "extension")
+                .filter((item) => item !== "name" && item !== "extension" && item !== "Folder" && item !== "EnterId")
                 .sort()
                 .map((item) => ({
                     value: item,
