@@ -5,6 +5,7 @@ const yemotConfBridgeSchema = mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
     fileName: { type: String, trim: true },
     Folder: { type: String, trim: true },
+    Current: { type: String, trim: true },
     title: { type: String, trim: true },
     Phone: { type: String, trim: true },
     IdType: { type: String, trim: true },
