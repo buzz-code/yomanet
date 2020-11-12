@@ -45,7 +45,7 @@ const getTableCellValue = (item, header) => {
             }
         }
         if (header.format === "array") {
-            return item[header.value].join(", ");
+            return item[header.value] && item[header.value].join(", ");
         }
     } catch (e) {
         console.log("getTableCellValue format error", JSON.stringify(item[header.value]), header.format, e);
