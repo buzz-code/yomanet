@@ -66,7 +66,7 @@ const mapItem = ([
         return null;
     }
 
-    const [Phone, ValName] = caller_id_name.split(" * ");
+    const [ValName, Phone] = caller_id_name.split(" * ");
     const EnterDate = moment.utc(date, "YYYY-MM-DD");
     const EnterTime = moment.utc(join_time, "YYYY-MM-DD HH:mm:ss");
     const ExitTime = moment.utc(leave_time, "YYYY-MM-DD HH:mm:ss");
