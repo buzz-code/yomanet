@@ -26,7 +26,6 @@ function registerHook(hook) {
     router.post(hook.url, auth, async function (req, res) {
         const { fullPath } = req.body;
 
-        console.log(req.user.provider);
         const { error, errorMessage } = await providers[req.user.provider].processFile(hook, req.user, fullPath);
         if (error) {
             res.send({ error, errorMessage });
