@@ -3,23 +3,28 @@ const mongoose = require("mongoose");
 const mongoURI = "mongodb://USERNAME:PASSWORD@localhost:PORT/vocal?authSource=admin";
 const { YemotPlayback } = require("../models/YemotPlayback");
 const { LessonInstance } = require("../models/LessonInstance");
+const { sendEmail } = require("../helpers/mailer");
 
 async function main() {
-    console.log("updateLessonInstance start");
+    const logs = [];
+    function log(...args) {
+        console.log(...args);
+        logs.push(JSON.stringify(args));
+    }
+
+    log("updateLessonInstance start");
     try {
-        const connect = mongoose
+        const connect = await mongoose
             .connect(mongoURI, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 useCreateIndex: true,
                 useFindAndModify: false,
             })
-            .then(() => console.log("MongoDB Connected..."))
-            .catch((err) => console.log("MongoDB connect error", err));
-
+            .then(() => log("MongoDB Connected..."));
         const users = await User.find({ provider: "yemot" }).lean();
         for (const user of users) {
-            console.log("start process for user:", user.name);
+            log("start process for user:", user.name);
             try {
                 const data = await YemotPlayback.aggregate()
                     .match({ user: user.name, FileLength: { $ne: null } })
@@ -38,17 +43,21 @@ async function main() {
                 await LessonInstance.deleteMany({ user: user.name });
                 await LessonInstance.insertMany(data);
 
-                console.log("end process for user:", user.name);
+                log("end process for user:", user.name);
             } catch (err) {
-                console.log("error for user:", user.name, err);
+                log("error for user:", user.name, err);
             }
         }
-        console.log("updateLessonInstance finished successfully");
+        log("updateLessonInstance finished successfully");
+        const info = await sendEmail("hadasa.schechter@gmail.com", "לוגים של cronjob", logs.join("<br/>"));
+        console.log(info);
     } catch (err) {
-        console.log("updateLessonInstance finished with an error", err);
+        log("updateLessonInstance finished with an error", err);
+        const info = await sendEmail("hadasa.schechter@gmail.com", "לוגים של cronjob", logs.join("<br/>"));
+        console.log(info);
     } finally {
         mongoose.connection.close(function () {
-            console.log("Mongoose connection disconnected");
+            log("Mongoose connection disconnected");
             process.exit(0);
         });
     }

@@ -32,5 +32,6 @@ async function sendReportByEmail(mailAddress, reportTitle, reportBuffer, reportF
 }
 
 module.exports = {
+    sendEmail,
     sendReportByEmail,
 };
