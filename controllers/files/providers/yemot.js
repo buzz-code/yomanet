@@ -1,4 +1,4 @@
-const { doYemotAction } = require("../../../helpers/yemot");
+const { doYemotAction } = require("../../../helpers/data-providers/yemot");
 const prettyBytes = require("pretty-bytes");
 const { YemotFile } = require("../../../models/YemotFile");
 const processYemotFile = require("../process-file/process-yemot-file");

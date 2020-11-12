@@ -6,7 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const tmp = require("tmp");
 const moment = require("moment");
-const { doYemotAction } = require("../../../helpers/yemot");
+const { doYemotAction } = require("../../../helpers/data-providers/yemot");
 
 const models = {
     LogPlaybackPlayStop: YemotPlayback,

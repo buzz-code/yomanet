@@ -1,6 +1,6 @@
 const { YemotFile } = require("../../../models/YemotFile");
 const processGisFile = require("../process-file/process-gis-file");
-const { getFtpClient } = require("../../../helpers/ftp");
+const { getFtpClient } = require("../../../helpers/data-providers/ftp");
 const prettyBytes = require("pretty-bytes");
 
 module.exports = {

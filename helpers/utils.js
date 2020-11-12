@@ -1,11 +1,11 @@
 const moment = require("moment");
 const constants = require("./constants");
 const { getTableCellValue } = require("./format");
-const { getPdfReportObject } = require("./pdfReport");
-const { getExcelReportObject } = require("./excelReport");
-const { getDiplomaReportObject } = require("./diplomaReport");
+const { getPdfReportObject } = require("./reports/pdfReport");
+const { getExcelReportObject } = require("./reports/excelReport");
+const { getDiplomaReportObject } = require("./reports/diplomaReport");
 const { sendReportByEmail } = require("./mailer");
-const { getGraphReportObject } = require("./graphReport");
+const { getGraphReportObject } = require("./reports/graphReport");
 
 const getTableDataResponse = (res, results, totalCount, headers, params) => {
     results.forEach((item) => {

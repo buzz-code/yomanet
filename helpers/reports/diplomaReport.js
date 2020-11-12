@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const { getSec2Min } = require("./format");
+const { getSec2Min } = require("../format");
 
 const defaultStats = { Count: 0, TimeTotal: 0 };
 

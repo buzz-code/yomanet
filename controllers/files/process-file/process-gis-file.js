@@ -7,7 +7,7 @@ const path = require("path");
 const tmp = require("tmp");
 const moment = require("moment");
 const XLSX = require("xlsx");
-const { getFtpClient } = require("../../../helpers/ftp");
+const { getFtpClient } = require("../../../helpers/data-providers/ftp");
 const constants = require("../../../helpers/constants");
 
 const models = {
