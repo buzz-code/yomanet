@@ -20,7 +20,7 @@ module.exports = {
             const results = files
                 .filter((item) => hook.dirRegex.test(item.name) || hook.fileRegex.test(item.name))
                 .map((item) => {
-                    const loadedFile = loadedFiles.find((file) => file.fullPath === item.what);
+                    const loadedFile = loadedFiles.find((file) => file.fullPath === item.name);
                     const resItem = {
                         name: item.name,
                         fullPath: item.name,
