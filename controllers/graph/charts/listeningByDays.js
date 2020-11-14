@@ -32,7 +32,7 @@ module.exports = {
 
         const data = await YemotPlayback.aggregate()
             .match({ $and: query })
-            .group({ _id: "$EnterDate", count: { $sum: 1 } })
+            .group({ _id: "$EnterDate", count: { $sum: "$TimeTotal" } })
             .sort({ _id: 1 });
 
         return {
@@ -40,7 +40,8 @@ module.exports = {
                 {
                     data: days
                         .map((day) => data.find((item) => day.isSame(item._id)))
-                        .map((item) => (item ? item.count : 0)),
+                        .map((item) => (item ? item.count : 0))
+                        .map((item) => Math.floor(item / 60)),
                     borderColor: "#563d7cd1",
                     fill: false,
                 },

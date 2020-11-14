@@ -33,7 +33,7 @@ module.exports = {
 
         const data = await YemotPlayback.aggregate()
             .match({ $and: query })
-            .group({ _id: { $hour: "$EnterTime" }, count: { $sum: 1 } })
+            .group({ _id: { $hour: "$EnterTime" }, count: { $sum: "$TimeTotal" } })
             .sort({ _id: 1 });
 
         const hours = [...Array(24).keys()];
@@ -43,7 +43,8 @@ module.exports = {
                 {
                     data: hours
                         .map((hour) => data.find((item) => item._id === hour))
-                        .map((item) => (item ? item.count : 0)),
+                        .map((item) => (item ? item.count : 0))
+                        .map((item) => Math.floor(item / 60)),
                     borderColor: "#563d7cd1",
                     fill: false,
                 },
