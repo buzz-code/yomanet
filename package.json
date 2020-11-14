@@ -1,6 +1,6 @@
 {
   "name": "vocal-center-stats",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "yomanet",
   "main": "index.js",
   "scripts": {
