@@ -8,7 +8,7 @@ export default [
     {
         url: "listeningByKlassAndLesson",
         title: "דוח האזנה לפי כיתה ומקצוע",
-        filterFields: ["singleKlass", "singleLesson", "name", "dateRange"],
+        filterFields: ["singleKlass", "singleLesson", "singleStudent", "dateRange"],
         isAdmin: false,
     },
     {
@@ -26,7 +26,7 @@ export default [
     {
         url: "listeningDiploma",
         title: "הנפקת תעודות לתלמידות",
-        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "name", "dateRange"],
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
         filterProps: {
             isHideEmailButton: true,
@@ -36,7 +36,7 @@ export default [
     {
         url: "confDiploma",
         title: "הנפקת תעודות לתלמידות - ועידה",
-        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "name", "dateRange"],
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
         filterProps: {
             isHideEmailButton: true,

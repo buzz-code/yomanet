@@ -13,8 +13,8 @@ module.exports = {
         return titleUtil.getTitle("דוח האזנה", filter, titleUtil.singleKlass, titleUtil.singleLesson, titleUtil.dates);
     },
     query: async function (filter, user) {
-        const query = queryUtil.getQuery(user, filter, queryUtil.lesson, queryUtil.dates);
-        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.name);
+        const query = queryUtil.getQuery(user, filter, queryUtil.lesson, queryUtil.dates, queryUtil.student);
+        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass);
 
         return { query, studentQuery };
     },

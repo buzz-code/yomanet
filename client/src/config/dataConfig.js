@@ -8,7 +8,7 @@ export default [
     {
         url: "listening",
         title: "נתוני האזנה",
-        filterFields: ["klass", "singleMegama", "lessonWithAll", "name", "dateRange", "secondRange"],
+        filterFields: ["klass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange", "secondRange"],
         isAdmin: false,
     },
     {
@@ -26,7 +26,7 @@ export default [
     {
         url: "conf",
         title: "נתוני ועידה",
-        filterFields: ["klass", "singleMegama", "lessonWithAll", "name", "dateRange"],
+        filterFields: ["klass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
     },
     {

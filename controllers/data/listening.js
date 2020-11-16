@@ -10,8 +10,8 @@ module.exports = {
         return "נתוני האזנה";
     },
     query: async function (filter, user) {
-        const query = queryUtil.getQuery(user, filter, queryUtil.dates, queryUtil.seconds, queryUtil.lesson);
-        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.megama, queryUtil.name);
+        const query = queryUtil.getQuery(user, filter, queryUtil.dates, queryUtil.seconds, queryUtil.lesson, queryUtil.student);
+        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.megama);
         const lessonQuery = queryUtil.getQuery(user, filter, queryUtil.allLessons);
 
         await queryUtil.filterStudents(query, studentQuery);
