@@ -19,6 +19,10 @@ function megama({ megama }, query) {
         query.push({ megama: new RegExp(`^(${megama.map((item) => item.value).join("|")})$`) });
 }
 
+function student({ student }, query) {
+    if (student && student.length) query.push({ EnterId: { $in: student.map((item) => item.value) } });
+}
+
 function lesson({ lesson }, query) {
     if (lesson && lesson.length)
         query.push({ Folder: new RegExp(`^(${lesson.map((item) => item.value).join("|")})$`) });
@@ -75,6 +79,7 @@ module.exports = {
     getQuery,
     klass,
     megama,
+    student,
     lesson,
     allLessons,
     name,

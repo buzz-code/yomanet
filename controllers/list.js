@@ -67,4 +67,26 @@ router.post("/megama", auth, async function (req, res) {
     res.send({ results: items });
 });
 
+router.post("/student", auth, async function (req, res) {
+    const { term } = req.body;
+
+    const query = { user: req.user.name };
+    if (term) query.name = new RegExp(term);
+    console.log("list query for url: /student", query);
+
+    const results = await Student.aggregate([
+        { $match: query },
+        { $project: { name: "$name", identityNumber: "$identityNumber" } },
+        { $project: { _id: 0, name: "$name", identityNumber: "$identityNumber" } },
+        { $sort: { name: 1, identityNumber: 1 } },
+        { $limit: 15 },
+    ]);
+
+    const items = results.map((item) => ({
+        value: item.identityNumber,
+        label: `${item.identityNumber} ${item.name}`,
+    }));
+    res.send({ results: items });
+});
+
 module.exports = router;

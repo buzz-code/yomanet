@@ -31,3 +31,12 @@ export function getMegamaList(term) {
         payload: request,
     };
 }
+
+export function getStudentList(term) {
+    const request = axios.post(`${LIST_SERVER}/student`, { term }).then((response) => response.data);
+
+    return {
+        type: GET_LIST,
+        payload: request,
+    };
+}

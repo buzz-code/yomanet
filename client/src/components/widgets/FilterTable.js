@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getLessonList, getKlassList, getMegamaList } from "../../_actions/list_actions";
+import { getLessonList, getKlassList, getMegamaList, getStudentList } from "../../_actions/list_actions";
 import EmailReportPopup from "./EmailReportPopup";
 import TypeAhead from "./TypeAhead";
 
@@ -19,6 +19,7 @@ export default function FilterTable({
     const [toDate, setToDate] = useState("");
     const [klass, setKlass] = useState([]);
     const [megama, setMegama] = useState([]);
+    const [student, setStudent] = useState([]);
     const [lesson, setLesson] = useState([]);
     const [allLessons, setAllLessons] = useState(false);
     const [fromSeconds, setFromSeconds] = useState("");
@@ -36,6 +37,7 @@ export default function FilterTable({
             toDate,
             klass,
             megama,
+            student,
             lesson,
             allLessons,
             fromSeconds,
@@ -54,6 +56,7 @@ export default function FilterTable({
         setToDate(params.toDate || "");
         setKlass(params.klass || []);
         setMegama(params.megama || []);
+        setStudent(params.student || []);
         setLesson(params.lesson || []);
         setAllLessons(params.allLessons || false);
         setFromSeconds(params.fromSeconds || "");
@@ -163,6 +166,23 @@ export default function FilterTable({
                         value={megama}
                         setValue={setMegama}
                         getOptions={getMegamaList}
+                    />
+                </div>
+            </div>
+        ),
+        student: (
+            <div className="form-group row">
+                <label htmlFor="student" className="col-sm-2">
+                    תלמידות
+                </label>
+                <div className="col">
+                    <TypeAhead
+                        id="student"
+                        multiple={true}
+                        placeholder={"בחר תלמידה..."}
+                        value={student}
+                        setValue={setStudent}
+                        getOptions={(query) => getStudentList(query)}
                     />
                 </div>
             </div>
@@ -345,6 +365,23 @@ export default function FilterTable({
                         value={megama}
                         setValue={setMegama}
                         getOptions={getMegamaList}
+                    />
+                </div>
+            </div>
+        ),
+        singleStudent: (
+            <div className="form-group row">
+                <label htmlFor="student" className="col-sm-2">
+                    תלמידה
+                </label>
+                <div className="col">
+                    <TypeAhead
+                        id="student"
+                        multiple={false}
+                        placeholder={"בחר תלמידה..."}
+                        value={student}
+                        setValue={setStudent}
+                        getOptions={(query) => getStudentList(query)}
                     />
                 </div>
             </div>
