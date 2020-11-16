@@ -52,10 +52,10 @@ module.exports = {
                 Folder: filter.lesson[0].value,
                 Current: { $in: [...keys] },
             },
-            ["Current", "FileLength"]
+            ["Current", "FileLength", "LongestListening"]
         ).lean();
         const fileLengthByKey = {};
-        fileLengths.forEach((item) => (fileLengthByKey[item.Current] = item.FileLength));
+        fileLengths.forEach((item) => (fileLengthByKey[item.Current] = item.FileLength || item.LongestListening));
 
         const headers = [
             { label: "שם התלמידה", value: "name", format: "nameWOKlass" },

@@ -6,6 +6,7 @@ const lessonInstanceSchema = mongoose.Schema({
     Folder: { type: String, trim: true },
     Current: { type: String, trim: true },
     FileLength: { type: Number },
+    LongestListening: { type: Number },
 });
 
 lessonInstanceSchema.index({ user: 1 });

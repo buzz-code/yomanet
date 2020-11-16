@@ -1,6 +1,7 @@
 const { User } = require("../models/User");
 const mongoose = require("mongoose");
 const mongoURI = "mongodb://USERNAME:PASSWORD@localhost:PORT/vocal?authSource=admin";
+// const mongoURI = "mongodb://localhost:27017/vocal";
 const { YemotPlayback } = require("../models/YemotPlayback");
 const { LessonInstance } = require("../models/LessonInstance");
 const { sendEmail } = require("../helpers/mailer");
@@ -27,10 +28,11 @@ async function main() {
             log("start process for user:", user.name);
             try {
                 const data = await YemotPlayback.aggregate()
-                    .match({ user: user.name, FileLength: { $ne: null } })
+                    .match({ user: user.name })
                     .group({
                         _id: { Folder: "$Folder", Current: "$Current" },
-                        FileLength: { $first: "$FileLength" },
+                        FileLength: { $max: "$FileLength" },
+                        LongestListening: { $max: "$TimeTotal" },
                     })
                     .project({
                         _id: 0,
@@ -38,7 +40,9 @@ async function main() {
                         Folder: "$_id.Folder",
                         Current: "$_id.Current",
                         FileLength: "$FileLength",
+                        LongestListening: "$LongestListening",
                     });
+                log(data && data[0]);
 
                 await LessonInstance.deleteMany({ user: user.name });
                 await LessonInstance.insertMany(data);
