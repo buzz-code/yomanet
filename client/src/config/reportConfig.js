@@ -8,7 +8,7 @@ export default [
     {
         url: "listeningByKlassAndLesson",
         title: "דוח האזנה לפי כיתה ומקצוע",
-        filterFields: ["singleKlass", "singleLesson", "dateRange"],
+        filterFields: ["singleKlass", "singleLesson", "name", "dateRange"],
         isAdmin: false,
     },
     {

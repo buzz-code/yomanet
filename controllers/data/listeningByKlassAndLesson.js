@@ -14,7 +14,7 @@ module.exports = {
     },
     query: async function (filter, user) {
         const query = queryUtil.getQuery(user, filter, queryUtil.lesson, queryUtil.dates);
-        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass);
+        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.name);
 
         return { query, studentQuery };
     },
