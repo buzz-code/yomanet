@@ -5,14 +5,14 @@ function getTitle(prefix, filter, ...titleParts) {
 }
 
 function singleKlass({ klass }) {
-    let title = " לכיתה ";
-    if (klass && klass.length) title += klass.map((item) => item.label).join("");
+    let title = "";
+    if (klass && klass.length) title += " לכיתה " + klass.map((item) => item.label).join("");
     return title;
 }
 
 function singleMegama({ megama }) {
-    let title = " למגמה ";
-    if (megama && megama.length) title += megama.map((item) => item.label).join("");
+    let title = "";
+    if (megama && megama.length) title += " למגמה " + megama.map((item) => item.label).join("");
     return title;
 }
 
