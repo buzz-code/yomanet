@@ -33,14 +33,14 @@ export default [
             isHideExcelButton: true,
         },
     },
-    {
-        url: "confDiploma",
-        title: "הנפקת תעודות לתלמידות - ועידה",
-        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
-        isAdmin: false,
-        filterProps: {
-            isHideEmailButton: true,
-            isHideExcelButton: true,
-        },
-    },
+    // {
+    //     url: "confDiploma",
+    //     title: "הנפקת תעודות לתלמידות - ועידה",
+    //     filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
+    //     isAdmin: false,
+    //     filterProps: {
+    //         isHideEmailButton: true,
+    //         isHideExcelButton: true,
+    //     },
+    // },
 ];

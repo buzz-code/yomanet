@@ -1,41 +1,48 @@
 const puppeteer = require("puppeteer");
 const { getSec2Min } = require("../format");
 
-const defaultStats = { Count: 0, TimeTotal: 0 };
+const createTableRow = (label, stats, lessonInstances) => {
+    const percents = lessonInstances.map(([key, value]) => Math.min(1, (stats[key] || 0) / value));
+    const avgPercent = percents.reduce((a, b) => a + b, 0) / percents.length;
+    const score = Math.floor(avgPercent * 100);
+    const timeTotal = Object.values(stats).reduce((a, b) => a + b, 0);
 
-const createTableRow = (label, stats) => `
+    return `
     <tr>
         <td>${label}</td>
-        <td>${stats.Count}</td>
-        <td>${getSec2Min(stats.TimeTotal)}</td>
-        <td>${getSec2Min(stats.Count ? stats.TimeTotal / stats.Count : 0)}</td>
+        <td>${percents.length}</td>
+        <td>${getSec2Min(timeTotal)}</td>
+        <td>${score}%</td>
     </tr>
 `;
+};
 
-const createTable = (studentData, headers) => `
+const createTable = (studentData, lessonInstances, headers) => `
     <table>
         <thead>
             <tr>
                 <th>שם השיעור</th>
                 <th>מספר שיעורים</th>
                 <th>סה"כ האזנה</th>
-                <th>זמן האזנה ממוצע</th>
+                <th>אחוז האזנה כולל</th>
             </tr>
         </thead>
         <tbody>
-            ${headers.map((item) => createTableRow(item.label, studentData[item.value] || defaultStats)).join("")}
+            ${headers
+                .map((item) => createTableRow(item.label, studentData[item.value] || {}, lessonInstances[item.value]))
+                .join("")}
         </tbody>
     </table>
     `;
 
-const createPage = (studentData, headers) => `
+const createPage = (studentData, lessonInstances, headers) => `
     <div class="page">
         <h1>${studentData.name}</h1>
-        ${createTable(studentData, headers)}
+        ${createTable(studentData, lessonInstances, headers)}
     </div>
     `;
 
-const createHtml = (data, headers) => `
+const createHtml = (listeningData, lessonInstances, headers) => `
       <html>
         <head>
           <style>
@@ -84,14 +91,14 @@ const createHtml = (data, headers) => `
             </style>
         </head>
         <body>
-            <h1>${data.length == 0 ? "לא נמצאו נתונים" : ""}</h1>
-            ${data.map((item) => createPage(item, headers)).join("")}
+            <h1>${listeningData.length == 0 ? "לא נמצאו נתונים" : ""}</h1>
+            ${listeningData.map((item) => createPage(item, lessonInstances, headers)).join("")}
         </body>
       </html>
     `;
 
-const getDiplomaReportObject = async (title, results, headers) => {
-    const html = createHtml(results, headers);
+const getDiplomaReportObject = async (title, { listeningData, lessonInstances }, headers) => {
+    const html = createHtml(listeningData, lessonInstances, headers);
     const browser = await puppeteer.launch({ headless: true, args: ["--no-sandbox"] });
     const pdf = await browser.newPage();
     await pdf.setContent(html);

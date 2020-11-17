@@ -64,24 +64,22 @@ function getAggregateForDiploma(query) {
         },
         {
             $group: {
-                _id: {
-                    EnterId: "$_id.EnterId",
-                    Folder: "$_id.Folder",
+                _id: { EnterId: "$_id.EnterId", Folder: "$_id.Folder" },
+                items: {
+                    $push: {
+                        Current: "$_id.Current",
+                        TimeTotal: "$TimeTotal",
+                    },
                 },
-                TimeTotal: { $sum: "$TimeTotal" },
-                Count: { $sum: 1 },
             },
         },
         {
             $group: {
                 _id: { EnterId: "$_id.EnterId" },
                 items: {
-                    $addToSet: {
+                    $push: {
                         Folder: "$_id.Folder",
-                        Stats: {
-                            TimeTotal: "$TimeTotal",
-                            Count: "$Count",
-                        },
+                        Stats: { $arrayToObject: { $zip: { inputs: ["$items.Current", "$items.TimeTotal"] } } },
                     },
                 },
             },

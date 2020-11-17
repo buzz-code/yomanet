@@ -1,4 +1,5 @@
 const { Lesson } = require("../../models/Lesson");
+const { LessonInstance } = require("../../models/LessonInstance");
 
 function getExtensions(data) {
     const extensions = new Set();
@@ -40,4 +41,33 @@ async function getDataById(model, aggregate) {
     return dataById;
 }
 
-module.exports = { getExtensions, getLessonByExt, getExtensionHeaders, setExtensionNames, getDataById };
+async function getLessonInstances(lessonIds, user, { fromDate, toDate }) {
+    const query = [{ user: user.name }];
+    query.push({ Folder: { $in: [...lessonIds] } });
+    query.push({ $or: [{ FileLength: { $gt: 0 } }, { LongestListening: { $gt: 0 } }] });
+    if (fromDate) query.push({ FirstListeningDate: { $gte: moment.utc(fromDate).toDate() } });
+    if (toDate) query.push({ FirstListeningDate: { $lte: moment.utc(toDate).toDate() } });
+    const lessonInstances = await LessonInstance.find({ $and: query }, [
+        "Folder",
+        "Current",
+        "FileLength",
+        "LongestListening",
+    ]).lean();
+    const lengthByFolderAndCurrent = {};
+    lessonIds.forEach(
+        (id) =>
+            (lengthByFolderAndCurrent[id] = lessonInstances
+                .filter((item) => item.Folder === id)
+                .map((item) => [item.Current, item.FileLength || item.LongestListening]))
+    );
+    return lengthByFolderAndCurrent;
+}
+
+module.exports = {
+    getExtensions,
+    getLessonByExt,
+    getExtensionHeaders,
+    setExtensionNames,
+    getDataById,
+    getLessonInstances,
+};

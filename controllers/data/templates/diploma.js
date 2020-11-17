@@ -1,7 +1,7 @@
 const { Student } = require("../../../models/Student");
 const titleUtil = require("../../../helpers/dataUtils/titleUtil");
 const queryUtil = require("../../../helpers/dataUtils/queryUtil");
-const { getLessonByExt, getExtensions, getDataById } = require("../../../helpers/dataUtils/utils");
+const { getLessonByExt, getExtensions, getDataById, getLessonInstances } = require("../../../helpers/dataUtils/utils");
 const { getAggregateForDiploma } = require("../../../helpers/dataUtils/aggregateUtil");
 
 module.exports = (model, url, title) => ({
@@ -37,18 +37,27 @@ module.exports = (model, url, title) => ({
         }
         return { isValid: false, errorMessage: "חובה לבחור כיתה או מגמה" };
     },
-    data: async function (queries, page) {
+    data: async function (queries, page, filter, user) {
         const { query, students } = await queryUtil.getQueryWithStudentIds(queries, page);
 
         const dataById = await getDataById(model, getAggregateForDiploma(query));
 
-        return students.map((item) => ({
+        const listeningData = students.map((item) => ({
             name: item.name,
             ...dataById[item.identityNumber],
         }));
+
+        const lessonIds = new Set(
+            Object.values(dataById).flatMap((item) =>
+                Object.keys(item).filter((item) => item !== "name" && item !== "EnterId")
+            )
+        );
+        const lessonInstances = await getLessonInstances(lessonIds, user, filter);
+
+        return { listeningData, lessonInstances };
     },
-    headers: async function (data, query, filter, user) {
-        const extensions = getExtensions(data);
+    headers: async function ({ listeningData }, query, filter, user) {
+        const extensions = getExtensions(listeningData);
         const lessonByExt = await getLessonByExt(user, extensions);
 
         if (filter.lesson && filter.lesson.length) {

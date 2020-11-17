@@ -79,6 +79,6 @@ registerHook(require("./dataByKlassOrMegama").confByKlassOrMegama);
 registerHook(require("./listeningByKlassAndLesson"));
 registerHook(require("./listeningByKlassPerStudent"));
 registerHook(require("./diploma").listenDiploma);
-registerHook(require("./diploma").confDiploma);
+// registerHook(require("./diploma").confDiploma);
 
 module.exports = router;
