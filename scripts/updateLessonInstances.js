@@ -23,7 +23,7 @@ async function main() {
                 useFindAndModify: false,
             })
             .then(() => log("MongoDB Connected..."));
-        const users = await User.find({ provider: "yemot" }).lean();
+        const users = await User.find().lean();
         for (const user of users) {
             log("start process for user:", user.name);
             try {
@@ -33,6 +33,7 @@ async function main() {
                         _id: { Folder: "$Folder", Current: "$Current" },
                         FileLength: { $max: "$FileLength" },
                         LongestListening: { $max: "$TimeTotal" },
+                        FirstListeningDate: { $min: "$EnterDate" },
                     })
                     .project({
                         _id: 0,
@@ -41,6 +42,7 @@ async function main() {
                         Current: "$_id.Current",
                         FileLength: "$FileLength",
                         LongestListening: "$LongestListening",
+                        FirstListeningDate: "$FirstListeningDate",
                     });
                 log(data && data[0]);
 

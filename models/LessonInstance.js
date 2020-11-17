@@ -7,6 +7,7 @@ const lessonInstanceSchema = mongoose.Schema({
     Current: { type: String, trim: true },
     FileLength: { type: Number },
     LongestListening: { type: Number },
+    FirstListeningDate: { type: Date },
 });
 
 lessonInstanceSchema.index({ user: 1 });
