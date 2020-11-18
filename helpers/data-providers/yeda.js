@@ -8,7 +8,7 @@ const getYedaController = async (username, password) => {
 
     return {
         listFiles: async function (url) {
-            const { data } = await axios.get(url, {
+            const { data } = await axios.get(`${url}dates`, {
                 headers: {
                     Authorization: `Token ${token}`,
                 },
@@ -16,7 +16,7 @@ const getYedaController = async (username, password) => {
             return data;
         },
         downloadFile: async function (url, path) {
-            return axios.get(`${url}?date=${path}&format=json`, {
+            return axios.get(`${url}list?date=${path}&format=json`, {
                 headers: {
                     Authorization: `Token ${token}`,
                 },
