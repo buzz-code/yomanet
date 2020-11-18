@@ -53,12 +53,14 @@ function getAggregateByKlassPerStudent(query) {
     ];
 }
 
-function getAggregateForDiploma(query) {
+function getAggregateForDiploma(query, reportType) {
+    const groupByField =
+        reportType === "listening" ? "$Current" : { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } };
     return [
         { $match: { $and: query } },
         {
             $group: {
-                _id: { EnterId: "$EnterId", Folder: "$Folder", Current: "$Current" },
+                _id: { EnterId: "$EnterId", Folder: "$Folder", Group: groupByField },
                 TimeTotal: { $sum: "$TimeTotal" },
             },
         },
@@ -67,7 +69,7 @@ function getAggregateForDiploma(query) {
                 _id: { EnterId: "$_id.EnterId", Folder: "$_id.Folder" },
                 items: {
                     $push: {
-                        Current: "$_id.Current",
+                        Group: "$_id.Group",
                         TimeTotal: "$TimeTotal",
                     },
                 },
@@ -79,7 +81,7 @@ function getAggregateForDiploma(query) {
                 items: {
                     $push: {
                         Folder: "$_id.Folder",
-                        Stats: { $arrayToObject: { $zip: { inputs: ["$items.Current", "$items.TimeTotal"] } } },
+                        Stats: { $arrayToObject: { $zip: { inputs: ["$items.Group", "$items.TimeTotal"] } } },
                     },
                 },
             },

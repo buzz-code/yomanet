@@ -41,15 +41,18 @@ async function getDataById(model, aggregate) {
     return dataById;
 }
 
-async function getLessonInstances(lessonIds, user, { fromDate, toDate }) {
+async function getLessonInstances(lessonIds, user, { fromDate, toDate }, reportType) {
     const query = [{ user: user.name }];
     query.push({ Folder: { $in: [...lessonIds] } });
     query.push({ $or: [{ FileLength: { $gt: 0 } }, { LongestListening: { $gt: 0 } }] });
+    query.push({ type: reportType });
     if (fromDate) query.push({ FirstListeningDate: { $gte: moment.utc(fromDate).toDate() } });
     if (toDate) query.push({ FirstListeningDate: { $lte: moment.utc(toDate).toDate() } });
+    const groupByField = reportType === "listening" ? "Current" : "EnterDate";
+
     const lessonInstances = await LessonInstance.find({ $and: query }, [
         "Folder",
-        "Current",
+        groupByField,
         "FileLength",
         "LongestListening",
     ]).lean();
@@ -58,8 +61,14 @@ async function getLessonInstances(lessonIds, user, { fromDate, toDate }) {
         (id) =>
             (lengthByFolderAndCurrent[id] = lessonInstances
                 .filter((item) => item.Folder === id)
-                .map((item) => [item.Current, item.FileLength || item.LongestListening]))
+                .map((item) => [item[groupByField], item.FileLength || item.LongestListening]))
     );
+    if (reportType === "conf") {
+        Object.values(lengthByFolderAndCurrent)
+            .flatMap((item) => item)
+            .forEach((item) => (item[0] = item[0].toISOString().slice(0, 10)));
+    }
+    
     return lengthByFolderAndCurrent;
 }
 

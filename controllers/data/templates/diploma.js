@@ -4,7 +4,7 @@ const queryUtil = require("../../../helpers/dataUtils/queryUtil");
 const { getLessonByExt, getExtensions, getDataById, getLessonInstances } = require("../../../helpers/dataUtils/utils");
 const { getAggregateForDiploma } = require("../../../helpers/dataUtils/aggregateUtil");
 
-module.exports = (model, url, title) => ({
+module.exports = (model, url, title, reportType) => ({
     url,
     title: function (filter) {
         return titleUtil.getTitle(
@@ -40,7 +40,7 @@ module.exports = (model, url, title) => ({
     data: async function (queries, page, filter, user) {
         const { query, students } = await queryUtil.getQueryWithStudentIds(queries, page);
 
-        const dataById = await getDataById(model, getAggregateForDiploma(query));
+        const dataById = await getDataById(model, getAggregateForDiploma(query, reportType));
 
         const listeningData = students.map((item) => ({
             name: item.name,
@@ -52,7 +52,7 @@ module.exports = (model, url, title) => ({
                 Object.keys(item).filter((item) => item !== "name" && item !== "EnterId")
             )
         );
-        const lessonInstances = await getLessonInstances(lessonIds, user, filter);
+        const lessonInstances = await getLessonInstances(lessonIds, user, filter, reportType);
 
         return { listeningData, lessonInstances };
     },
