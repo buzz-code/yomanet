@@ -1,6 +1,11 @@
 const { Lesson } = require("../../models/Lesson");
 const { LessonInstance } = require("../../models/LessonInstance");
 
+const groupByField = {
+    listening: "Current",
+    conf: "EnterDate",
+};
+
 function getExtensions(data) {
     const extensions = new Set();
     data.forEach((item) => {
@@ -48,11 +53,10 @@ async function getLessonInstancesForDiploma(lessonIds, user, { fromDate, toDate 
     query.push({ type: reportType });
     if (fromDate) query.push({ FirstListeningDate: { $gte: moment.utc(fromDate).toDate() } });
     if (toDate) query.push({ FirstListeningDate: { $lte: moment.utc(toDate).toDate() } });
-    const groupByField = reportType === "listening" ? "Current" : "EnterDate";
 
     const lessonInstances = await LessonInstance.find({ $and: query }, [
         "Folder",
-        groupByField,
+        groupByField[reportType],
         "FileLength",
         "LongestListening",
     ]).lean();
@@ -61,7 +65,7 @@ async function getLessonInstancesForDiploma(lessonIds, user, { fromDate, toDate 
         (id) =>
             (lengthByFolderAndCurrent[id] = lessonInstances
                 .filter((item) => item.Folder === id)
-                .map((item) => [item[groupByField], item.FileLength || item.LongestListening]))
+                .map((item) => [item[groupByField[reportType]], item.FileLength || item.LongestListening]))
     );
 
     return lengthByFolderAndCurrent;

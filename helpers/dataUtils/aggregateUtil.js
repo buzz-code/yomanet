@@ -1,3 +1,8 @@
+const groupByField = {
+    listening: "$Current",
+    conf: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
+};
+
 function getAggregateByKlassAndLesson(query) {
     return [
         { $match: { $and: query } },
@@ -54,13 +59,11 @@ function getAggregateByKlassPerStudent(query) {
 }
 
 function getAggregateForDiploma(query, reportType) {
-    const groupByField =
-        reportType === "listening" ? "$Current" : { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } };
     return [
         { $match: { $and: query } },
         {
             $group: {
-                _id: { EnterId: "$EnterId", Folder: "$Folder", Group: groupByField },
+                _id: { EnterId: "$EnterId", Folder: "$Folder", Group: groupByField[reportType] },
                 TimeTotal: { $sum: "$TimeTotal" },
             },
         },
