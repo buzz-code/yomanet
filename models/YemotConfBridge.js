@@ -18,6 +18,7 @@ const yemotConfBridgeSchema = mongoose.Schema({
     ConfBridge: { type: String, trim: true },
     Type: { type: String, trim: true },
     TimeTotal: { type: Number },
+    FileLength: { type: Number },
 });
 
 yemotConfBridgeSchema.index({ user: 1 });
