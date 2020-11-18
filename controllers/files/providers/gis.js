@@ -5,7 +5,7 @@ const prettyBytes = require("pretty-bytes");
 
 module.exports = {
     listFiles: async (hook, user, subPath) => {
-        if (!user.gisUsername || !user.gisPassword) {
+        if (!user.providerUsername || !user.providerPassword) {
             return { error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור למערכת של GIS" };
         }
 
@@ -14,7 +14,7 @@ module.exports = {
         }
 
         try {
-            const client = await getFtpClient("gis", user.gisUsername, user.gisPassword);
+            const client = await getFtpClient("gis", user.providerUsername, user.providerPassword);
             const files = await client.list();
             const loadedFiles = await YemotFile.find({ user: user.name }).lean();
             const results = files
@@ -39,7 +39,7 @@ module.exports = {
         }
     },
     processFile: async (hook, user, fullPath) => {
-        if (!user.gisUsername || !user.gisPassword) {
+        if (!user.providerUsername || !user.providerPassword) {
             return { error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור למערכת של GIS" };
         }
         const currentlyProcessing = await YemotFile.countDocuments({ user: user.name, status: "בטעינה" });

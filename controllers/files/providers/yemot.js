@@ -5,7 +5,7 @@ const processYemotFile = require("../process-file/process-yemot-file");
 
 module.exports = {
     listFiles: async (hook, user, subPath) => {
-        if (!user.yemotUsername || !user.yemotPassword) {
+        if (!user.providerUsername || !user.providerPassword) {
             return { error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור לימות המשיח" };
         }
 
@@ -15,9 +15,9 @@ module.exports = {
 
         try {
             const { data } = await doYemotAction(
-                user.yemotUsername,
-                user.yemotPassword,
-                user.yemotIsPrivate,
+                user.providerUsername,
+                user.providerPassword,
+                user.providerIsPrivate,
                 "GetIvrTree",
                 { path: hook.yemotPath + "/" + (subPath || "") }
             );
@@ -49,7 +49,7 @@ module.exports = {
         }
     },
     processFile: async (hook, user, fullPath) => {
-        if (!user.yemotUsername || !user.yemotPassword) {
+        if (!user.providerUsername || !user.providerPassword) {
             return { error: true, errorMessage: "לא ניתן לשאוב קבצים מכיוון שלא מוגדר חיבור לימות המשיח" };
         }
         const currentlyProcessing = await YemotFile.countDocuments({ user: user.name, status: "בטעינה" });

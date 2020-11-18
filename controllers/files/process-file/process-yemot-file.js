@@ -123,7 +123,7 @@ async function uploadFile(user, fullPath, fileType) {
         const opts = {}; //{ session };
         console.log("start processing yemot file", defaultItem);
 
-        const tempPath = await downloadFile(user.yemotUsername, user.yemotPassword, user.yemotIsPrivate, fullPath);
+        const tempPath = await downloadFile(user.providerUsername, user.providerPassword, user.providerIsPrivate, fullPath);
         await readFile(tempPath, fileType, defaultItem, opts);
         await YemotFile.findOneAndUpdate({ user: user.name, fullPath }, { $set: { status: "נטען בהצלחה" } }, opts);
         console.log("finish processing yemot file", defaultItem);
@@ -143,7 +143,7 @@ async function uploadFile(user, fullPath, fileType) {
 module.exports = { uploadFile };
 
 // uploadFile(
-//     { name: "asdf", yemotUsername: "033069265", yemotPassword: "7525" },
+//     { name: "asdf", providerUsername: "033069265", providerPassword: "7525" },
 //     "ivr2:Log/LogPlaybackPlayStop/LogPlaybackPlayStop.2020-10-28.ymgr",
 //     "LogPlaybackPlayStop"
 // ).then(() => console.log("done"));

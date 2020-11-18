@@ -111,7 +111,7 @@ async function uploadFile(user, fullPath, fileType) {
         const opts = {}; //{ session };
         console.log("start processing gis file", defaultItem);
 
-        const tempPath = await downloadFile(user.gisUsername, user.gisPassword, fullPath);
+        const tempPath = await downloadFile(user.providerUsername, user.providerPassword, fullPath);
         await readFile(tempPath, fileType, defaultItem, opts);
         await YemotFile.findOneAndUpdate({ user: user.name, fullPath }, { $set: { status: "נטען בהצלחה" } }, opts);
         console.log("finish processing gis file", defaultItem);
