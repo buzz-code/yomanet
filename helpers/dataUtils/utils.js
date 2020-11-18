@@ -41,7 +41,7 @@ async function getDataById(model, aggregate) {
     return dataById;
 }
 
-async function getLessonInstances(lessonIds, user, { fromDate, toDate }, reportType) {
+async function getLessonInstancesForDiploma(lessonIds, user, { fromDate, toDate }, reportType) {
     const query = [{ user: user.name }];
     query.push({ Folder: { $in: [...lessonIds] } });
     query.push({ $or: [{ FileLength: { $gt: 0 } }, { LongestListening: { $gt: 0 } }] });
@@ -63,12 +63,7 @@ async function getLessonInstances(lessonIds, user, { fromDate, toDate }, reportT
                 .filter((item) => item.Folder === id)
                 .map((item) => [item[groupByField], item.FileLength || item.LongestListening]))
     );
-    if (reportType === "conf") {
-        Object.values(lengthByFolderAndCurrent)
-            .flatMap((item) => item)
-            .forEach((item) => (item[0] = item[0].toISOString().slice(0, 10)));
-    }
-    
+
     return lengthByFolderAndCurrent;
 }
 
@@ -78,5 +73,5 @@ module.exports = {
     getExtensionHeaders,
     setExtensionNames,
     getDataById,
-    getLessonInstances,
+    getLessonInstancesForDiploma,
 };

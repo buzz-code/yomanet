@@ -54,7 +54,10 @@ async function main() {
                 const conf = await YemotConfBridge.aggregate()
                     .match({ user: user.name })
                     .group({
-                        _id: { Folder: "$Folder", EnterDate: "$EnterDate" },
+                        _id: {
+                            Folder: "$Folder",
+                            EnterDate: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
+                        },
                         FileLength: { $max: "$FileLength" },
                         LongestListening: { $max: "$TimeTotal" },
                         FirstListeningDate: { $min: "$EnterDate" },

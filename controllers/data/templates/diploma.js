@@ -1,7 +1,7 @@
 const { Student } = require("../../../models/Student");
 const titleUtil = require("../../../helpers/dataUtils/titleUtil");
 const queryUtil = require("../../../helpers/dataUtils/queryUtil");
-const { getLessonByExt, getExtensions, getDataById, getLessonInstances } = require("../../../helpers/dataUtils/utils");
+const { getLessonByExt, getExtensions, getDataById, getLessonInstancesForDiploma } = require("../../../helpers/dataUtils/utils");
 const { getAggregateForDiploma } = require("../../../helpers/dataUtils/aggregateUtil");
 
 module.exports = (model, url, title, reportType) => ({
@@ -52,7 +52,7 @@ module.exports = (model, url, title, reportType) => ({
                 Object.keys(item).filter((item) => item !== "name" && item !== "EnterId")
             )
         );
-        const lessonInstances = await getLessonInstances(lessonIds, user, filter, reportType);
+        const lessonInstances = await getLessonInstancesForDiploma(lessonIds, user, filter, reportType);
 
         return { listeningData, lessonInstances };
     },
