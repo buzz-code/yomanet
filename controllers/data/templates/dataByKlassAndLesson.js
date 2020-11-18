@@ -8,21 +8,35 @@ const { getSec2Min } = require("../../../helpers/format");
 module.exports = (model, url, title, reportType) => ({
     url,
     title: function (filter) {
-        return titleUtil.getTitle(title, filter, titleUtil.singleKlass, titleUtil.singleLesson, titleUtil.dates);
+        return titleUtil.getTitle(
+            title,
+            filter,
+            titleUtil.singleKlass,
+            titleUtil.singleMegama,
+            titleUtil.singleLesson,
+            titleUtil.dates
+        );
     },
     query: async function (filter, user) {
         const query = queryUtil.getQuery(user, filter, queryUtil.lesson, queryUtil.dates, queryUtil.student);
-        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass);
+        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.megama);
 
         return { query, studentQuery };
     },
     validate: async function (query, user, filter) {
-        if (filter.klass && filter.klass.length && filter.lesson && filter.lesson.length) {
+        if (
+            ((filter.klass && filter.klass.length) || (filter.megama && filter.megama.length)) &&
+            filter.lesson &&
+            filter.lesson.length
+        ) {
             return { isValid: true, errorMessage: null };
         }
         return {
             isValid: false,
-            errorMessage: filter.klass && filter.klass.length ? "חובה לבחור שיעור" : "חובה לבחור כיתה",
+            errorMessage:
+                (filter.klass && filter.klass.length) || (filter.megama && filter.megama.length)
+                    ? "חובה לבחור שיעור"
+                    : "חובה לבחור כיתה או מגמה",
         };
     },
     data: async function (queries, page, filter) {

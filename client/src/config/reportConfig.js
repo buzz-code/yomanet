@@ -7,14 +7,14 @@ export default [
     },
     {
         url: "listeningByKlassAndLesson",
-        title: "דוח האזנה לפי כיתה ומקצוע",
-        filterFields: ["singleKlass", "singleLesson", "singleStudent", "dateRange"],
+        title: "דוח האזנה לפי כיתה או מגמה ומקצוע",
+        filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
         isAdmin: false,
     },
     {
         url: "confByKlassAndLesson",
-        title: "דוח ועידה לפי כיתה ומקצוע",
-        filterFields: ["singleKlass", "singleLesson", "singleStudent", "dateRange"],
+        title: "דוח ועידה לפי כיתה או מגמה ומקצוע",
+        filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
         isAdmin: false,
     },
     {
