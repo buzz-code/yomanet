@@ -1,16 +1,14 @@
-const { YemotPlayback } = require("../../models/YemotPlayback");
-const { Student } = require("../../models/Student");
-const titleUtil = require("../../helpers/dataUtils/titleUtil");
-const queryUtil = require("../../helpers/dataUtils/queryUtil");
-const { getDataById } = require("../../helpers/dataUtils/utils");
-const { getAggregateByKlassAndLesson } = require("../../helpers/dataUtils/aggregateUtil");
-const { LessonInstance } = require("../../models/LessonInstance");
-const { getSec2Min } = require("../../helpers/format");
+const { Student } = require("../../../models/Student");
+const titleUtil = require("../../../helpers/dataUtils/titleUtil");
+const queryUtil = require("../../../helpers/dataUtils/queryUtil");
+const { getDataById, getLessonInstancesForKlassAndLesson } = require("../../../helpers/dataUtils/utils");
+const { getAggregateByKlassAndLesson } = require("../../../helpers/dataUtils/aggregateUtil");
+const { getSec2Min } = require("../../../helpers/format");
 
-module.exports = {
-    url: "/listeningByKlassAndLesson",
+module.exports = (model, url, title, reportType) => ({
+    url,
     title: function (filter) {
-        return titleUtil.getTitle("דוח האזנה", filter, titleUtil.singleKlass, titleUtil.singleLesson, titleUtil.dates);
+        return titleUtil.getTitle(title, filter, titleUtil.singleKlass, titleUtil.singleLesson, titleUtil.dates);
     },
     query: async function (filter, user) {
         const query = queryUtil.getQuery(user, filter, queryUtil.lesson, queryUtil.dates, queryUtil.student);
@@ -30,8 +28,9 @@ module.exports = {
     data: async function (queries, page, filter) {
         const { query, students } = await queryUtil.getQueryWithStudentIds(queries, page);
 
-        const dataById = await getDataById(YemotPlayback, getAggregateByKlassAndLesson(query));
+        const dataById = await getDataById(model, getAggregateByKlassAndLesson(query, reportType));
 
+        console.log(dataById);
         return students.map((item) => ({
             name: item.name,
             extension: filter.lesson[0].label,
@@ -46,16 +45,12 @@ module.exports = {
             }
         });
 
-        const fileLengths = await LessonInstance.find(
-            {
-                user: user.name,
-                Folder: filter.lesson[0].value,
-                Current: { $in: [...keys] },
-            },
-            ["Current", "FileLength", "LongestListening"]
-        ).lean();
-        const fileLengthByKey = {};
-        fileLengths.forEach((item) => (fileLengthByKey[item.Current] = item.FileLength || item.LongestListening));
+        const fileLengthByKey = await getLessonInstancesForKlassAndLesson(
+            filter.lesson[0].value,
+            keys,
+            user,
+            reportType
+        );
 
         const headers = [
             { label: "שם התלמידה", value: "name", format: "nameWOKlass" },
@@ -76,4 +71,4 @@ module.exports = {
         const { studentQuery } = queries;
         return await Student.countDocuments({ $and: studentQuery });
     },
-};
+});

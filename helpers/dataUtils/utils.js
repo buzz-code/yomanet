@@ -71,6 +71,24 @@ async function getLessonInstancesForDiploma(lessonIds, user, { fromDate, toDate 
     return lengthByFolderAndCurrent;
 }
 
+async function getLessonInstancesForKlassAndLesson(folder, keys, user, reportType) {
+    const fileLengths = await LessonInstance.find(
+        {
+            user: user.name,
+            Folder: folder,
+            [groupByField[reportType]]: { $in: [...keys] },
+            type: reportType,
+        },
+        [groupByField[reportType], "FileLength", "LongestListening"]
+    ).lean();
+    const fileLengthByKey = {};
+    fileLengths.forEach(
+        (item) => (fileLengthByKey[item[groupByField[reportType]]] = item.FileLength || item.LongestListening)
+    );
+
+    return fileLengthByKey;
+}
+
 module.exports = {
     getExtensions,
     getLessonByExt,
@@ -78,4 +96,5 @@ module.exports = {
     setExtensionNames,
     getDataById,
     getLessonInstancesForDiploma,
+    getLessonInstancesForKlassAndLesson,
 };

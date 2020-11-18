@@ -3,22 +3,22 @@ const groupByField = {
     conf: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
 };
 
-function getAggregateByKlassAndLesson(query) {
+function getAggregateByKlassAndLesson(query, reportType) {
     return [
         { $match: { $and: query } },
         {
             $group: {
-                _id: { EnterId: "$EnterId", Folder: "$Folder", Current: "$Current" },
+                _id: { EnterId: "$EnterId", Folder: "$Folder", Group: groupByField[reportType] },
                 TimeTotal: { $sum: "$TimeTotal" },
             },
         },
         {
             $group: {
                 _id: { EnterId: "$_id.EnterId", Folder: "$_id.Folder" },
-                items: { $addToSet: { Current: "$_id.Current", TimeTotal: { $sum: "$TimeTotal" } } },
+                items: { $addToSet: { Group: "$_id.Group", TimeTotal: { $sum: "$TimeTotal" } } },
             },
         },
-        { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.Current", "$items.TimeTotal"] } } } } },
+        { $project: { tmp: { $arrayToObject: { $zip: { inputs: ["$items.Group", "$items.TimeTotal"] } } } } },
         { $addFields: { "tmp.EnterId": "$_id.EnterId", "tmp.Folder": "$_id.Folder" } },
         { $replaceRoot: { newRoot: "$tmp" } },
     ];

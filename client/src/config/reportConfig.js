@@ -12,6 +12,12 @@ export default [
         isAdmin: false,
     },
     {
+        url: "confByKlassAndLesson",
+        title: "דוח ועידה לפי כיתה ומקצוע",
+        filterFields: ["singleKlass", "singleLesson", "singleStudent", "dateRange"],
+        isAdmin: false,
+    },
+    {
         url: "listeningByKlassPerStudent",
         title: "דוח האזנה כללי לכיתה",
         filterFields: ["singleKlass", "dateRange"],
