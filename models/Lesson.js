@@ -6,6 +6,7 @@ const lessonSchema = mongoose.Schema({
     extension: { type: String, trim: true },
     messageName: { type: String, trim: true },
     megama: [{ type: String, trim: true }],
+    displayName: { type: String, trim: true },
 });
 
 lessonSchema.index({ user: 1 });

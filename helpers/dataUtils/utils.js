@@ -19,7 +19,7 @@ function getExtensions(data) {
 async function getLessonByExt(user, extensions) {
     const lessons = await Lesson.find({ user: user.name, extension: { $in: [...extensions] } }).lean();
     const lessonByExt = {};
-    lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
+    lessons.forEach((item) => (lessonByExt[item.extension] = item.displayName || item.messageName));
     return lessonByExt;
 }
 

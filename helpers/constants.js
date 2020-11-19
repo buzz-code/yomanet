@@ -3,6 +3,7 @@ module.exports = {
         { label: "שלוחה", value: "extension" },
         { label: "שם הודעה", value: "messageName" },
         { label: "כיתה/ מגמה/ התמחות", value: "megama", format: "array" },
+        { label: "השם לתעודה", value: "displayName" },
     ],
     studentHeaders: [
         { label: "תעודת זהות", value: "identityNumber" },
