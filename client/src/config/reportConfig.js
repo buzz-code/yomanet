@@ -12,26 +12,14 @@ export default [
         isAdmin: false,
     },
     {
-        url: "confByKlassAndLesson",
-        title: "דוח ועידה לפי כיתה או מגמה ומקצוע",
-        filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
-        isAdmin: false,
-    },
-    {
         url: "listeningByKlassPerStudent",
         title: "דוח האזנה כללי לכיתה",
         filterFields: ["singleKlass", "dateRange"],
         isAdmin: false,
     },
     {
-        url: "confByKlassOrMegama",
-        title: "דוח ועידה לפי כיתה או מגמה",
-        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
-        isAdmin: false,
-    },
-    {
         url: "listeningDiploma",
-        title: "הנפקת תעודות לתלמידות",
+        title: "הנפקת תעודות האזנה לתלמידות",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
         filterProps: {
@@ -40,8 +28,20 @@ export default [
         },
     },
     {
+        url: "confByKlassOrMegama",
+        title: "דוח ועידה לפי כיתה או מגמה",
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
+        isAdmin: false,
+    },
+    {
+        url: "confByKlassAndLesson",
+        title: "דוח ועידה לפי כיתה או מגמה ומקצוע",
+        filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
+        isAdmin: false,
+    },
+    {
         url: "confDiploma",
-        title: "הנפקת תעודות לתלמידות - ועידה",
+        title: "הנפקת תעודות ועידה לתלמידות",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
         filterProps: {
