@@ -1,7 +1,7 @@
 const { getDateList } = require("../../../helpers/utils");
 const { YemotPlayback } = require("../../../models/YemotPlayback");
-const { Lesson } = require("../../../models/Lesson");
 const queryUtil = require("../../../helpers/dataUtils/queryUtil");
+const { getLessonByExt } = require("../../../helpers/dataUtils/utils");
 
 module.exports = {
     type: "bar",
@@ -37,9 +37,10 @@ module.exports = {
             .sort({ count: -1 })
             .limit(10);
 
-        const lessons = await Lesson.find({ user, extension: { $in: data.map((item) => item._id) } }).lean();
-        const lessonByExt = {};
-        lessons.forEach((item) => (lessonByExt[item.extension] = item.messageName));
+        const lessonByExt = await getLessonByExt(
+            { name: user },
+            data.map((item) => item._id)
+        );
 
         return {
             datasets: [
