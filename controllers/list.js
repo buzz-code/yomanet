@@ -69,22 +69,28 @@ router.post("/megama", auth, async function (req, res) {
 
 router.post("/student", auth, async function (req, res) {
     const { term } = req.body;
+    const klassRegex = /[א-ת]\d/;
 
     const query = { user: req.user.name };
-    if (term) query.name = new RegExp(term);
+    if (term) {
+        const klass = term.match(klassRegex);
+        const name = term.replace(klassRegex, "").replace(/^ /, "^");
+        if (name !== "^") query.name = new RegExp(name);
+        if (klass) query.fullKlassName = new RegExp(klass[0]);
+    }
     console.log("list query for url: /student", query);
 
     const results = await Student.aggregate([
         { $match: query },
-        { $project: { name: "$name", identityNumber: "$identityNumber" } },
-        { $project: { _id: 0, name: "$name", identityNumber: "$identityNumber" } },
-        { $sort: { name: 1, identityNumber: 1 } },
+        { $project: { fullKlassName: "$fullKlassName", name: "$name", identityNumber: "$identityNumber" } },
+        { $project: { _id: 0, fullKlassName: "$fullKlassName", name: "$name", identityNumber: "$identityNumber" } },
+        { $sort: { fullKlassName: 1, name: 1, identityNumber: 1 } },
         { $limit: 15 },
     ]);
 
     const items = results.map((item) => ({
         value: item.identityNumber,
-        label: `${item.identityNumber} ${item.name}`,
+        label: `${item.fullKlassName} ${item.name} ${item.identityNumber}`,
     }));
     res.send({ results: items });
 });

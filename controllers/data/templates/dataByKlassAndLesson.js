@@ -18,8 +18,8 @@ module.exports = (model, url, title, reportType) => ({
         );
     },
     query: async function (filter, user) {
-        const query = queryUtil.getQuery(user, filter, queryUtil.lesson, queryUtil.dates, queryUtil.student);
-        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.megama);
+        const query = queryUtil.getQuery(user, filter, queryUtil.lesson, queryUtil.dates);
+        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.megama, queryUtil.student);
 
         return { query, studentQuery };
     },

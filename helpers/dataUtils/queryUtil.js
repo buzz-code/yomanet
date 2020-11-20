@@ -20,7 +20,7 @@ function megama({ megama }, query) {
 }
 
 function student({ student }, query) {
-    if (student && student.length) query.push({ EnterId: { $in: student.map((item) => item.value) } });
+    if (student && student.length) query.push({ identityNumber: { $in: student.map((item) => item.value) } });
 }
 
 function lesson({ lesson }, query) {

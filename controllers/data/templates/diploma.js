@@ -1,7 +1,12 @@
 const { Student } = require("../../../models/Student");
 const titleUtil = require("../../../helpers/dataUtils/titleUtil");
 const queryUtil = require("../../../helpers/dataUtils/queryUtil");
-const { getLessonByExt, getExtensions, getDataById, getLessonInstancesForDiploma } = require("../../../helpers/dataUtils/utils");
+const {
+    getLessonByExt,
+    getExtensions,
+    getDataById,
+    getLessonInstancesForDiploma,
+} = require("../../../helpers/dataUtils/utils");
 const { getAggregateForDiploma } = require("../../../helpers/dataUtils/aggregateUtil");
 
 module.exports = (model, url, title, reportType) => ({
@@ -17,8 +22,8 @@ module.exports = (model, url, title, reportType) => ({
         );
     },
     query: async function (filter, user) {
-        const query = queryUtil.getQuery(user, filter, queryUtil.dates, queryUtil.lesson, queryUtil.student);
-        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.megama);
+        const query = queryUtil.getQuery(user, filter, queryUtil.dates, queryUtil.lesson);
+        const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.megama, queryUtil.student);
         const lessonQuery = queryUtil.getQuery(user, filter, queryUtil.allLessons);
 
         await queryUtil.filterLessons(query, lessonQuery);
