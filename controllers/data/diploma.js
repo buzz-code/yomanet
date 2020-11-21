@@ -6,4 +6,7 @@ const confDiploma = diploma(YemotConfBridge, "/confDiploma", "תעודת ועי�
 const { YemotPlayback } = require("../../models/YemotPlayback");
 const listenDiploma = diploma(YemotPlayback, "/listeningDiploma", "תעודת האזנה", "listening");
 
-module.exports = { confDiploma, listenDiploma };
+const { YemotPlayDir } = require("../../models/YemotPlayDir");
+const recordDiploma = diploma(YemotPlayDir, "/recordDiploma", "תעודת שיעורים מוקלטים", "record");
+
+module.exports = { confDiploma, listenDiploma, recordDiploma };

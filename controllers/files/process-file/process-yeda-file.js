@@ -1,12 +1,14 @@
 const { YemotPlayback } = require("../../../models/YemotPlayback");
 const { YemotFile } = require("../../../models/YemotFile");
 const { YemotConfBridge } = require("../../../models/YemotConfBridge");
+const { YemotPlayDir } = require("../../../models/YemotPlayDir");
 const moment = require("moment");
 const { getYedaController } = require("../../../helpers/data-providers/yeda");
 
 const models = {
     LogPlaybackPlayStop: YemotPlayback,
     LogConfBridgeEnterExit: YemotConfBridge,
+    LogPlayDirTimeEnterExit: YemotPlayDir,
 };
 
 const downloadFile = async (username, password, url, path) => {

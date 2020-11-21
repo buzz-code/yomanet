@@ -38,5 +38,6 @@ function registerHook(hook) {
 
 registerHook(require("./hooks/listening"));
 registerHook(require("./hooks/conf"));
+registerHook(require("./hooks/record"));
 
 module.exports = router;

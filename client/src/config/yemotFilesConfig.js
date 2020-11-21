@@ -7,4 +7,8 @@ export default [
         url: "conf",
         title: "רשימת קבצי ועידה",
     },
+    {
+        url: "record",
+        title: "רשימת קבצי הקלטות",
+    },
 ];

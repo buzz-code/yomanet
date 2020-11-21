@@ -30,6 +30,12 @@ export default [
         isAdmin: false,
     },
     {
+        url: "record",
+        title: "נתוני שיעורים מוקלטים",
+        filterFields: ["klass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
+        isAdmin: false,
+    },
+    {
         url: "file",
         title: "קבצים שהועלו",
         filterFields: [],

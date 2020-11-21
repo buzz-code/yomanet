@@ -4,6 +4,7 @@ const { LessonInstance } = require("../../models/LessonInstance");
 const groupByField = {
     listening: "Current",
     conf: "EnterDate",
+    record: "EnterDate",
 };
 
 function getExtensions(data) {

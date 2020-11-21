@@ -1,6 +1,7 @@
 const groupByField = {
     listening: "$Current",
     conf: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
+    record: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
 };
 
 function getAggregateByKlassAndLesson(query, reportType) {

@@ -4,6 +4,7 @@ const { YemotPlayback } = require("../../models/YemotPlayback");
 const { Lesson } = require("../../models/Lesson");
 const { Student } = require("../../models/Student");
 const { YemotConfBridge } = require("../../models/YemotConfBridge");
+const { YemotPlayDir } = require("../../models/YemotPlayDir");
 const { getPagingConfig } = require("../../helpers/utils");
 
 module.exports = {
@@ -30,6 +31,7 @@ module.exports = {
                 const isAdmin = user.role !== 0 ? "כן" : "לא";
                 const listening = await YemotPlayback.countDocuments(query);
                 const conf = await YemotConfBridge.countDocuments(query);
+                const record = await YemotPlayDir.countDocuments(query);
                 const lesson = await Lesson.countDocuments(query);
                 const student = await Student.countDocuments(query);
 
@@ -44,6 +46,7 @@ module.exports = {
                     isAdmin,
                     listening,
                     conf,
+                    record,
                     lesson,
                     student,
                 };

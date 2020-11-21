@@ -1,6 +1,7 @@
 const { YemotPlayback } = require("../../../models/YemotPlayback");
 const { YemotFile } = require("../../../models/YemotFile");
 const { YemotConfBridge } = require("../../../models/YemotConfBridge");
+const { YemotPlayDir } = require("../../../models/YemotPlayDir");
 const readline = require("readline");
 const fs = require("fs");
 const path = require("path");
@@ -13,6 +14,7 @@ const constants = require("../../../helpers/constants");
 const models = {
     LogPlaybackPlayStop: YemotPlayback,
     LogConfBridgeEnterExit: YemotConfBridge,
+    LogPlayDirTimeEnterExit: YemotPlayDir,
 };
 
 const downloadFile = async (username, password, path) => {

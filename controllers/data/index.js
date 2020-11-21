@@ -72,14 +72,18 @@ registerHook(require("./listening"));
 registerHook(require("./lesson"));
 registerHook(require("./student"));
 registerHook(require("./conf"));
+registerHook(require("./record"));
 registerHook(require("./user"));
 registerHook(require("./file"));
 registerHook(require("./dataByKlassOrMegama").listeningByKlassOrMegama);
 registerHook(require("./dataByKlassOrMegama").confByKlassOrMegama);
+registerHook(require("./dataByKlassOrMegama").recordByKlassOrMegama);
 registerHook(require("./dataByKlassAndLesson").listeningByKlassAndLesson);
 registerHook(require("./dataByKlassAndLesson").confByKlassAndLesson);
+registerHook(require("./dataByKlassAndLesson").recordByKlassAndLesson);
 registerHook(require("./listeningByKlassPerStudent"));
 registerHook(require("./diploma").listenDiploma);
 registerHook(require("./diploma").confDiploma);
+registerHook(require("./diploma").recordDiploma);
 
 module.exports = router;

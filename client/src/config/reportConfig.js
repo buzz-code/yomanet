@@ -49,4 +49,26 @@ export default [
             isHideExcelButton: true,
         },
     },
+    {
+        url: "recordByKlassOrMegama",
+        title: "דוח שיעורים מוקלטים לפי כיתה או מגמה",
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
+        isAdmin: false,
+    },
+    {
+        url: "recordByKlassAndLesson",
+        title: "דוח שיעורים מוקלטים לפי כיתה או מגמה ומקצוע",
+        filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
+        isAdmin: false,
+    },
+    {
+        url: "recordDiploma",
+        title: "הנפקת תעודות שיעורים מוקלטים לתלמידות",
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
+        isAdmin: false,
+        filterProps: {
+            isHideEmailButton: true,
+            isHideExcelButton: true,
+        },
+    },
 ];

@@ -1,6 +1,7 @@
 const { YemotPlayback } = require("../../../models/YemotPlayback");
 const { YemotFile } = require("../../../models/YemotFile");
 const { YemotConfBridge } = require("../../../models/YemotConfBridge");
+const { YemotPlayDir } = require("../../../models/YemotPlayDir");
 const readline = require("readline");
 const fs = require("fs");
 const path = require("path");
@@ -11,6 +12,7 @@ const { doYemotAction } = require("../../../helpers/data-providers/yemot");
 const models = {
     LogPlaybackPlayStop: YemotPlayback,
     LogConfBridgeEnterExit: YemotConfBridge,
+    LogPlayDirTimeEnterExit: YemotPlayDir,
 };
 
 const downloadFile = async (username, password, isPrivateYemot, path) => {
@@ -60,7 +62,7 @@ const getItemFromLine = (line, defaultItem) => {
         const [key, value] = pair.split("#");
         item[key] = getValue(key, value, item);
     });
-    if (Object.keys(item).length < 10) {
+    if (Object.keys(item).length < 8) {
         return null;
     }
     return item;
@@ -94,12 +96,16 @@ function getValue(key, value, item) {
             } else {
                 return null;
             }
+        case "File":
+            item["Current"] = value;
+            return value;
         default:
             return value;
     }
 }
 
 const saveAndClear = async (arr, fileType, options, defaultItem, index) => {
+    console.log(arr[0])
     await models[fileType].insertMany(arr, options);
     arr.length = 0;
     console.log("save yemot file data for ", defaultItem, fileType, index);

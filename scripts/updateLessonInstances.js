@@ -4,6 +4,7 @@ const mongoURI = "mongodb://USERNAME:PASSWORD@localhost:PORT/vocal?authSource=ad
 // const mongoURI = "mongodb://localhost:27017/vocal";
 const { YemotPlayback } = require("../models/YemotPlayback");
 const { YemotConfBridge } = require("../models/YemotConfBridge");
+const { YemotPlayDir } = require("../models/YemotPlayDir");
 const { LessonInstance } = require("../models/LessonInstance");
 const { sendEmail } = require("../helpers/mailer");
 
@@ -75,6 +76,31 @@ async function main() {
                 log(conf && conf[0]);
 
                 await LessonInstance.insertMany(conf);
+
+                const record = await YemotPlayDir.aggregate()
+                    .match({ user: user.name })
+                    .group({
+                        _id: {
+                            Folder: "$Folder",
+                            EnterDate: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
+                        },
+                        FileLength: { $max: "$FileLength" },
+                        LongestListening: { $max: "$TimeTotal" },
+                        FirstListeningDate: { $min: "$EnterDate" },
+                    })
+                    .project({
+                        _id: 0,
+                        user: user.name,
+                        Folder: "$_id.Folder",
+                        EnterDate: "$_id.EnterDate",
+                        FileLength: "$FileLength",
+                        LongestListening: "$LongestListening",
+                        FirstListeningDate: "$FirstListeningDate",
+                        type: "record",
+                    });
+                log(record && record[0]);
+
+                await LessonInstance.insertMany(record);
 
                 log("end process for user:", user.name);
             } catch (err) {

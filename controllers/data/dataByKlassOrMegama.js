@@ -6,4 +6,7 @@ const confByKlassOrMegama = dataByKlassOrMegama(YemotConfBridge, "/confByKlassOr
 const { YemotPlayback } = require("../../models/YemotPlayback");
 const listeningByKlassOrMegama = dataByKlassOrMegama(YemotPlayback, "/listeningByKlassOrMegama", "דוח האזנה");
 
-module.exports = { confByKlassOrMegama, listeningByKlassOrMegama };
+const { YemotPlayDir } = require("../../models/YemotPlayDir");
+const recordByKlassOrMegama = dataByKlassOrMegama(YemotPlayDir, "/recordByKlassOrMegama", "דוח שיעורים מוקלטים");
+
+module.exports = { confByKlassOrMegama, listeningByKlassOrMegama, recordByKlassOrMegama };

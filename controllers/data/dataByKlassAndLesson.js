@@ -11,4 +11,12 @@ const listeningByKlassAndLesson = dataByKlassAndLesson(
     "listening"
 );
 
-module.exports = { confByKlassAndLesson, listeningByKlassAndLesson };
+const { YemotPlayDir } = require("../../models/YemotPlayDir");
+const recordByKlassAndLesson = dataByKlassAndLesson(
+    YemotPlayDir,
+    "/recordByKlassAndLesson",
+    "דוח שיעורים מוקלטים",
+    "record"
+);
+
+module.exports = { confByKlassAndLesson, listeningByKlassAndLesson, recordByKlassAndLesson };
