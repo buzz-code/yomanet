@@ -68,9 +68,9 @@ function registerHook(hook) {
     });
 }
 
-registerHook(require("./listening"));
 registerHook(require("./lesson"));
 registerHook(require("./student"));
+registerHook(require("./listening"));
 registerHook(require("./conf"));
 registerHook(require("./record"));
 registerHook(require("./user"));

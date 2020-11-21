@@ -1,8 +1,5 @@
 const dataByKlassAndLesson = require("./templates/dataByKlassAndLesson");
 
-const { YemotConfBridge } = require("../../models/YemotConfBridge");
-const confByKlassAndLesson = dataByKlassAndLesson(YemotConfBridge, "/confByKlassAndLesson", "דוח ועידה", "conf");
-
 const { YemotPlayback } = require("../../models/YemotPlayback");
 const listeningByKlassAndLesson = dataByKlassAndLesson(
     YemotPlayback,
@@ -10,6 +7,9 @@ const listeningByKlassAndLesson = dataByKlassAndLesson(
     "דוח האזנה",
     "listening"
 );
+
+const { YemotConfBridge } = require("../../models/YemotConfBridge");
+const confByKlassAndLesson = dataByKlassAndLesson(YemotConfBridge, "/confByKlassAndLesson", "דוח ועידה", "conf");
 
 const { YemotPlayDir } = require("../../models/YemotPlayDir");
 const recordByKlassAndLesson = dataByKlassAndLesson(
@@ -19,4 +19,4 @@ const recordByKlassAndLesson = dataByKlassAndLesson(
     "record"
 );
 
-module.exports = { confByKlassAndLesson, listeningByKlassAndLesson, recordByKlassAndLesson };
+module.exports = { listeningByKlassAndLesson, confByKlassAndLesson, recordByKlassAndLesson };

@@ -6,12 +6,6 @@ export default [
     //     isAdmin: false,
     // },
     {
-        url: "listening",
-        title: "נתוני האזנה",
-        filterFields: ["klass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange", "secondRange"],
-        isAdmin: false,
-    },
-    {
         url: "lesson",
         title: "נתוני שיעורים",
         filterFields: ["extension", "messageName", "klass", "megama"],
@@ -21,6 +15,12 @@ export default [
         url: "student",
         title: "נתוני תלמידים",
         filterFields: ["identityNumber", "name", "klass", "singleMegama"],
+        isAdmin: false,
+    },
+    {
+        url: "listening",
+        title: "נתוני האזנה",
+        filterFields: ["klass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange", "secondRange"],
         isAdmin: false,
     },
     {
