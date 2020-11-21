@@ -106,7 +106,11 @@ h2 {
     font-size: 0.9rem;
 }
 
+.instruction .news {
+    font-size: 0.9rem;
+}
+
 .form-check-inline {
-    margin-left: .75rem;
+    margin-left: 0.75rem;
     margin-right: 0;
 }
