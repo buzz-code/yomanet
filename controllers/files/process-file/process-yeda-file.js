@@ -58,7 +58,7 @@ const mapItem = (
     const ExitTime = moment.utc(end_date, "YYYY-MM-DD HH:mm:ss");
     const EnterDate = moment.utc(EnterTime).startOf("day");
     const TimeTotal = moment.utc(duration, "HH:mm:ss").diff(moment.utc().startOf("day"), "seconds");
-    const FileLength = moment.utc(record_duration, "HH:mm:ss").diff(moment.utc().startOf("day"), "seconds");
+    const FileLength = record_duration ? moment.utc(record_duration, "HH:mm:ss").diff(moment.utc().startOf("day"), "seconds") : null;
 
     return {
         user,
