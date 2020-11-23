@@ -53,7 +53,7 @@ async function main() {
                 await LessonInstance.insertMany(data);
 
                 const conf = await YemotConfBridge.aggregate()
-                    .match({ user: user.name })
+                    .match({ user: user.name, Type: "admin" })
                     .group({
                         _id: {
                             Folder: "$Folder",
