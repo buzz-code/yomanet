@@ -3,7 +3,7 @@ const { getSec2Min } = require("../format");
 
 const createTableRow = (label, stats, lessonInstances) => {
     const percents = lessonInstances.map(([key, value]) => Math.min(1, (stats[key] || 0) / value));
-    const avgPercent = percents.reduce((a, b) => a + b, 0) / percents.length;
+    const avgPercent = percents.length ? percents.reduce((a, b) => a + b, 0) / percents.length : 0;
     const score = Math.floor(avgPercent * 100);
     const timeTotal = Object.values(stats).reduce((a, b) => a + b, 0);
 

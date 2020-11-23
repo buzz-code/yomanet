@@ -26,9 +26,9 @@ module.exports = (model, url, title, reportType) => ({
         const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.megama, queryUtil.student);
         const lessonQuery = queryUtil.getQuery(user, filter, queryUtil.allLessons);
 
-        await queryUtil.filterLessons(query, lessonQuery);
+        const extensions = await queryUtil.filterLessons(query, lessonQuery);
 
-        return { query, studentQuery };
+        return { query, studentQuery, extensions };
     },
     validate: async function (query, user, filter) {
         if ((filter.klass && filter.klass.length) || (filter.megama && filter.megama.length)) {
@@ -52,17 +52,19 @@ module.exports = (model, url, title, reportType) => ({
             ...dataById[item.identityNumber],
         }));
 
-        const lessonIds = new Set(
-            Object.values(dataById).flatMap((item) =>
-                Object.keys(item).filter((item) => item !== "name" && item !== "EnterId")
-            )
-        );
+        const lessonIds = queries.extensions
+            ? queries.extensions.map((item) => item.extension)
+            : new Set(
+                  Object.values(dataById).flatMap((item) =>
+                      Object.keys(item).filter((item) => item !== "name" && item !== "EnterId")
+                  )
+              );
         const lessonInstances = await getLessonInstancesForDiploma(lessonIds, user, filter, reportType);
 
         return { listeningData, lessonInstances };
     },
-    headers: async function ({ listeningData }, query, filter, user) {
-        const extensions = getExtensions(listeningData);
+    headers: async function ({ lessonInstances }, query, filter, user) {
+        const extensions = Object.keys(lessonInstances);
         const lessonByExt = await getLessonByExt(user, extensions);
 
         if (filter.lesson && filter.lesson.length) {

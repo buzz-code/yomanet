@@ -62,6 +62,7 @@ async function filterLessons(query, lessonQuery) {
     if (lessonQuery.length > 1) {
         const extensions = await Lesson.find({ $and: lessonQuery }, ["extension"]).lean();
         query.push({ Folder: { $in: extensions.map((item) => item.extension) } });
+        return extensions;
     }
 }
 
