@@ -34,9 +34,9 @@ function registerHook(hook) {
 
         const results = await hook.data(query, -1, filter, req.user);
         const headers = await hook.headers(results, query, filter, req.user);
-        const title = hook.title(filter);
+        const title = hook.title(filter, query);
 
-        createReport(res, hook.url, filter.format, title, results, headers);
+        createReport(res, hook.url, filter.format, title, results, headers, hook.isMultiple);
     });
     router.put(hook.url, auth, async function (req, res) {
         const filter = JSON.parse(req.body.filter);
@@ -81,6 +81,7 @@ registerHook(require("./dataByKlassOrMegama").recordByKlassOrMegama);
 registerHook(require("./dataByKlassAndLesson").listeningByKlassAndLesson);
 registerHook(require("./dataByKlassAndLesson").confByKlassAndLesson);
 registerHook(require("./dataByKlassAndLesson").recordByKlassAndLesson);
+registerHook(require("./multipleDataByKlassAndLesson"));
 registerHook(require("./listeningByKlassPerStudent"));
 registerHook(require("./diploma").listenDiploma);
 registerHook(require("./diploma").confDiploma);

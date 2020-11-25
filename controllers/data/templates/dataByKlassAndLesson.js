@@ -44,7 +44,6 @@ module.exports = (model, url, title, reportType) => ({
 
         const dataById = await getDataById(model, getAggregateByKlassAndLesson(query, reportType));
 
-        console.log(dataById);
         return students.map((item) => ({
             name: item.name,
             extension: filter.lesson[0].label,

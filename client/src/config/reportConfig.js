@@ -36,6 +36,16 @@ export default [
         isAdmin: false,
     },
     {
+        url: "multipleListeningByKlassAndLesson",
+        title: "דוח לפי כיתה או מגמה ומקצוע - קבצים מרובים - האזנה",
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
+        isAdmin: false,
+        filterProps: {
+            isHideEmailButton: true,
+            isHideExcelButton: true,
+        },
+    },
+    {
         url: "listeningByKlassPerStudent",
         title: "דוח כללי לכיתה - האזנה",
         filterFields: ["singleKlass", "dateRange"],

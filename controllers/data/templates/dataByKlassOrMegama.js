@@ -27,9 +27,6 @@ module.exports = (model, url, title) => ({
     },
     validate: async function (query, user, filter) {
         if ((filter.klass && filter.klass.length) || (filter.megama && filter.megama.length)) {
-            // if (filter.klass && filter.klass.length && filter.megama && filter.megama.length) {
-            //     return { isValid: false, errorMessage: "ניתן לסנן לפי כיתה או לפי מגמה, אך לא שניהם" };
-            // }
             return { isValid: true, errorMessage: null };
         }
         return { isValid: false, errorMessage: "חובה לבחור כיתה או מגמה" };

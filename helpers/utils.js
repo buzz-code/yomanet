@@ -1,4 +1,5 @@
 const moment = require("moment");
+var JSZip = require("jszip");
 const constants = require("./constants");
 const { getTableCellValue } = require("./format");
 const { getPdfReportObject } = require("./reports/pdfReport");
@@ -23,19 +24,41 @@ const getTableDataResponse = (res, results, totalCount, headers, params) => {
     res.send(data);
 };
 
-const createReport = async (res, url, format, title, results, headers) => {
-    let report = null;
-    if (format === "PDF") {
-        if (url.indexOf("Diploma") === -1) {
-            report = await getPdfReportObject(title, results, headers);
-        } else {
-            report = await getDiplomaReportObject(title, results, headers);
-        }
-    } else if (format === "EXCEL") {
-        report = await getExcelReportObject(title, results, headers);
-    }
+const createReport = async (res, url, format, title, results, headers, isMultiple) => {
+    let report = await getReport(url, format, title, results, headers, isMultiple);
     res.attachment(report.fileName);
     res.end(report.buffer);
+};
+
+const getReport = async (url, format, title, results, headers, isMultiple) => {
+    if (isMultiple) {
+        return getReportsZipFile(url, format, title, results, headers);
+    } else {
+        if (format === "PDF") {
+            if (url.indexOf("Diploma") === -1) {
+                return getPdfReportObject(title, results, headers);
+            } else {
+                return getDiplomaReportObject(title, results, headers);
+            }
+        } else if (format === "EXCEL") {
+            return getExcelReportObject(title, results, headers);
+        }
+    }
+};
+
+const getReportsZipFile = async (url, format, title, results, headers) => {
+    const reportPromise = results.map((item, index) =>
+        getReport(url, format, title[index], results[index], headers[index])
+    );
+    const reports = await promiseAllSerial(reportPromise);
+
+    var zip = new JSZip();
+    reports.forEach((item) => zip.file(item.fileName, item.buffer));
+    const buffer = await zip.generateAsync({ type: "nodebuffer" });
+    return {
+        fileName: "דוחות מקובצים.zip",
+        buffer,
+    };
 };
 
 const createGraphReport = async (res, format, title, results) => {
@@ -96,6 +119,17 @@ function getDateList(fromDate, toDate) {
     return days;
 }
 
+const promiseAllSerial = async (promises) => {
+    const data = [];
+    let index = 0;
+    while (index < promises.length) {
+        data.push(await promises[index]);
+        index++;
+    }
+
+    return data;
+};
+
 module.exports = {
     getTableCellValue,
     getTableDataResponse,
@@ -104,4 +138,5 @@ module.exports = {
     sendReportByMail,
     getPagingConfig,
     getDateList,
+    promiseAllSerial,
 };
