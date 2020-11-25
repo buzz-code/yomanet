@@ -42,7 +42,6 @@ export default [
         isAdmin: false,
         filterProps: {
             isHideEmailButton: true,
-            isHideExcelButton: true,
         },
     },
     {

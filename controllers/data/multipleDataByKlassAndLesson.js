@@ -30,8 +30,8 @@ module.exports = {
         if (!(filter.lesson && filter.lesson.length) && !filter.allLessons) {
             return { isValid: false, errorMessage: "חובה לבחור שיעור, או לסמן את כל השיעורים המתאימים" };
         }
-        if (filter.format !== "PDF") {
-            return { isValid: false, errorMessage: "להנפקת הדוחות לחצו על הכפתור Pdf" };
+        if (filter.format !== "PDF" && filter.format !== "EXCEL") {
+            return { isValid: false, errorMessage: "להנפקת הדוחות לחצו על הכפתור Pdf או Excel" };
         }
         return { isValid: true, errorMessage: null };
     },
