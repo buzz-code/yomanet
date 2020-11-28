@@ -33,7 +33,7 @@ async function main() {
                 await LessonInstance.deleteMany({ user: user.name });
                 const lessons = await Lesson.find({}, ["extension", "confExtension"]).lean();
                 const confExtensionDict = Object.fromEntries(
-                    lessons.map((item) => [item.extension, item.confExtension])
+                    lessons.map((item) => [item.confExtension, item.extension])
                 );
 
                 const data = await YemotPlayback.aggregate()
