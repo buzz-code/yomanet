@@ -29,6 +29,8 @@ async function main() {
         for (const user of users) {
             log("start process for user:", user.name);
             try {
+                await LessonInstance.deleteMany({ user: user.name });
+              
                 const data = await YemotPlayback.aggregate()
                     .match({ user: user.name })
                     .group({
@@ -49,7 +51,6 @@ async function main() {
                     });
                 log(data && data[0]);
 
-                await LessonInstance.deleteMany({ user: user.name });
                 await LessonInstance.insertMany(data);
 
                 const conf = await YemotConfBridge.aggregate()

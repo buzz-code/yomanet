@@ -61,6 +61,7 @@ const mapItem = ([
     date,
     conference_session_uuid,
     conference_uuid,
+    moderator,
 ]) => {
     if (!caller_id_number || !caller_id_name || date === "date") {
         return null;
@@ -71,6 +72,10 @@ const mapItem = ([
     const EnterTime = moment.utc(join_time, "YYYY-MM-DD HH:mm:ss");
     const ExitTime = moment.utc(leave_time, "YYYY-MM-DD HH:mm:ss");
     const TimeTotal = moment.utc(length, "HH:mm:ss").diff(moment.utc().startOf("day"), "seconds");
+    let FileLength = null;
+    if (moderator && moderator.toLower() === "false") {
+        FileLength = TimeTotal;
+    }
 
     return {
         user,
@@ -84,6 +89,7 @@ const mapItem = ([
         EnterTime,
         ExitTime,
         TimeTotal,
+        FileLength,
     };
 };
 
