@@ -4,6 +4,7 @@ module.exports = {
         { label: "שם הודעה", value: "messageName" },
         { label: "כיתה/ מגמה/ התמחות", value: "megama", format: "array" },
         { label: "השם לתעודה", value: "displayName" },
+        { label: "שלוחת ועידה", value: "confExtension" },
     ],
     studentHeaders: [
         { label: "תעודת זהות", value: "identityNumber" },

@@ -6,6 +6,7 @@ const { YemotPlayback } = require("../models/YemotPlayback");
 const { YemotConfBridge } = require("../models/YemotConfBridge");
 const { YemotPlayDir } = require("../models/YemotPlayDir");
 const { LessonInstance } = require("../models/LessonInstance");
+const { Lesson } = require("../models/Lesson");
 const { sendEmail } = require("../helpers/mailer");
 
 async function main() {
@@ -30,7 +31,11 @@ async function main() {
             log("start process for user:", user.name);
             try {
                 await LessonInstance.deleteMany({ user: user.name });
-              
+                const lessons = await Lesson.find({}, ["extension", "confExtension"]).lean();
+                const confExtensionDict = Object.fromEntries(
+                    lessons.map((item) => [item.extension, item.confExtension])
+                );
+
                 const data = await YemotPlayback.aggregate()
                     .match({ user: user.name })
                     .group({
@@ -75,6 +80,7 @@ async function main() {
                         type: "conf",
                     });
                 log(conf && conf[0]);
+                conf.forEach((item) => (item.Folder = confExtensionDict[item.Folder] || item.Folder));
 
                 await LessonInstance.insertMany(conf);
 

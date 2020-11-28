@@ -99,6 +99,11 @@ function getValue(key, value, item) {
         case "File":
             item["Current"] = value;
             return value;
+        case "Type":
+            if (value === "admin") {
+                item["FileLength"] = item["TimeTotal"];
+            }
+            return value;
         default:
             return value;
     }
