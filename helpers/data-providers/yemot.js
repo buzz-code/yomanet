@@ -7,6 +7,7 @@ const yemotUrl = (isPrivate) =>
 const doYemotAction = async (username, password, isPrivateYemot, action, params, config) => {
     params.token = `${username}:${password}`;
     const data = qs.stringify(params);
+    console.log(yemotUrl(isPrivateYemot) + action + '?' + data)
     const res = await axios.get(yemotUrl(isPrivateYemot) + action + "?" + data, {
         maxContentLength: Infinity,
         ...config,
