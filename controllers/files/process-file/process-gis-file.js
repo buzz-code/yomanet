@@ -73,7 +73,7 @@ const mapItem = ([
     const ExitTime = moment.utc(leave_time, "YYYY-MM-DD HH:mm:ss");
     const TimeTotal = moment.utc(length, "HH:mm:ss").diff(moment.utc().startOf("day"), "seconds");
     let FileLength = null;
-    if (moderator && moderator.toLower() === "false") {
+    if (moderator && moderator.toLower && moderator.toLower() === "true") {
         FileLength = TimeTotal;
     }
 
