@@ -23,7 +23,6 @@ module.exports = {
             );
             const loadedFiles = await YemotFile.find({ user: user.name }).lean();
 
-            console.log(data)
             const results = data.items
                 .filter((item) => (item.exists && hook.dirRegex.test(item.name)) || hook.fileRegex.test(item.name))
                 .map((item) => {

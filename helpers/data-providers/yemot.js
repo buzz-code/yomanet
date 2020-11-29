@@ -11,7 +11,7 @@ const doYemotAction = async (username, password, isPrivateYemot, action, params,
         maxContentLength: Infinity,
         ...config,
     });
-    console.log(res.config.url, res.data)
+    console.log(res.config.url)
     return res;
 };
 
