@@ -29,11 +29,8 @@ async function main() {
         const users = await User.find().lean();
         for (const user of users) {
             log("start process for user:", user.name);
-            log(1);
             try {
-                log(2);
                 await LessonInstance.deleteMany({ user: user.name });
-                log(3);
                 const lessons = await Lesson.find(
                     {
                         user: user.name,
@@ -41,13 +38,12 @@ async function main() {
                     },
                     ["extension", "confExtension"]
                 ).lean();
-                log(4)
+                log(lessons.map((item) => [item.confExtension, item.extension]))
+                log(Object.fromEntries)
                 const confExtensionDict = Object.fromEntries(
                     lessons.map((item) => [item.confExtension, item.extension])
                 );
-                log(5)
                 log(confExtensionDict);
-                log(6)
 
                 const data = await YemotPlayback.aggregate()
                     .match({ user: user.name })
