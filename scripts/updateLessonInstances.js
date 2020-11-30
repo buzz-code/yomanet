@@ -31,7 +31,7 @@ async function main() {
             log("start process for user:", user.name);
             try {
                 await LessonInstance.deleteMany({ user: user.name });
-                const lessons = await Lesson.find({}, ["extension", "confExtension"]).lean();
+                const lessons = await Lesson.find({ user: user.name, confExtension: { "$nin": [ null, "" ] }}, ["extension", "confExtension"]).lean();
                 const confExtensionDict = Object.fromEntries(
                     lessons.map((item) => [item.confExtension, item.extension])
                 );
