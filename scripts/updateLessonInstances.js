@@ -31,10 +31,17 @@ async function main() {
             log("start process for user:", user.name);
             try {
                 await LessonInstance.deleteMany({ user: user.name });
-                const lessons = await Lesson.find({ user: user.name, confExtension: { "$nin": [ null, "" ] }}, ["extension", "confExtension"]).lean();
+                const lessons = await Lesson.find(
+                    {
+                        user: user.name,
+                        confExtension: { $nin: [null, ""] },
+                    },
+                    ["extension", "confExtension"]
+                ).lean();
                 const confExtensionDict = Object.fromEntries(
                     lessons.map((item) => [item.confExtension, item.extension])
                 );
+                log(confExtensionDict);
 
                 const data = await YemotPlayback.aggregate()
                     .match({ user: user.name })
@@ -68,6 +75,7 @@ async function main() {
                         FileLength: { $max: "$FileLength" },
                         LongestListening: { $max: "$TimeTotal" },
                         FirstListeningDate: { $min: "$EnterDate" },
+                        LessonTitle: { $max: "$LessonTitle" },
                     })
                     .project({
                         _id: 0,
@@ -77,6 +85,7 @@ async function main() {
                         FileLength: "$FileLength",
                         LongestListening: "$LongestListening",
                         FirstListeningDate: "$FirstListeningDate",
+                        LessonTitle: "$LessonTitle",
                         type: "conf",
                     });
                 log(conf && conf[0]);

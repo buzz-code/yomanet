@@ -58,7 +58,7 @@ module.exports = (model, url, title, reportType) => ({
             }
         });
 
-        const fileLengthByKey = await getLessonInstancesForKlassAndLesson(
+        const { fileLengthByKey, lessonTitleByKey } = await getLessonInstancesForKlassAndLesson(
             filter.lesson[0].value,
             keys,
             user,
@@ -73,7 +73,7 @@ module.exports = (model, url, title, reportType) => ({
                 .sort()
                 .map((item) => ({
                     value: item,
-                    label: `${item} - ${getSec2Min(fileLengthByKey[item])}`,
+                    label: getHeaderTitle(item, fileLengthByKey, lessonTitleByKey),
                     format: "sec2min",
                 })),
         ];
@@ -85,3 +85,10 @@ module.exports = (model, url, title, reportType) => ({
         return await Student.countDocuments({ $and: studentQuery });
     },
 });
+
+function getHeaderTitle(item, fileLengthByKey, lessonTitleByKey) {
+    if (lessonTitleByKey[item]) {
+        return `${lessonTitleByKey[item]} (${item}) - ${getSec2Min(fileLengthByKey[item])}`;
+    }
+    return `${item} - ${getSec2Min(fileLengthByKey[item])}`;
+}

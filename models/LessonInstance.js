@@ -8,6 +8,7 @@ const lessonInstanceSchema = mongoose.Schema({
     FileLength: { type: Number },
     LongestListening: { type: Number },
     FirstListeningDate: { type: Date },
+    LessonTitle: { type: String },
     EnterDate: { type: String },
     type: { type: String },
 });
