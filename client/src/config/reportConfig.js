@@ -1,43 +1,43 @@
 export default [
     {
         url: "listeningByKlassOrMegama",
-        title: "דוח לפי כיתה או מגמה - האזנה",
+        title: "כיתה או מגמה - האזנה",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
         isAdmin: false,
     },
     {
         url: "confByKlassOrMegama",
-        title: "דוח לפי כיתה או מגמה - ועידה",
+        title: "כיתה או מגמה - ועידה",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
         isAdmin: false,
     },
     {
         url: "recordByKlassOrMegama",
-        title: "דוח לפי כיתה או מגמה - שיעורים מוקלטים",
+        title: "כיתה או מגמה - שיעורים מוקלטים",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
         isAdmin: false,
     },
     {
         url: "listeningByKlassAndLesson",
-        title: "דוח לפי כיתה או מגמה ומקצוע - האזנה",
+        title: "כיתה או מגמה ומקצוע - האזנה",
         filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
         isAdmin: false,
     },
     {
         url: "confByKlassAndLesson",
-        title: "דוח לפי כיתה או מגמה ומקצוע - ועידה",
+        title: "כיתה או מגמה ומקצוע - ועידה",
         filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
         isAdmin: false,
     },
     {
         url: "recordByKlassAndLesson",
-        title: "דוח לפי כיתה או מגמה ומקצוע - שיעורים מוקלטים",
+        title: "כיתה או מגמה ומקצוע - שיעורים מוקלטים",
         filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
         isAdmin: false,
     },
     {
         url: "multipleListeningByKlassAndLesson",
-        title: "דוח לפי כיתה או מגמה ומקצוע - קבצים מרובים - האזנה",
+        title: "כיתה או מגמה ומקצוע - קבצים מרובים - האזנה",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
         filterProps: {
