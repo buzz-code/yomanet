@@ -45,7 +45,9 @@ async function main() {
                 const confExtensionDict = Object.fromEntries(
                     lessons.map((item) => [item.confExtension, item.extension])
                 );
+                log(5)
                 log(confExtensionDict);
+                log(6)
 
                 const data = await YemotPlayback.aggregate()
                     .match({ user: user.name })
