@@ -38,10 +38,8 @@ async function main() {
                     },
                     ["extension", "confExtension"]
                 ).lean();
-                log(lessons.map((item) => [item.confExtension, item.extension]));
                 const confExtensionDict = {};
                 lessons.forEach((item) => (confExtensionDict[item.confExtension] = item.extension));
-                log(confExtensionDict);
 
                 const data = await YemotPlayback.aggregate()
                     .match({ user: user.name })
