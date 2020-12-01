@@ -37,7 +37,7 @@ export default [
     },
     {
         url: "multipleListeningByKlassAndLesson",
-        title: "כיתה או מגמה ומקצוע - קבצים מרובים - האזנה",
+        title: "כיתה או מגמה ומקצוע - שיעורים מרובים - האזנה",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
         filterProps: {
