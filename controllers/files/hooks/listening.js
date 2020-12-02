@@ -3,6 +3,6 @@ module.exports = {
     yemotPath: "ivr2:Log/LogPlaybackPlayStop",
     yedaUrl: "https://yeda-phone.com/bsh/api/sfu-",
     dirRegex: /^nothing$/,
-    fileRegex: /^LogPlaybackPlayStop\.[\d][\d][\d][\d]-[\d][\d]-[\d][\d]\.ymgr$/,
+    fileRegex: /^((LogPlaybackPlayStop\.[\d][\d][\d][\d]-[\d][\d]-[\d][\d]\.ymgr)|([a-z]*\.[\d]*\.csv))$/,
     fileType: "LogPlaybackPlayStop",
 };

@@ -48,6 +48,7 @@ async function main() {
                         FileLength: { $max: "$FileLength" },
                         LongestListening: { $max: "$TimeTotal" },
                         FirstListeningDate: { $min: "$EnterDate" },
+                        LessonTitle: { $max: "$LessonTitle" },
                     })
                     .project({
                         _id: 0,
@@ -57,6 +58,7 @@ async function main() {
                         FileLength: "$FileLength",
                         LongestListening: "$LongestListening",
                         FirstListeningDate: "$FirstListeningDate",
+                        LessonTitle: "$LessonTitle",
                         type: "listening",
                     });
                 log(data && data[0]);
