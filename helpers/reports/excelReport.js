@@ -4,9 +4,16 @@ const { getTableCellValue } = require("../format");
 
 const getExcelReportObject = async (title, results, headers) => {
     var workbook = new ExcelJS.stream.xlsx.WorkbookWriter({ useStyles: true });
-    var worksheet = workbook.addWorksheet(title);
-    const header = worksheet.addRow(headers.map((item) => item.label));
-    header.eachCell((cell) => {
+    var worksheet = workbook.addWorksheet("גליון 1");
+    headers.forEach((item) => (item.format === "sec2min" ? (item.format = "sec2minExcel") : null));
+    worksheet.columns = headers.map((item) => ({
+        header: item.label,
+        key: item.value,
+        style: {
+            numFmt: item.format === "sec2minExcel" ? "HH:mm:ss" : undefined,
+        },
+    }));
+    worksheet.getRow(1).eachCell((cell) => {
         cell.fill = {
             type: "pattern",
             pattern: "solid",
@@ -18,10 +25,10 @@ const getExcelReportObject = async (title, results, headers) => {
             color: { argb: "ffffff" },
         };
     });
-    header.commit();
     results.forEach((item) => {
-        const row = headers.map((header) => getTableCellValue(item, header));
-        worksheet.addRow(row).commit();
+        const row = {};
+        headers.forEach((header) => (row[header.value] = getTableCellValue(item, header)));
+        worksheet.addRow(row);
     });
     worksheet.commit();
     await workbook.commit();

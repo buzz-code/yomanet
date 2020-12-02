@@ -29,6 +29,14 @@ const getTableCellValue = (item, header) => {
             const duration = item[header.value];
             return getSec2Min(duration);
         }
+        if (header.format === "sec2minExcel") {
+            const duration = item[header.value];
+            const sec = getSec2Min(duration);
+            if (Number.isInteger(sec)) {
+                sec /= 86400;
+            }
+            return sec;
+        }
         if (header.format === "date") {
             return moment.utc(item[header.value]).format("DD/MM/YYYY");
         }
