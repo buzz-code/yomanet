@@ -2,19 +2,19 @@ export default [
     { isHeader: true, title: "האזנה" },
     {
         url: "listeningByKlassOrMegama",
-        title: "כיתה או מגמה - האזנה",
+        title: "כיתה או מגמה",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
         isAdmin: false,
     },
     {
         url: "listeningByKlassAndLesson",
-        title: "כיתה או מגמה ומקצוע - האזנה",
+        title: "כיתה או מגמה ומקצוע",
         filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
         isAdmin: false,
     },
     {
         url: "multipleListeningByKlassAndLesson",
-        title: "כיתה או מגמה ומקצוע - שיעורים מרובים - האזנה",
+        title: "כיתה או מגמה ומקצוע - שיעורים מרובים",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
         filterProps: {
@@ -23,13 +23,13 @@ export default [
     },
     {
         url: "listeningByKlassPerStudent",
-        title: "דוח כללי לכיתה - האזנה",
+        title: "דוח כללי לכיתה",
         filterFields: ["singleKlass", "dateRange"],
         isAdmin: false,
     },
     {
         url: "listeningDiploma",
-        title: "הנפקת תעודות לתלמידות - האזנה",
+        title: "הנפקת תעודות לתלמידות",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
         filterProps: {
@@ -41,19 +41,19 @@ export default [
     { isHeader: true, title: "ועידה" },
     {
         url: "confByKlassOrMegama",
-        title: "כיתה או מגמה - ועידה",
+        title: "כיתה או מגמה",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
         isAdmin: false,
     },
     {
         url: "confByKlassAndLesson",
-        title: "כיתה או מגמה ומקצוע - ועידה",
+        title: "כיתה או מגמה ומקצוע",
         filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
         isAdmin: false,
     },
     {
         url: "confDiploma",
-        title: "הנפקת תעודות לתלמידות - ועידה",
+        title: "הנפקת תעודות לתלמידות",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
         filterProps: {
@@ -65,19 +65,19 @@ export default [
     { isHeader: true, title: "שיעורים מוקלטים" },
     {
         url: "recordByKlassOrMegama",
-        title: "כיתה או מגמה - שיעורים מוקלטים",
+        title: "כיתה או מגמה",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
         isAdmin: false,
     },
     {
         url: "recordByKlassAndLesson",
-        title: "כיתה או מגמה ומקצוע - שיעורים מוקלטים",
+        title: "כיתה או מגמה ומקצוע",
         filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
         isAdmin: false,
     },
     {
         url: "recordDiploma",
-        title: "הנפקת תעודות לתלמידות - שיעורים מוקלטים",
+        title: "הנפקת תעודות לתלמידות",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
         filterProps: {
