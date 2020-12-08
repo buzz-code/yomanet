@@ -19,6 +19,7 @@ function NavBar(props) {
             label: "נתונים",
             value: "/data",
             children: dataConfig.map((item) => ({
+                isDivider: item.isDivider,
                 label: item.title,
                 value: `/data/${item.url}`,
                 isAdmin: item.isAdmin,
@@ -28,6 +29,7 @@ function NavBar(props) {
             label: "דוחות",
             value: "/report",
             children: reportConfig.map((item) => ({
+                isDivider: item.isDivider,
                 label: item.title,
                 value: `/report/${item.url}`,
                 isAdmin: item.isAdmin,
@@ -37,6 +39,7 @@ function NavBar(props) {
             label: "העלאת קובץ",
             value: "/upload",
             children: uploadConfig.map((item) => ({
+                isDivider: item.isDivider,
                 label: item.title,
                 value: `/upload/${item.url}`,
             })),
@@ -45,6 +48,7 @@ function NavBar(props) {
             label: "טעינת קבצים ישירות מהמערכת",
             value: "/files",
             children: yemotFilesConfig.map((item) => ({
+                isDivider: item.isDivider,
                 label: item.title,
                 value: `/files/${item.url}`,
             })),
@@ -53,6 +57,7 @@ function NavBar(props) {
             label: "גרפים",
             value: "/graph",
             children: graphConfig.map((item) => ({
+                isDivider: item.isDivider,
                 label: item.title,
                 value: `/graph/${item.url}`,
                 isAdmin: item.isAdmin,
