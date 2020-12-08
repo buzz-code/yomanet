@@ -114,3 +114,7 @@ h2 {
     margin-left: 0.75rem;
     margin-right: 0;
 }
+
+.navbar {
+    background-color: #563d7c !important;
+}

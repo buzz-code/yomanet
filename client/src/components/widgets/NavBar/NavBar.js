@@ -1,7 +1,7 @@
 import React from "react";
-import "./Navbar.css";
 import { useSelector } from "react-redux";
 import clsx from "clsx";
+import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { useLocation, withRouter } from "react-router-dom";
 import { logoutUser } from "../../../_actions/user_actions";
 import dataConfig from "../../../config/dataConfig";
@@ -83,95 +83,39 @@ function NavBar(props) {
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark">
-            <a href="/" className="navbar-brand">
-                {/* יומן Net */}
-                {/* <img style={{ height: "42px" }} src="/1.jpg" alt="" /> */}
+        <Navbar bg="dark" variant="dark" expand="lg">
+            <Navbar.Brand href="/">
                 <img style={{ height: "42px" }} src="/2.jpg" />
-            </a>
-            <button
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarNav"
-                aria-controls="navbarNav"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-                className="navbar-toggler">
-                <span className="navbar-toggler-icon"></span>
-            </button>
-            <div id="navbarNav" className="collapse navbar-collapse">
-                <ul className="navbar-nav mr-auto">
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto" activeKey={location.pathname}>
                     {routes.map((item) =>
                         item.isAdmin && (!userData || !userData.isAdmin) ? null : item.children ? (
-                            <li
-                                className={clsx("nav-item dropdown", {
-                                    active: item.children.map((item) => item.value).indexOf(location.pathname) > -1,
-                                })}>
-                                <button
-                                    className="btn shadow-none nav-link dropdown-toggle"
-                                    id="navbarDropdownMenuLink"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false">
-                                    {item.label}
-                                </button>
-                                <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    {item.children.map((item) =>
-                                        item.isAdmin && (!userData || !userData.isAdmin) ? null : (
-                                            <a href={item.value} title={item.label} className="dropdown-item">
-                                                {item.label}
-                                            </a>
-                                        )
-                                    )}
-                                </div>
-                            </li>
+                            <NavDropdown title={item.label} id={item.value}>
+                                {item.children.map((item) =>
+                                    item.isDivider ? (
+                                        <NavDropdown.Divider />
+                                    ) : item.isAdmin && (!userData || !userData.isAdmin) ? null : (
+                                        <NavDropdown.Item href={item.value}>{item.label}</NavDropdown.Item>
+                                    )
+                                )}
+                            </NavDropdown>
                         ) : (
-                            <li
-                                className={clsx("nav-item", {
-                                    active:
-                                        location.pathname.startsWith(item.value) &&
-                                        (item.value !== "/" || location.pathname === "/"),
-                                })}>
-                                <a href={item.value} title={item.label} className="btn shadow-none nav-link">
-                                    {item.label}
-                                </a>
-                            </li>
+                            <Nav.Link href={item.value}>{item.label}</Nav.Link>
                         )
                     )}
-                </ul>
-                <ul className="navbar-nav">
+                </Nav>
+                <Nav activeKey={location.pathname}>
                     {userData && userData.isAuth ? (
-                        <li
-                            className={clsx("nav-item dropdown", {
-                                active: location.pathname.startsWith("/login"),
-                            })}>
-                            <a className="nav-link" onClick={logoutHandler}>
-                                התנתקות
-                            </a>
-                        </li>
+                        <Nav.Link onClick={logoutHandler}>התנתקות</Nav.Link>
                     ) : (
-                        <li
-                            className={clsx("nav-item dropdown", {
-                                active: location.pathname.startsWith("/login"),
-                            })}>
-                            <a className="nav-link" href="/login">
-                                התחברות
-                            </a>
-                        </li>
+                        <Nav.Link href="/login">התחברות</Nav.Link>
                     )}
-                    {userData && userData.isAdmin && (
-                        <li
-                            className={clsx("nav-item dropdown", {
-                                active: location.pathname.startsWith("/register"),
-                            })}>
-                            <a className="nav-link" href="/register">
-                                הרשמה
-                            </a>
-                        </li>
-                    )}
-                </ul>
-            </div>
-        </nav>
+                    {userData && userData.isAdmin && <Nav.Link href="/register">הרשמה</Nav.Link>}
+                </Nav>
+            </Navbar.Collapse>
+        </Navbar>
     );
 }
 

@@ -17,6 +17,7 @@ export default [
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
         isAdmin: false,
     },
+    { isDivider: true },
     {
         url: "listeningByKlassAndLesson",
         title: "כיתה או מגמה ומקצוע - האזנה",
@@ -35,6 +36,7 @@ export default [
         filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
         isAdmin: false,
     },
+    { isDivider: true },
     {
         url: "multipleListeningByKlassAndLesson",
         title: "כיתה או מגמה ומקצוע - שיעורים מרובים - האזנה",
@@ -44,12 +46,14 @@ export default [
             isHideEmailButton: true,
         },
     },
+    { isDivider: true },
     {
         url: "listeningByKlassPerStudent",
         title: "דוח כללי לכיתה - האזנה",
         filterFields: ["singleKlass", "dateRange"],
         isAdmin: false,
     },
+    { isDivider: true },
     {
         url: "listeningDiploma",
         title: "הנפקת תעודות לתלמידות - האזנה",
