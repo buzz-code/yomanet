@@ -1,4 +1,5 @@
 export default [
+    { isHeader: true, title: "האזנה" },
     {
         url: "listeningByKlassOrMegama",
         title: "כיתה או מגמה - האזנה",
@@ -6,37 +7,11 @@ export default [
         isAdmin: false,
     },
     {
-        url: "confByKlassOrMegama",
-        title: "כיתה או מגמה - ועידה",
-        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
-        isAdmin: false,
-    },
-    {
-        url: "recordByKlassOrMegama",
-        title: "כיתה או מגמה - שיעורים מוקלטים",
-        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
-        isAdmin: false,
-    },
-    { isDivider: true },
-    {
         url: "listeningByKlassAndLesson",
         title: "כיתה או מגמה ומקצוע - האזנה",
         filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
         isAdmin: false,
     },
-    {
-        url: "confByKlassAndLesson",
-        title: "כיתה או מגמה ומקצוע - ועידה",
-        filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
-        isAdmin: false,
-    },
-    {
-        url: "recordByKlassAndLesson",
-        title: "כיתה או מגמה ומקצוע - שיעורים מוקלטים",
-        filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
-        isAdmin: false,
-    },
-    { isDivider: true },
     {
         url: "multipleListeningByKlassAndLesson",
         title: "כיתה או מגמה ומקצוע - שיעורים מרובים - האזנה",
@@ -46,14 +21,12 @@ export default [
             isHideEmailButton: true,
         },
     },
-    { isDivider: true },
     {
         url: "listeningByKlassPerStudent",
         title: "דוח כללי לכיתה - האזנה",
         filterFields: ["singleKlass", "dateRange"],
         isAdmin: false,
     },
-    { isDivider: true },
     {
         url: "listeningDiploma",
         title: "הנפקת תעודות לתלמידות - האזנה",
@@ -64,6 +37,20 @@ export default [
             isHideExcelButton: true,
         },
     },
+
+    { isHeader: true, title: "ועידה" },
+    {
+        url: "confByKlassOrMegama",
+        title: "כיתה או מגמה - ועידה",
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
+        isAdmin: false,
+    },
+    {
+        url: "confByKlassAndLesson",
+        title: "כיתה או מגמה ומקצוע - ועידה",
+        filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
+        isAdmin: false,
+    },
     {
         url: "confDiploma",
         title: "הנפקת תעודות לתלמידות - ועידה",
@@ -73,6 +60,20 @@ export default [
             isHideEmailButton: true,
             isHideExcelButton: true,
         },
+    },
+    
+    { isHeader: true, title: "שיעורים מוקלטים" },
+    {
+        url: "recordByKlassOrMegama",
+        title: "כיתה או מגמה - שיעורים מוקלטים",
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
+        isAdmin: false,
+    },
+    {
+        url: "recordByKlassAndLesson",
+        title: "כיתה או מגמה ומקצוע - שיעורים מוקלטים",
+        filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
+        isAdmin: false,
     },
     {
         url: "recordDiploma",

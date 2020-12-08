@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import clsx from "clsx";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { useLocation, withRouter } from "react-router-dom";
 import { logoutUser } from "../../../_actions/user_actions";
@@ -14,54 +13,38 @@ function NavBar(props) {
     const userData = useSelector((state) => state.user.userData);
     const location = useLocation();
 
+    const getChildRoute = (item, prefix) => ({
+        label: item.title,
+        value: `/${prefix}/${item.url}`,
+        isAdmin: item.isAdmin,
+        isHeader: item.isHeader,
+        isDivider: item.isDivider,
+    });
     const routes = [
         {
             label: "נתונים",
             value: "/data",
-            children: dataConfig.map((item) => ({
-                isDivider: item.isDivider,
-                label: item.title,
-                value: `/data/${item.url}`,
-                isAdmin: item.isAdmin,
-            })),
+            children: dataConfig.map((item) => getChildRoute(item, "data")),
         },
         {
             label: "דוחות",
             value: "/report",
-            children: reportConfig.map((item) => ({
-                isDivider: item.isDivider,
-                label: item.title,
-                value: `/report/${item.url}`,
-                isAdmin: item.isAdmin,
-            })),
+            children: reportConfig.map((item) => getChildRoute(item, "route")),
         },
         {
             label: "העלאת קובץ",
             value: "/upload",
-            children: uploadConfig.map((item) => ({
-                isDivider: item.isDivider,
-                label: item.title,
-                value: `/upload/${item.url}`,
-            })),
+            children: uploadConfig.map((item) => getChildRoute(item, "upload")),
         },
         {
             label: "טעינת קבצים ישירות מהמערכת",
             value: "/files",
-            children: yemotFilesConfig.map((item) => ({
-                isDivider: item.isDivider,
-                label: item.title,
-                value: `/files/${item.url}`,
-            })),
+            children: yemotFilesConfig.map((item) => getChildRoute(item, "files")),
         },
         {
             label: "גרפים",
             value: "/graph",
-            children: graphConfig.map((item) => ({
-                isDivider: item.isDivider,
-                label: item.title,
-                value: `/graph/${item.url}`,
-                isAdmin: item.isAdmin,
-            })),
+            children: graphConfig.map((item) => getChildRoute(item, "graph")),
         },
         {
             label: "הוראות שימוש",
@@ -99,7 +82,9 @@ function NavBar(props) {
                         item.isAdmin && (!userData || !userData.isAdmin) ? null : item.children ? (
                             <NavDropdown title={item.label} id={item.value}>
                                 {item.children.map((item) =>
-                                    item.isDivider ? (
+                                    item.isHeader ? (
+                                        <NavDropdown.Header>{item.label}</NavDropdown.Header>
+                                    ) : item.isDivider ? (
                                         <NavDropdown.Divider />
                                     ) : item.isAdmin && (!userData || !userData.isAdmin) ? null : (
                                         <NavDropdown.Item href={item.value}>{item.label}</NavDropdown.Item>
