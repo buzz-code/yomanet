@@ -6,47 +6,20 @@ const moment = require("moment");
 
 const userSchema = mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
-    name: {
-        type: String,
-        maxlength: 50,
-    },
-    email: {
-        type: String,
-        trim: true,
-        unique: 1,
-    },
-    password: {
-        type: String,
-        minglength: 5,
-    },
-    role: {
-        type: Number,
-        default: 0,
-    },
-    image: String,
-    token: {
-        type: String,
-    },
-    tokenExp: {
-        type: Number,
-    },
-    welcomeMessage: {
-        type: String,
-        trime: true,
-    },
-    provider: {
-        type: String,
-    },
-    providerUsername: {
-        type: String,
-        trime: true,
-    },
-    providerPassword: {
-        type: String,
-        trime: true,
-    },
+    name: { type: String, maxlength: 50 },
+    email: { type: String, trim: true, unique: 1 },
+    password: { type: String, minglength: 5 },
+    role: { type: Number, default: 0 },
+    image: { type: String },
+    token: { type: String },
+    tokenExp: { type: Number },
+    welcomeMessage: { type: String, trime: true },
+    provider: { type: String },
+    providerUsername: { type: String, trime: true },
+    providerPassword: { type: String, trime: true },
     providerIsPrivate: { type: Boolean, default: false },
     isPaid: { type: Boolean, default: false },
+    minListening: { type: Number },
 });
 
 userSchema.index({ email: 1 });

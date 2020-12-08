@@ -63,8 +63,6 @@ async function main() {
                     });
                 log(data && data[0]);
 
-                await LessonInstance.insertMany(data);
-
                 const conf = await YemotConfBridge.aggregate()
                     .match({ user: user.name })
                     .group({
@@ -91,8 +89,6 @@ async function main() {
                 log(conf && conf[0]);
                 conf.forEach((item) => (item.Folder = confExtensionDict[item.Folder] || item.Folder));
 
-                await LessonInstance.insertMany(conf);
-
                 const record = await YemotPlayDir.aggregate()
                     .match({ user: user.name })
                     .group({
@@ -116,7 +112,13 @@ async function main() {
                     });
                 log(record && record[0]);
 
-                await LessonInstance.insertMany(record);
+                let dataToSave = [...data, ...conf, record];
+                if (user.minListening) {
+                    dataToSave = dataToSave.filter(
+                        (item) => item.FileLength > user.minListening || item.LongestListening > user.minListening
+                    );
+                }
+                await LessonInstance.insertMany(dataToSave);
 
                 log("end process for user:", user.name);
             } catch (err) {
