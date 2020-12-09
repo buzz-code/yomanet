@@ -29,7 +29,7 @@ function NavBar(props) {
         {
             label: "דוחות",
             value: "/report",
-            children: reportConfig.map((item) => getChildRoute(item, "route")),
+            children: reportConfig.map((item) => getChildRoute(item, "report")),
         },
         {
             label: "העלאת קובץ",
