@@ -52,6 +52,15 @@ export default [
         isAdmin: false,
     },
     {
+        url: "multipleConfByKlassAndLesson",
+        title: "כיתה או מגמה ומקצוע - נתוני ועידה מרובים",
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
+        isAdmin: false,
+        filterProps: {
+            isHideEmailButton: true,
+        },
+    },
+ {
         url: "confDiploma",
         title: "הנפקת תעודות לתלמידות",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
