@@ -1,5 +1,5 @@
 const multipleDataByKlassAndLesson = require("./templates/multipleDataByKlassAndLesson");
-const { listeningByKlassAndLesson, confByKlassAndLesson } = require("./dataByKlassAndLesson");
+const { listeningByKlassAndLesson, confByKlassAndLesson, recordByKlassAndLesson } = require("./dataByKlassAndLesson");
 
 const multipleListeningByKlassAndLesson = multipleDataByKlassAndLesson(
     "/multipleListeningByKlassAndLesson",
@@ -15,4 +15,11 @@ const multipleConfByKlassAndLesson = multipleDataByKlassAndLesson(
     "conf"
 );
 
-module.exports = { multipleListeningByKlassAndLesson, multipleConfByKlassAndLesson };
+const multipleRecordByKlassAndLesson = multipleDataByKlassAndLesson(
+    "/multipleRecordByKlassAndLesson",
+    "דוח שיעורים מוקלטים מרובה",
+    recordByKlassAndLesson,
+    "record"
+);
+
+module.exports = { multipleListeningByKlassAndLesson, multipleConfByKlassAndLesson, multipleRecordByKlassAndLesson };
