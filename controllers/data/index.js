@@ -83,6 +83,7 @@ registerHook(require("./dataByKlassAndLesson").confByKlassAndLesson);
 registerHook(require("./dataByKlassAndLesson").recordByKlassAndLesson);
 registerHook(require("./multipleDataByKlassAndLesson").multipleListeningByKlassAndLesson);
 registerHook(require("./multipleDataByKlassAndLesson").multipleConfByKlassAndLesson);
+registerHook(require("./multipleDataByKlassAndLesson").multipleRecordByKlassAndLesson);
 registerHook(require("./listeningByKlassPerStudent"));
 registerHook(require("./diploma").listenDiploma);
 registerHook(require("./diploma").confDiploma);
