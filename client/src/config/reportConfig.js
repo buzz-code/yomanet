@@ -85,6 +85,15 @@ export default [
         isAdmin: false,
     },
     {
+        url: "multipleRecordByKlassAndLesson",
+        title: "כיתה או מגמה ומקצוע - שיעורים מרובים",
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
+        isAdmin: false,
+        filterProps: {
+            isHideEmailButton: true,
+        },
+    },
+    {
         url: "recordDiploma",
         title: "הנפקת תעודות לתלמידות",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
