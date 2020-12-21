@@ -24,15 +24,15 @@ const getTableDataResponse = (res, results, totalCount, headers, params) => {
     res.send(data);
 };
 
-const createReport = async (res, url, format, title, results, headers, isMultiple) => {
-    let report = await getReport(url, format, title, results, headers, isMultiple);
+const createReport = async (res, url, format, title, results, headers, isPercent) => {
+    let report = await getReport(url, format, title, results, headers, isPercent);
     res.attachment(report.fileName);
     res.end(report.buffer);
 };
 
-const getReport = async (url, format, title, results, headers, isMultiple) => {
-    if (isMultiple) {
-        return getReportsZipFile(url, format, title, results, headers);
+const getReport = async (url, format, title, results, headers, isPercent) => {
+    if (isPercent) {
+        return getReportsPercentFile(url, format, title, results, headers);
     } else {
         if (format === "PDF") {
             if (url.indexOf("Diploma") === -1) {
@@ -59,6 +59,25 @@ const getReportsZipFile = async (url, format, title, results, headers) => {
         fileName: "דוחות מקובצים.zip",
         buffer,
     };
+};
+
+const getReportsPercentFile = async (url, format, title, results, headers) => {
+    for (const res of results) {
+        for (const key of headers) {
+            const [x, length] = key.label.split(" - ");
+            if (length) {
+                const timeParts = length.split(":").reverse().map(Number);
+                let sec = 0;
+                while (timeParts.length) {
+                    sec = sec * 60 + timeParts.pop();
+                }
+                const score = Math.floor(Math.min(1, (res[key.value] || 0) / sec) * 100);
+                res[key.value] = score;
+            }
+        }
+    }
+    headers.filter((item) => item.format === "sec2min").forEach((item) => (item.format = "percent"));
+    return getReport(url, format, title, results, headers);
 };
 
 const createGraphReport = async (res, format, title, results) => {

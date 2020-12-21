@@ -22,6 +22,15 @@ export default [
         },
     },
     {
+        url: "multipleListeningPercentByKlassAndLesson",
+        title: "כיתה או מגמה ומקצוע - שיעורים מרובים - אחוזים",
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
+        isAdmin: false,
+        filterProps: {
+            isHideEmailButton: true,
+        },
+    },
+    {
         url: "listeningByKlassPerStudent",
         title: "דוח כללי לכיתה",
         filterFields: ["singleKlass", "dateRange"],
@@ -60,7 +69,16 @@ export default [
             isHideEmailButton: true,
         },
     },
- {
+    {
+        url: "multipleConfPercentByKlassAndLesson",
+        title: "כיתה או מגמה ומקצוע - נתוני ועידה מרובים - אחוזים",
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
+        isAdmin: false,
+        filterProps: {
+            isHideEmailButton: true,
+        },
+    },
+    {
         url: "confDiploma",
         title: "הנפקת תעודות לתלמידות",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
@@ -70,7 +88,6 @@ export default [
             isHideExcelButton: true,
         },
     },
-    
     { isHeader: true, title: "שיעורים מוקלטים" },
     {
         url: "recordByKlassOrMegama",
@@ -87,6 +104,15 @@ export default [
     {
         url: "multipleRecordByKlassAndLesson",
         title: "כיתה או מגמה ומקצוע - שיעורים מרובים",
+        filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
+        isAdmin: false,
+        filterProps: {
+            isHideEmailButton: true,
+        },
+    },
+    {
+        url: "multipleRecordPercentByKlassAndLesson",
+        title: "כיתה או מגמה ומקצוע - שיעורים מרובים - אחוזים",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
         filterProps: {

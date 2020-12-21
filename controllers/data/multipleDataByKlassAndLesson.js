@@ -22,4 +22,35 @@ const multipleRecordByKlassAndLesson = multipleDataByKlassAndLesson(
     "record"
 );
 
-module.exports = { multipleListeningByKlassAndLesson, multipleConfByKlassAndLesson, multipleRecordByKlassAndLesson };
+const multipleListeningPercentByKlassAndLesson = multipleDataByKlassAndLesson(
+    "/multipleListeningPercentByKlassAndLesson",
+    "דוח האזנה מרובה - אחוזים",
+    listeningByKlassAndLesson,
+    "listening",
+    true
+);
+
+const multipleConfPercentByKlassAndLesson = multipleDataByKlassAndLesson(
+    "/multipleConfPercentByKlassAndLesson",
+    "דוח ועידה מרובה - אחוזים",
+    confByKlassAndLesson,
+    "conf",
+    true
+);
+
+const multipleRecordPercentByKlassAndLesson = multipleDataByKlassAndLesson(
+    "/multipleRecordPercentByKlassAndLesson",
+    "דוח שיעורים מוקלטים מרובה - אחוזים",
+    recordByKlassAndLesson,
+    "record",
+    true
+);
+
+module.exports = {
+    multipleListeningByKlassAndLesson,
+    multipleConfByKlassAndLesson,
+    multipleRecordByKlassAndLesson,
+    multipleListeningPercentByKlassAndLesson,
+    multipleConfPercentByKlassAndLesson,
+    multipleRecordPercentByKlassAndLesson,
+};

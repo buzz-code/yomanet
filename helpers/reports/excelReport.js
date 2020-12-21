@@ -2,15 +2,21 @@ const ExcelJS = require("exceljs");
 const contentDisposition = require("content-disposition");
 const { getTableCellValue } = require("../format");
 
+const colFormat = {
+    ["sec2minExcel"]: "HH:mm:ss",
+    ["percentExcel"]: "0%",
+};
+
 const getExcelReportObject = async (title, results, headers) => {
     var workbook = new ExcelJS.stream.xlsx.WorkbookWriter({ useStyles: true });
     var worksheet = workbook.addWorksheet("גליון 1");
     headers.forEach((item) => (item.format === "sec2min" ? (item.format = "sec2minExcel") : null));
+    headers.forEach((item) => (item.format === "percent" ? (item.format = "percentExcel") : null));
     worksheet.columns = headers.map((item) => ({
         header: item.label,
         key: item.value,
         style: {
-            numFmt: item.format === "sec2minExcel" ? "HH:mm:ss" : undefined,
+            numFmt: colFormat[item.format],
         },
     }));
     worksheet.getRow(1).eachCell((cell) => {

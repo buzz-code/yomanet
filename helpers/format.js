@@ -55,6 +55,15 @@ const getTableCellValue = (item, header) => {
         if (header.format === "array") {
             return item[header.value] && item[header.value].join(", ");
         }
+        if (header.format === "percent") {
+            return item[header.value] + "%";
+        }
+        if (header.format === "percentExcel") {
+            const score = item[header.value];
+            if (!isNaN(score)) {
+                return score / 100;
+            }
+        }
     } catch (e) {
         console.log("getTableCellValue format error", JSON.stringify(item[header.value]), header.format, e);
         return item[header.value];

@@ -5,7 +5,8 @@ const { getLessonInstancesForKlassAndLesson } = require("../../../helpers/dataUt
 const { Lesson } = require("../../../models/Lesson");
 const titleUtil = require("../../../helpers/dataUtils/titleUtil");
 
-module.exports = (url, title, dataTemplate, type) => ({
+module.exports = (url, title, dataTemplate, type, isPercent) => ({
+    isPercent,
     url,
     title: function (filter) {
         return titleUtil.getTitle(
