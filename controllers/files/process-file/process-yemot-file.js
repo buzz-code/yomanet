@@ -62,7 +62,7 @@ const getItemFromLine = (line, defaultItem) => {
         const [key, value] = pair.split("#");
         item[key] = getValue(key, value, item);
     });
-    if (Object.keys(item).length < 8) {
+    if (Object.values(item).filter((item) => item).length < 8) {
         return null;
     }
     return item;
