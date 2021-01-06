@@ -6,7 +6,6 @@ const { YemotPlayback } = require("../models/YemotPlayback");
 const { YemotConfBridge } = require("../models/YemotConfBridge");
 const { YemotPlayDir } = require("../models/YemotPlayDir");
 const { LessonInstance } = require("../models/LessonInstance");
-const { Lesson } = require("../models/Lesson");
 const { sendEmail } = require("../helpers/mailer");
 
 async function main() {
@@ -31,15 +30,6 @@ async function main() {
             log("start process for user:", user.name);
             try {
                 await LessonInstance.deleteMany({ user: user.name });
-                const lessons = await Lesson.find(
-                    {
-                        user: user.name,
-                        confExtension: { $nin: [null, ""] },
-                    },
-                    ["extension", "confExtension"]
-                ).lean();
-                const confExtensionDict = {};
-                lessons.forEach((item) => (confExtensionDict[item.confExtension] = item.extension));
 
                 const data = await YemotPlayback.aggregate()
                     .match({ user: user.name })
@@ -67,7 +57,7 @@ async function main() {
                     .match({ user: user.name })
                     .group({
                         _id: {
-                            Folder: "$Folder",
+                            Folder: { $arrayElemAt: [{ $split: ["$ConfBridge", "-"] }, 1] },
                             EnterDate: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
                         },
                         FileLength: { $max: "$FileLength" },
@@ -87,7 +77,6 @@ async function main() {
                         type: "conf",
                     });
                 log(conf && conf[0]);
-                conf.forEach((item) => (item.Folder = confExtensionDict[item.Folder] || item.Folder));
 
                 const record = await YemotPlayDir.aggregate()
                     .match({ user: user.name })
