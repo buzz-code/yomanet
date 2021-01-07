@@ -60,7 +60,7 @@ async function main() {
                             Folder: { $arrayElemAt: [{ $split: ["$ConfBridge", "-"] }, 1] },
                             EnterDate: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
                         },
-                        FileLength: { $max: "$FileLength" },
+                        FileLength: { $sum: "$FileLength" },
                         LongestListening: { $max: "$TimeTotal" },
                         FirstListeningDate: { $min: "$EnterDate" },
                         LessonTitle: { $max: "$LessonTitle" },
