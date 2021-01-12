@@ -1,11 +1,19 @@
 const puppeteer = require("puppeteer");
 const { getSec2Min } = require("../format");
 
+const getLabelScoreForScore = (score) => {
+    if (score > 78) return "מצוין";
+    if (score > 60) return "טוב";
+    if (score > 40) return "בסדר";
+    return "חלש";
+};
+
 const createTableRow = (label, stats, lessonInstances) => {
     const percents = lessonInstances.map(([key, value]) => Math.min(1, (stats[key] || 0) / value));
     const avgPercent = percents.length ? percents.reduce((a, b) => a + b, 0) / percents.length : 0;
     const score = Math.floor(avgPercent * 100);
     const timeTotal = Object.values(stats).reduce((a, b) => a + b, 0);
+    const labelScore = getLabelScoreForScore(score);
 
     return `
     <tr>
@@ -13,6 +21,7 @@ const createTableRow = (label, stats, lessonInstances) => {
         <td>${percents.length}</td>
         <td>${getSec2Min(timeTotal)}</td>
         <td>${score}%</td>
+        <td>${labelScore}%</td>
     </tr>
 `;
 };
@@ -25,6 +34,7 @@ const createTable = (studentData, lessonInstances, headers) => `
                 <th>מספר שיעורים</th>
                 <th>סה"כ האזנה</th>
                 <th>אחוז האזנה כולל</th>
+                <th>ציון</th>
             </tr>
         </thead>
         <tbody>
