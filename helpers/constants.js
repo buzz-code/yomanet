@@ -12,6 +12,7 @@ module.exports = {
         { label: "מחזור", value: "grade" },
         { label: "מספר כיתה", value: "classNum" },
         { label: "מגמה/ התמחות", value: "megama", format: "array" },
+        { label: "שיעורים לתעודה", value: "lessons", format: "array" },
     ],
     userHeaders: [
         { value: "name", label: "שם משתמש" },

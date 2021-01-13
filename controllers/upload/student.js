@@ -8,6 +8,7 @@ module.exports = {
         parsed.forEach((item) => {
             item.user = user.name;
             item.megama = item.megama ? item.megama.split(",") : [];
+            item.lessons = item.lessons ? item.lessons.split(",") : [];
         });
         await Student.deleteMany({ user: user.name });
         await Student.insertMany(parsed);
