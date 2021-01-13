@@ -25,7 +25,7 @@ async function main() {
                 useFindAndModify: false,
             })
             .then(() => log("MongoDB Connected..."));
-        const users = await User.find().lean();
+        const users = await User.find({}).lean();
         for (const user of users) {
             log("start process for user:", user.name);
             try {
@@ -34,10 +34,18 @@ async function main() {
                 const data = await YemotPlayback.aggregate()
                     .match({ user: user.name })
                     .group({
-                        _id: { Folder: "$Folder", Current: "$Current" },
-                        FileLength: { $max: "$FileLength" },
+                        _id: { Folder: "$Folder", Current: "$Current", FileLength: "$FileLength" },
+                        count: { $sum: "1" },
                         LongestListening: { $max: "$TimeTotal" },
                         FirstListeningDate: { $min: "$EnterDate" },
+                        LessonTitle: { $max: "$LessonTitle" },
+                    })
+                    .sort({ "_id.FileLength": 1, count: -1 })
+                    .group({
+                        _id: { Folder: "$_id.Folder", Current: "$_id.Current" },
+                        FileLength: { $first: "$_id.FileLength" },
+                        LongestListening: { $max: "$LongestListening" },
+                        FirstListeningDate: { $min: "$FirstListeningDate" },
                         LessonTitle: { $max: "$LessonTitle" },
                     })
                     .project({
