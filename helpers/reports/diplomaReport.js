@@ -21,7 +21,7 @@ const createTableRow = (label, stats, lessonInstances) => {
         <td>${percents.length}</td>
         <td>${getSec2Min(timeTotal)}</td>
         <td>${score}%</td>
-        <td>${labelScore}%</td>
+        <td>${labelScore}</td>
     </tr>
 `;
 };
