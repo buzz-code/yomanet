@@ -8,6 +8,7 @@ const studentSchema = mongoose.Schema({
     grade: { type: String, trim: true },
     classNum: { type: String, trim: true },
     megama: [{ type: String, trim: true }],
+    lessons: [{ type: String, trim: true }],
     fullName: {
         type: String,
         trim: true,
