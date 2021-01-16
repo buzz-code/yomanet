@@ -68,7 +68,7 @@ async function filterLessons(query, lessonQuery) {
 
 async function getQueryWithStudentIds(queries, page) {
     const { query, studentQuery } = queries;
-    const students = await Student.find({ $and: studentQuery }, ["identityNumber", "name"], {
+    const students = await Student.find({ $and: studentQuery }, ["identityNumber", "name", "lessons"], {
         ...getPagingConfig(page),
         sort: { name: 1 },
     }).lean();
