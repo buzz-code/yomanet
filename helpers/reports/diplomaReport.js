@@ -9,6 +9,8 @@ const getLabelScoreForScore = (score) => {
 };
 
 const createTableRow = (label, stats, lessonInstances) => {
+    if (stats[key] === "none") return "";
+    
     const percents = lessonInstances.map(([key, value]) => Math.min(1, (stats[key] || 0) / value));
     const avgPercent = percents.length ? percents.reduce((a, b) => a + b, 0) / percents.length : 0;
     const score = Math.floor(avgPercent * 100);
