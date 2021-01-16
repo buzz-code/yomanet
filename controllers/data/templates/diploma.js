@@ -88,9 +88,11 @@ const getDataForStudent = (dataById, student) => {
     const studentData = dataById[student.identityNumber];
     console.log({ student, lessons: student.lessons, keys: Object.keys(studentData) });
     if (student.lessons && student.lessons.length) {
+        console.log("in if", student.name);
         const keys = Object.keys(studentData);
         for (const key of keys) {
             if (student.lessons.indexOf(key) == -1) {
+                console.log("remove lesson " + key, student.name);
                 delete studentData[key];
             }
         }
