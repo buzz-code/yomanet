@@ -49,7 +49,8 @@ module.exports = (model, url, title, reportType) => ({
 
         const listeningData = students.map((item) => ({
             name: item.name,
-            ...getDataForStudent(dataById, item),
+            lessons: item.lessons,
+            ...dataById[item.identityNumber],
         }));
 
         const lessonIds = queries.extensions
@@ -83,16 +84,3 @@ module.exports = (model, url, title, reportType) => ({
         return await Student.countDocuments({ $and: studentQuery });
     },
 });
-
-const getDataForStudent = (dataById, student) => {
-    const studentData = dataById[student.identityNumber];
-    if (student.lessons && student.lessons.length) {
-        const keys = Object.keys(studentData);
-        for (const key of keys) {
-            if (student.lessons.indexOf(key) == -1) {
-                studentData[key] = "none";
-            }
-        }
-    }
-    return studentData;
-};

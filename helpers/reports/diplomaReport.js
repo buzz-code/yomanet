@@ -9,8 +9,6 @@ const getLabelScoreForScore = (score) => {
 };
 
 const createTableRow = (label, stats, lessonInstances) => {
-    if (stats[key] === "none") return "";
-    
     const percents = lessonInstances.map(([key, value]) => Math.min(1, (stats[key] || 0) / value));
     const avgPercent = percents.length ? percents.reduce((a, b) => a + b, 0) / percents.length : 0;
     const score = Math.floor(avgPercent * 100);
@@ -41,6 +39,12 @@ const createTable = (studentData, lessonInstances, headers) => `
         </thead>
         <tbody>
             ${headers
+                .filter(
+                    (item) =>
+                        !studentData.lessons ||
+                        !studentData.lessons.length ||
+                        studentData.lessons.indexOf(item.value) > -1
+                )
                 .map((item) => createTableRow(item.label, studentData[item.value] || {}, lessonInstances[item.value]))
                 .join("")}
         </tbody>
