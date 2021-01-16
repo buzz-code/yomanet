@@ -86,14 +86,14 @@ module.exports = (model, url, title, reportType) => ({
 
 const getDataForStudent = (dataById, student) => {
     const studentData = dataById[student.identityNumber];
-    console.log(student)
-    if(student.lessons && student.lessons.length) {
+    console.log({ student, lessons: student.lessons, keys: Object.keys(studentData) });
+    if (student.lessons && student.lessons.length) {
         const keys = Object.keys(studentData);
         for (const key of keys) {
-            if(student.lessons.indexOf(key) == -1) {
+            if (student.lessons.indexOf(key) == -1) {
                 delete studentData[key];
             }
         }
     }
     return studentData;
-}
+};
