@@ -86,7 +86,7 @@ module.exports = (model, url, title, reportType) => ({
 
 const getDataForStudent = (dataById, student) => {
     const studentData = dataById[student.identityNumber];
-    console.log(student.lessons)
+    console.log(student)
     if(student.lessons && student.lessons.length) {
         const keys = Object.keys(studentData);
         for (const key of keys) {
