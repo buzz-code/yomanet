@@ -21,7 +21,6 @@ const createTableRow = (label, stats, lessonInstances) => {
         <td>${percents.length}</td>
         <td>${getSec2Min(timeTotal)}</td>
         <td>${score}%</td>
-        <td>${labelScore}</td>
     </tr>
 `;
 };
@@ -34,7 +33,6 @@ const createTable = (studentData, lessonInstances, headers) => `
                 <th>מספר שיעורים</th>
                 <th>סה"כ האזנה</th>
                 <th>אחוז האזנה כולל</th>
-                <th>ציון</th>
             </tr>
         </thead>
         <tbody>
