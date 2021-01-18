@@ -53,7 +53,7 @@ const createTable = (studentData, lessonInstances, headers) => `
 
 const createPage = (studentData, lessonInstances, headers) => `
     <div class="page">
-        <h1>${studentData.name}</h1>
+        <h1>${studentData.klass} - ${studentData.name}</h1>
         ${createTable(studentData, lessonInstances, headers)}
     </div>
     `;

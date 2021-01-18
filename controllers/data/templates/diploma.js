@@ -49,6 +49,7 @@ module.exports = (model, url, title, reportType) => ({
 
         const listeningData = students.map((item) => ({
             name: item.name,
+            klass: item.fullKlassName,
             lessons: item.lessons,
             ...dataById[item.identityNumber],
         }));
