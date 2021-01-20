@@ -1,7 +1,7 @@
 export default [
     { isHeader: true, title: "האזנה" },
     {
-        url: "listeningByKlassOrMegama",
+        url: "dataByKlassOrMegama/listening",
         title: "כיתה או מגמה",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
         isAdmin: false,
@@ -49,7 +49,7 @@ export default [
 
     { isHeader: true, title: "ועידה" },
     {
-        url: "confByKlassOrMegama",
+        url: "dataByKlassOrMegama/conf",
         title: "כיתה או מגמה",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
         isAdmin: false,
@@ -90,7 +90,7 @@ export default [
     },
     { isHeader: true, title: "שיעורים מוקלטים" },
     {
-        url: "recordByKlassOrMegama",
+        url: "dataByKlassOrMegama/record",
         title: "כיתה או מגמה",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "dateRange"],
         isAdmin: false,
