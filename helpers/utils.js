@@ -35,7 +35,7 @@ const getReport = async (url, format, title, results, headers, isPercent) => {
         return getReportsPercentFile(url, format, title, results, headers);
     } else {
         if (format === "PDF") {
-            if (url.indexOf("Diploma") === -1) {
+            if (url.indexOf("diploma") === -1) {
                 return getPdfReportObject(title, results, headers);
             } else {
                 return getDiplomaReportObject(title, results, headers);

@@ -76,8 +76,6 @@ registerHook(require("./multipleDataByKlassAndLesson").multipleListeningPercentB
 registerHook(require("./multipleDataByKlassAndLesson").multipleConfPercentByKlassAndLesson);
 registerHook(require("./multipleDataByKlassAndLesson").multipleRecordPercentByKlassAndLesson);
 registerHook(require("./listeningByKlassPerStudent"));
-registerHook(require("./diploma").listenDiploma);
-registerHook(require("./diploma").confDiploma);
-registerHook(require("./diploma").recordDiploma);
+registerHook(require("./diploma"));
 
 module.exports = router;

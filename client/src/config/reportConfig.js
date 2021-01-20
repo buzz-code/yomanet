@@ -37,7 +37,7 @@ export default [
         isAdmin: false,
     },
     {
-        url: "listeningDiploma",
+        url: "diploma/listening",
         title: "הנפקת תעודות לתלמידות",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
@@ -79,7 +79,7 @@ export default [
         },
     },
     {
-        url: "confDiploma",
+        url: "diploma/conf",
         title: "הנפקת תעודות לתלמידות",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
@@ -120,7 +120,7 @@ export default [
         },
     },
     {
-        url: "recordDiploma",
+        url: "diploma/record",
         title: "הנפקת תעודות לתלמידות",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
