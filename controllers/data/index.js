@@ -6,6 +6,7 @@ const { getTableDataResponse, createReport, sendReportByMail } = require("../../
 function registerHook(hook) {
     router.post(hook.url, auth, async function (req, res) {
         const filter = JSON.parse(req.body.filter);
+        const params = req.params;
         const query = await hook.query(filter, req.user);
         console.log("data query for url:", hook.url, filter, query);
 
@@ -15,14 +16,15 @@ function registerHook(hook) {
             return;
         }
 
-        const results = await hook.data(query, filter.page, filter, req.user);
+        const results = await hook.data(query, filter.page, filter, req.user, params);
         const count = await hook.count(query);
-        const headers = await hook.headers(results, query, filter, req.user);
+        const headers = await hook.headers(results, query, filter, req.user, params);
 
         getTableDataResponse(res, results, count, headers, filter);
     });
     router.get(hook.url, auth, async function (req, res) {
         const filter = JSON.parse(req.query.filter);
+        const params = req.params;
         const query = await hook.query(filter, req.user);
         console.log("report query for url:", hook.url, filter, query);
 
@@ -32,14 +34,15 @@ function registerHook(hook) {
             return;
         }
 
-        const results = await hook.data(query, -1, filter, req.user);
-        const headers = await hook.headers(results, query, filter, req.user);
-        const title = hook.title(filter, query);
+        const results = await hook.data(query, -1, filter, req.user, params);
+        const headers = await hook.headers(results, query, filter, req.user, params);
+        const title = hook.title(filter, query, params);
 
         createReport(res, hook.url, filter.format, title, results, headers, hook.isPercent);
     });
     router.put(hook.url, auth, async function (req, res) {
         const filter = JSON.parse(req.body.filter);
+        const params = req.params;
         const query = await hook.query(filter, req.user);
         console.log("email query for url:", hook.url, filter, query);
 
@@ -49,9 +52,9 @@ function registerHook(hook) {
             return;
         }
 
-        const results = await hook.data(query, -1, filter, req.user);
-        const headers = await hook.headers(results, query, filter, req.user);
-        const title = hook.title(filter);
+        const results = await hook.data(query, -1, filter, req.user, params);
+        const headers = await hook.headers(results, query, filter, req.user, params);
+        const title = hook.title(filter, query, params);
 
         sendReportByMail(res, req.body.recipient, filter.format, title, results, headers);
     });
