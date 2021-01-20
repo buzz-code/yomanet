@@ -47,10 +47,10 @@ module.exports = {
         return { isValid: false, errorMessage: "חובה לבחור כיתה או מגמה" };
     },
     data: async function (queries, page, filter, user, params) {
-        const { model, reportType } = moduleMapping[params.type];
+        const { model, groupField } = moduleMapping[params.type];
 
         const { query, students } = await queryUtil.getQueryWithStudentIds(queries, page);
-        const dataById = await getDataById(model, getAggregateForDiploma(query, reportType));
+        const dataById = await getDataById(model, getAggregateForDiploma(query, groupField));
 
         const listeningData = students.map((item) => ({
             name: item.name,
@@ -66,7 +66,7 @@ module.exports = {
                       Object.keys(item).filter((item) => item !== "name" && item !== "EnterId")
                   )
               );
-        const lessonInstances = await getLessonInstancesForDiploma(lessonIds, user, filter, reportType);
+        const lessonInstances = await getLessonInstancesForDiploma(lessonIds, user, filter, groupField);
 
         return { listeningData, lessonInstances };
     },
@@ -95,16 +95,16 @@ const moduleMapping = {
     listening: {
         model: YemotPlayback,
         title: "תעודת האזנה",
-        reportType: "listening",
+        groupField: "current",
     },
     conf: {
         model: YemotConfBridge,
         title: "תעודת ועידה",
-        reportType: "conf",
+        groupField: "enterDate",
     },
     record: {
         model: YemotPlayDir,
         title: "תעודת שיעורים מוקלטים",
-        reportType: "record",
+        groupField: "enterDate",
     },
 };

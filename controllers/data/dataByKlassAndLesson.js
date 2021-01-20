@@ -44,10 +44,10 @@ module.exports = {
         };
     },
     data: async function (queries, page, filter, user, params) {
-        const { model, reportType } = moduleMapping[params.type];
+        const { model, groupField } = moduleMapping[params.type];
 
         const { query, students } = await queryUtil.getQueryWithStudentIds(queries, page);
-        const dataById = await getDataById(model, getAggregateByKlassAndLesson(query, reportType));
+        const dataById = await getDataById(model, getAggregateByKlassAndLesson(query, groupField));
 
         return students.map((item) => ({
             name: item.name,
@@ -56,7 +56,7 @@ module.exports = {
         }));
     },
     headers: async function (data, query, filter, user, params) {
-        const { reportType } = moduleMapping[params.type];
+        const { groupField } = moduleMapping[params.type];
         const keys = new Set();
         data.forEach((item) => {
             for (const key in item) {
@@ -68,7 +68,7 @@ module.exports = {
             filter.lesson[0].value,
             keys,
             user,
-            reportType
+            groupField
         );
 
         const headers = [
@@ -105,16 +105,16 @@ const moduleMapping = {
     listening: {
         model: YemotPlayback,
         title: "דוח האזנה",
-        reportType: "listening",
+        groupField: "current",
     },
     conf: {
         model: YemotConfBridge,
         title: "דוח ועידה",
-        reportType: "conf",
+        groupField: "enterDate",
     },
     record: {
         model: YemotPlayDir,
         title: "דוח שיעורים מוקלטים",
-        reportType: "record",
+        groupField: "enterDate",
     },
 };

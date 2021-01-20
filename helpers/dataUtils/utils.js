@@ -3,9 +3,8 @@ const { LessonInstance } = require("../../models/LessonInstance");
 const moment = require("moment");
 
 const groupByField = {
-    listening: "Current",
-    conf: "EnterDate",
-    record: "EnterDate",
+    current: "Current",
+    enterDate: "EnterDate",
 };
 
 function getExtensions(data) {
@@ -48,17 +47,17 @@ async function getDataById(model, aggregate) {
     return dataById;
 }
 
-async function getLessonInstancesForDiploma(lessonIds, user, { fromDate, toDate }, reportType) {
+async function getLessonInstancesForDiploma(lessonIds, user, { fromDate, toDate }, groupField, reportType) {
     const query = [{ user: user.name }];
     query.push({ Folder: { $in: [...lessonIds] } });
     query.push({ $or: [{ FileLength: { $gt: 0 } }, { LongestListening: { $gt: 0 } }] });
-    query.push({ type: reportType });
+    // query.push({ type: reportType });
     if (fromDate) query.push({ FirstListeningDate: { $gte: moment.utc(fromDate).toDate() } });
     if (toDate) query.push({ FirstListeningDate: { $lte: moment.utc(toDate).toDate() } });
 
     const lessonInstances = await LessonInstance.find({ $and: query }, [
         "Folder",
-        groupByField[reportType],
+        groupByField[groupField],
         "FileLength",
         "LongestListening",
     ]).lean();
@@ -67,29 +66,29 @@ async function getLessonInstancesForDiploma(lessonIds, user, { fromDate, toDate 
         (id) =>
             (lengthByFolderAndCurrent[id] = lessonInstances
                 .filter((item) => item.Folder === id)
-                .map((item) => [item[groupByField[reportType]], item.FileLength || item.LongestListening]))
+                .map((item) => [item[groupByField[groupField]], item.FileLength || item.LongestListening]))
     );
 
     return lengthByFolderAndCurrent;
 }
 
-async function getLessonInstancesForKlassAndLesson(folder, keys, user, reportType) {
+async function getLessonInstancesForKlassAndLesson(folder, keys, user, groupField, reportType) {
     const fileLengths = await LessonInstance.find(
         {
             user: user.name,
             Folder: folder,
-            [groupByField[reportType]]: { $in: [...keys] },
-            type: reportType,
+            [groupByField[groupField]]: { $in: [...keys] },
+            // type: reportType,
         },
-        [groupByField[reportType], "FileLength", "LongestListening", "LessonTitle", "FirstListeningDate"]
+        [groupByField[groupField], "FileLength", "LongestListening", "LessonTitle", "FirstListeningDate"]
     ).lean();
     const fileLengthByKey = {};
     const lessonTitleByKey = {};
     const firstListeningByKey = {};
     fileLengths.forEach((item) => {
-        fileLengthByKey[item[groupByField[reportType]]] = item.FileLength || item.LongestListening;
-        lessonTitleByKey[item[groupByField[reportType]]] = item.LessonTitle;
-        firstListeningByKey[item[groupByField[reportType]]] =
+        fileLengthByKey[item[groupByField[groupField]]] = item.FileLength || item.LongestListening;
+        lessonTitleByKey[item[groupByField[groupField]]] = item.LessonTitle;
+        firstListeningByKey[item[groupByField[groupField]]] =
             item.FirstListeningDate && moment.utc(item.FirstListeningDate).format("DD/MM/YYYY");
     });
 

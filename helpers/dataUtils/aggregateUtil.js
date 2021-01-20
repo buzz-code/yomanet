@@ -1,15 +1,14 @@
 const groupByField = {
-    listening: "$Current",
-    conf: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
-    record: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
+    current: "$Current",
+    enterDate: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
 };
 
-function getAggregateByKlassAndLesson(query, reportType) {
+function getAggregateByKlassAndLesson(query, groupField) {
     return [
         { $match: { $and: query } },
         {
             $group: {
-                _id: { EnterId: "$EnterId", Folder: "$Folder", Group: groupByField[reportType] },
+                _id: { EnterId: "$EnterId", Folder: "$Folder", Group: groupByField[groupField] },
                 TimeTotal: { $sum: "$TimeTotal" },
             },
         },
@@ -59,12 +58,12 @@ function getAggregateByKlassPerStudent(query) {
     ];
 }
 
-function getAggregateForDiploma(query, reportType) {
+function getAggregateForDiploma(query, groupField) {
     return [
         { $match: { $and: query } },
         {
             $group: {
-                _id: { EnterId: "$EnterId", Folder: "$Folder", Group: groupByField[reportType] },
+                _id: { EnterId: "$EnterId", Folder: "$Folder", Group: groupByField[groupField] },
                 TimeTotal: { $sum: "$TimeTotal" },
             },
         },

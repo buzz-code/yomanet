@@ -72,7 +72,7 @@ module.exports = {
         return results;
     },
     headers: async function (data, { lessons, ...queries }, filter, user, params) {
-        const { reportType } = moduleMapping[params.type];
+        const { groupField } = moduleMapping[params.type];
         const keys = new Set(data.flatMap((item) => Object.keys(item)).filter((item) => item !== "name"));
         const lessonsAndCurrents = {};
         keys.forEach((item) => {
@@ -91,7 +91,7 @@ module.exports = {
                 fileLengthByKey,
                 lessonTitleByKey,
                 firstListeningByKey,
-            } = await getLessonInstancesForKlassAndLesson(lesson, currents, user, reportType);
+            } = await getLessonInstancesForKlassAndLesson(lesson, currents, user, groupField);
 
             const lessonObj = lessons.filter((item) => item.extension === lesson)[0];
 
@@ -127,34 +127,34 @@ const moduleMapping = {
     listening: {
         model: YemotPlayback,
         title: "דוח האזנה מרובה",
-        reportType: "listening",
+        groupField: "current",
     },
     conf: {
         model: YemotConfBridge,
         title: "דוח ועידה מרובה",
-        reportType: "conf",
+        groupField: "enterDate",
     },
     record: {
         model: YemotPlayDir,
         title: "דוח שיעורים מוקלטים מרובה",
-        reportType: "record",
+        groupField: "enterDate",
     },
     listeningPercent: {
         model: YemotPlayback,
         title: "דוח האזנה מרובה - אחוזים",
-        reportType: "listening",
+        groupField: "current",
         isPercent: true,
     },
     confPercent: {
         model: YemotConfBridge,
         title: "דוח ועידה מרובה - אחוזים",
-        reportType: "conf",
+        groupField: "enterDate",
         isPercent: true,
     },
     recordPercent: {
         model: YemotPlayDir,
         title: "דוח שיעורים מוקלטים מרובה - אחוזים",
-        reportType: "record",
+        groupField: "enterDate",
         isPercent: true,
     },
 };
