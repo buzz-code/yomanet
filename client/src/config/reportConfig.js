@@ -7,7 +7,7 @@ export default [
         isAdmin: false,
     },
     {
-        url: "listeningByKlassAndLesson",
+        url: "dataByKlassAndLesson/listening",
         title: "כיתה או מגמה ומקצוע",
         filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
         isAdmin: false,
@@ -55,7 +55,7 @@ export default [
         isAdmin: false,
     },
     {
-        url: "confByKlassAndLesson",
+        url: "dataByKlassAndLesson/conf",
         title: "כיתה או מגמה ומקצוע",
         filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
         isAdmin: false,
@@ -96,7 +96,7 @@ export default [
         isAdmin: false,
     },
     {
-        url: "recordByKlassAndLesson",
+        url: "dataByKlassAndLesson/record",
         title: "כיתה או מגמה ומקצוע",
         filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
         isAdmin: false,
