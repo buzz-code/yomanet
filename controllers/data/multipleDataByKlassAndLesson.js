@@ -10,9 +10,9 @@ const { YemotPlayDir } = require("../../models/YemotPlayDir");
 const dataByKlassAndLesson = require("./dataByKlassAndLesson");
 
 module.exports = {
-    isPercent: function (params) {
-        const { isPercent } = moduleMapping[params.type];
-        return isPercent;
+    specialReportType: function (params) {
+        const { specialReportType } = moduleMapping[params.type];
+        return specialReportType;
     },
     url: "/multipleDataByKlassAndLesson/:type",
     title: function (filter, query, params) {
@@ -143,18 +143,18 @@ const moduleMapping = {
         model: YemotPlayback,
         title: "דוח האזנה מרובה - אחוזים",
         groupField: "current",
-        isPercent: true,
+        specialReportType: "percent",
     },
     confPercent: {
         model: YemotConfBridge,
         title: "דוח ועידה מרובה - אחוזים",
         groupField: "enterDate",
-        isPercent: true,
+        specialReportType: "percent",
     },
     recordPercent: {
         model: YemotPlayDir,
         title: "דוח שיעורים מוקלטים מרובה - אחוזים",
         groupField: "enterDate",
-        isPercent: true,
+        specialReportType: "percent",
     },
 };

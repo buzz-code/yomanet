@@ -13,6 +13,9 @@ const { YemotConfBridge } = require("../../models/YemotConfBridge");
 const { YemotPlayDir } = require("../../models/YemotPlayDir");
 
 module.exports = {
+    specialReportType: function (params) {
+        return "diploma";
+    },
     url: "/diploma/:type",
     title: function (filter, query, params) {
         const { title } = moduleMapping[params.type];

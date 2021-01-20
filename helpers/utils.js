@@ -24,21 +24,21 @@ const getTableDataResponse = (res, results, totalCount, headers, params) => {
     res.send(data);
 };
 
-const createReport = async (res, url, format, title, results, headers, isPercent) => {
-    let report = await getReport(url, format, title, results, headers, isPercent);
+const createReport = async (res, url, format, title, results, headers, specialType) => {
+    let report = await getReport(url, format, title, results, headers, specialType);
     res.attachment(report.fileName);
     res.end(report.buffer);
 };
 
-const getReport = async (url, format, title, results, headers, isPercent) => {
-    if (isPercent) {
+const getReport = async (url, format, title, results, headers, specialType) => {
+    if (specialType === "percent") {
         return getReportsPercentFile(url, format, title, results, headers);
     } else {
         if (format === "PDF") {
-            if (url.indexOf("diploma") === -1) {
-                return getPdfReportObject(title, results, headers);
-            } else {
+            if (specialType === "diploma") {
                 return getDiplomaReportObject(title, results, headers);
+            } else {
+                return getPdfReportObject(title, results, headers);
             }
         } else if (format === "EXCEL") {
             return getExcelReportObject(title, results, headers);

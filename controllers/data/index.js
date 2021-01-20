@@ -37,8 +37,9 @@ function registerHook(hook) {
         const results = await hook.data(query, -1, filter, req.user, params);
         const headers = await hook.headers(results, query, filter, req.user, params);
         const title = hook.title(filter, query, params);
+        const specialReportType = hook.specialReportType && hook.specialReportType(params);
 
-        createReport(res, hook.url, filter.format, title, results, headers, hook.isPercent && hook.isPercent(params));
+        createReport(res, hook.url, filter.format, title, results, headers, specialReportType);
     });
     router.put(hook.url, auth, async function (req, res) {
         const filter = JSON.parse(req.body.filter);
