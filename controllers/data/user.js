@@ -61,16 +61,4 @@ module.exports = {
     count: async function (query) {
         return 0;
     },
-    save: async function (item) {
-        try {
-            const user = await User.findById(item._id);
-            Object.entries(item).forEach(([key, value]) => value && (user[key] = value));
-            console.log(user);
-            await user.save();
-            return { isValid: true, successMessage: "נשמר בהצלחה" };
-        } catch (e) {
-            console.log("save item error", e);
-            return { isValid: false, errorMessage: "ארעה שגיאה" };
-        }
-    },
 };

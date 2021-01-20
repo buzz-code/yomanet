@@ -55,17 +55,6 @@ function registerHook(hook) {
 
         sendReportByMail(res, req.body.recipient, filter.format, title, results, headers);
     });
-    router.post("/update" + hook.url, auth, async function (req, res) {
-        const { item } = req.body;
-        console.log("save item for url:", hook.url, item);
-
-        const { isValid, errorMessage, successMessage } = await hook.save(item);
-        if (!isValid) {
-            res.send({ error: true, errorMessage });
-        } else {
-            res.send({ error: false, successMessage });
-        }
-    });
 }
 
 registerHook(require("./lesson"));
