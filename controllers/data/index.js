@@ -38,7 +38,7 @@ function registerHook(hook) {
         const headers = await hook.headers(results, query, filter, req.user, params);
         const title = hook.title(filter, query, params);
 
-        createReport(res, hook.url, filter.format, title, results, headers, hook.isPercent);
+        createReport(res, hook.url, filter.format, title, results, headers, hook.isPercent(params));
     });
     router.put(hook.url, auth, async function (req, res) {
         const filter = JSON.parse(req.body.filter);
@@ -69,12 +69,7 @@ registerHook(require("./user"));
 registerHook(require("./file"));
 registerHook(require("./dataByKlassOrMegama"));
 registerHook(require("./dataByKlassAndLesson"));
-registerHook(require("./multipleDataByKlassAndLesson").multipleListeningByKlassAndLesson);
-registerHook(require("./multipleDataByKlassAndLesson").multipleConfByKlassAndLesson);
-registerHook(require("./multipleDataByKlassAndLesson").multipleRecordByKlassAndLesson);
-registerHook(require("./multipleDataByKlassAndLesson").multipleListeningPercentByKlassAndLesson);
-registerHook(require("./multipleDataByKlassAndLesson").multipleConfPercentByKlassAndLesson);
-registerHook(require("./multipleDataByKlassAndLesson").multipleRecordPercentByKlassAndLesson);
+registerHook(require("./multipleDataByKlassAndLesson"));
 registerHook(require("./listeningByKlassPerStudent"));
 registerHook(require("./diploma"));
 

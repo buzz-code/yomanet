@@ -13,7 +13,7 @@ export default [
         isAdmin: false,
     },
     {
-        url: "multipleListeningByKlassAndLesson",
+        url: "multipleDataByKlassAndLesson/listening",
         title: "כיתה או מגמה ומקצוע - שיעורים מרובים",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
@@ -22,7 +22,7 @@ export default [
         },
     },
     {
-        url: "multipleListeningPercentByKlassAndLesson",
+        url: "multipleDataByKlassAndLesson/listeningPercent",
         title: "כיתה או מגמה ומקצוע - שיעורים מרובים - אחוזים",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
@@ -61,7 +61,7 @@ export default [
         isAdmin: false,
     },
     {
-        url: "multipleConfByKlassAndLesson",
+        url: "multipleDataByKlassAndLesson/conf",
         title: "כיתה או מגמה ומקצוע - נתוני ועידה מרובים",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
@@ -70,7 +70,7 @@ export default [
         },
     },
     {
-        url: "multipleConfPercentByKlassAndLesson",
+        url: "multipleDataByKlassAndLesson/confPercent",
         title: "כיתה או מגמה ומקצוע - נתוני ועידה מרובים - אחוזים",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
@@ -102,7 +102,7 @@ export default [
         isAdmin: false,
     },
     {
-        url: "multipleRecordByKlassAndLesson",
+        url: "multipleDataByKlassAndLesson/record",
         title: "כיתה או מגמה ומקצוע - שיעורים מרובים",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
@@ -111,7 +111,7 @@ export default [
         },
     },
     {
-        url: "multipleRecordPercentByKlassAndLesson",
+        url: "multipleDataByKlassAndLesson/recordPercent",
         title: "כיתה או מגמה ומקצוע - שיעורים מרובים - אחוזים",
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
