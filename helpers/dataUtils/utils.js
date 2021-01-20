@@ -86,9 +86,10 @@ async function getLessonInstancesForKlassAndLesson(folder, keys, user, groupFiel
     const lessonTitleByKey = {};
     const firstListeningByKey = {};
     fileLengths.forEach((item) => {
-        fileLengthByKey[item[groupByField[groupField]]] = item.FileLength || item.LongestListening;
-        lessonTitleByKey[item[groupByField[groupField]]] = item.LessonTitle;
-        firstListeningByKey[item[groupByField[groupField]]] =
+        const itemKey = item[groupByField[groupField]];
+        fileLengthByKey[itemKey] = item.FileLength || item.LongestListening;
+        lessonTitleByKey[itemKey] = item.LessonTitle;
+        firstListeningByKey[itemKey] =
             item.FirstListeningDate && moment.utc(item.FirstListeningDate).format("DD/MM/YYYY");
     });
 
