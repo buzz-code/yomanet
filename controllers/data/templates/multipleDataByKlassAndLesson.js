@@ -78,12 +78,11 @@ module.exports = (url, title, dataTemplate, type, isPercent) => ({
 
         for (const lesson in lessonsAndCurrents) {
             const currents = lessonsAndCurrents[lesson];
-            const { fileLengthByKey, lessonTitleByKey } = await getLessonInstancesForKlassAndLesson(
-                lesson,
-                currents,
-                user,
-                type
-            );
+            const {
+                fileLengthByKey,
+                lessonTitleByKey,
+                firstListeningByKey,
+            } = await getLessonInstancesForKlassAndLesson(lesson, currents, user, type);
 
             const lessonObj = lessons.filter((item) => item.extension === lesson)[0];
 
@@ -92,7 +91,7 @@ module.exports = (url, title, dataTemplate, type, isPercent) => ({
                 0,
                 ...[...currents].sort().map((item) => ({
                     value: lesson + "--" + item,
-                    label: getHeaderTitle(item, lessonObj, fileLengthByKey, lessonTitleByKey),
+                    label: getHeaderTitle(item, lessonObj, fileLengthByKey, lessonTitleByKey, firstListeningByKey),
                     format: "sec2min",
                 }))
             );
@@ -105,10 +104,12 @@ module.exports = (url, title, dataTemplate, type, isPercent) => ({
     },
 });
 
-function getHeaderTitle(item, lessonObj, fileLengthByKey, lessonTitleByKey) {
+function getHeaderTitle(item, lessonObj, fileLengthByKey, lessonTitleByKey, firstListeningByKey) {
     const lessonName = lessonObj ? (lessonObj.displayName || lessonObj.messageName) + " " : null;
     if (lessonTitleByKey[item]) {
-        return `${lessonName}${lessonTitleByKey[item]} (${item}) - ${getSec2Min(fileLengthByKey[item])}`;
+        return `${lessonName}${lessonTitleByKey[item]} (${item}) ${firstListeningByKey[item] || ""} - ${getSec2Min(
+            fileLengthByKey[item]
+        )}`;
     }
-    return `${lessonName}${item} - ${getSec2Min(fileLengthByKey[item])}`;
+    return `${lessonName}${item} ${firstListeningByKey[item] || ""} - ${getSec2Min(fileLengthByKey[item])}`;
 }

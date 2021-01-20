@@ -81,16 +81,19 @@ async function getLessonInstancesForKlassAndLesson(folder, keys, user, reportTyp
             [groupByField[reportType]]: { $in: [...keys] },
             type: reportType,
         },
-        [groupByField[reportType], "FileLength", "LongestListening", "LessonTitle"]
+        [groupByField[reportType], "FileLength", "LongestListening", "LessonTitle", "FirstListeningDate"]
     ).lean();
     const fileLengthByKey = {};
     const lessonTitleByKey = {};
+    const firstListeningByKey = {};
     fileLengths.forEach((item) => {
         fileLengthByKey[item[groupByField[reportType]]] = item.FileLength || item.LongestListening;
         lessonTitleByKey[item[groupByField[reportType]]] = item.LessonTitle;
+        firstListeningByKey[item[groupByField[reportType]]] =
+            item.FirstListeningDate && moment.utc(item.FirstListeningDate).format("DD/MM/YYYY");
     });
 
-    return { fileLengthByKey, lessonTitleByKey };
+    return { fileLengthByKey, lessonTitleByKey, firstListeningByKey };
 }
 
 module.exports = {

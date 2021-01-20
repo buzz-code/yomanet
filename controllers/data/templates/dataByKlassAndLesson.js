@@ -58,7 +58,7 @@ module.exports = (model, url, title, reportType) => ({
             }
         });
 
-        const { fileLengthByKey, lessonTitleByKey } = await getLessonInstancesForKlassAndLesson(
+        const { fileLengthByKey, lessonTitleByKey, firstListeningByKey } = await getLessonInstancesForKlassAndLesson(
             filter.lesson[0].value,
             keys,
             user,
@@ -73,7 +73,7 @@ module.exports = (model, url, title, reportType) => ({
                 .sort()
                 .map((item) => ({
                     value: item,
-                    label: getHeaderTitle(item, fileLengthByKey, lessonTitleByKey),
+                    label: getHeaderTitle(item, fileLengthByKey, lessonTitleByKey, firstListeningByKey),
                     format: "sec2min",
                 })),
         ];
@@ -86,9 +86,11 @@ module.exports = (model, url, title, reportType) => ({
     },
 });
 
-function getHeaderTitle(item, fileLengthByKey, lessonTitleByKey) {
+function getHeaderTitle(item, fileLengthByKey, lessonTitleByKey, firstListeningByKey) {
     if (lessonTitleByKey[item]) {
-        return `${lessonTitleByKey[item]} (${item}) - ${getSec2Min(fileLengthByKey[item])}`;
+        return `${lessonTitleByKey[item]} (${item}) ${firstListeningByKey[item] || ""} - ${getSec2Min(
+            fileLengthByKey[item]
+        )}`;
     }
-    return `${item} - ${getSec2Min(fileLengthByKey[item])}`;
+    return `${item} ${firstListeningByKey[item]} - ${getSec2Min(fileLengthByKey[item])}`;
 }
