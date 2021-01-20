@@ -62,6 +62,7 @@ const createHtml = (listeningData, lessonInstances, headers) => `
           <style>
             body {
                 direction: rtl;
+                font-family: sans-serif;
             }
             h1 {
                 text-align: center;
@@ -102,11 +103,17 @@ const createHtml = (listeningData, lessonInstances, headers) => `
             tbody tr:last-of-type {
                 border-bottom: 2px solid #009879;
             }    
+            footer {
+                position: fixed;
+                bottom: 0;
+                font-size: 0.75rem;
+            }
             </style>
         </head>
         <body>
             <h1>${listeningData.length == 0 ? "לא נמצאו נתונים" : ""}</h1>
             ${listeningData.map((item) => createPage(item, lessonInstances, headers)).join("")}
+            <footer>הופק ע"י מערכת יומנט, חסוי ע"פ חוק הגנת הפרטיות</footer>
         </body>
       </html>
     `;

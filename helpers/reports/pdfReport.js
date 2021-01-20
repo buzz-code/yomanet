@@ -37,13 +37,13 @@ const createHtml = (title, data, headers) => `
           <style>
             body {
                 direction: rtl;
+                font-family: sans-serif;
             }
             h1, h2 {
                 text-align: center;
             }
             table {
                 min-width: 100%;
-                font-family: sans-serif;
                 table-layout: fixed;
             }
             thead tr {
@@ -76,12 +76,18 @@ const createHtml = (title, data, headers) => `
             tbody tr:last-of-type {
                 border-bottom: 2px solid #009879;
             }
+            footer {
+                position: fixed;
+                bottom: 0;
+                font-size: 0.75rem;
+            }
             </style>
         </head>
         <body>
             <h1>${title}</h1>
             ${data.length > 0 ? createTable(data.map((item) => createRow(item, headers)).join(""), headers) : ""}
             <h2>${data.length == 0 ? "לא נמצאו נתונים" : ""}</h2>
+            <footer>הופק ע"י מערכת יומנט, חסוי ע"פ חוק הגנת הפרטיות</footer>
         </body>
       </html>
     `;
