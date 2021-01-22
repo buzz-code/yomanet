@@ -43,7 +43,6 @@ export default [
         isAdmin: false,
         filterProps: {
             isHideEmailButton: true,
-            isHideExcelButton: true,
         },
     },
 
@@ -85,7 +84,6 @@ export default [
         isAdmin: false,
         filterProps: {
             isHideEmailButton: true,
-            isHideExcelButton: true,
         },
     },
     { isHeader: true, title: "שיעורים מוקלטים" },
@@ -126,7 +124,6 @@ export default [
         isAdmin: false,
         filterProps: {
             isHideEmailButton: true,
-            isHideExcelButton: true,
         },
     },
 ];

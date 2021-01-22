@@ -42,8 +42,8 @@ module.exports = {
             // if (filter.klass && filter.klass.length && filter.megama && filter.megama.length) {
             //     return { isValid: false, errorMessage: "ניתן לסנן לפי כיתה או לפי מגמה, אך לא שניהם" };
             // }
-            if (filter.format !== "PDF") {
-                return { isValid: false, errorMessage: "להנפקת תעודות לחצו על הכפתור Pdf" };
+            if (!filter.format) {
+                return { isValid: false, errorMessage: "להנפקת תעודות לחצו על הכפתור Pdf או Excel" };
             }
             return { isValid: true, errorMessage: null };
         }
