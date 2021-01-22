@@ -48,10 +48,13 @@ module.exports = {
     },
     data: async function (queries, page, filter, user, params) {
         const { query, studentQuery, lessons } = queries;
+        const reportType = params.type.replace("Percent", "");
         const dataPromise = lessons.map(async (item) => {
             const dataQuery = [...query, { Folder: new RegExp(`^${item.extension}$`) }];
             const filter = { lesson: [{ label: item.extension }] };
-            return dataByKlassAndLesson.data({ query: dataQuery, studentQuery }, page, filter, user, params);
+            return dataByKlassAndLesson.data({ query: dataQuery, studentQuery }, page, filter, user, {
+                type: reportType,
+            });
         });
         const data = await promiseAllSerial(dataPromise);
         if (data.length === 0) {
