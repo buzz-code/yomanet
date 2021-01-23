@@ -6,13 +6,13 @@ export default [
         isAdmin: false,
         reportTypes: ["listening", "conf", "record"],
     },
-    {
-        url: "dataByKlassAndLesson",
-        title: "כיתה או מגמה ומקצוע",
-        filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
-        isAdmin: false,
-        reportTypes: ["listening", "conf", "record"],
-    },
+    // {
+    //     url: "dataByKlassAndLesson",
+    //     title: "כיתה או מגמה ומקצוע",
+    //     filterFields: ["singleKlass", "singleMegama", "singleLesson", "singleStudent", "dateRange"],
+    //     isAdmin: false,
+    //     reportTypes: ["listening", "conf", "record"],
+    // },
     {
         url: "multipleDataByKlassAndLesson",
         title: "כיתה או מגמה ומקצוע - שיעורים מרובים",
