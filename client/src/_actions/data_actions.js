@@ -3,7 +3,10 @@ import { FETCH_DATA, GET_REPORT_DATA, SEND_DATA_BY_EMAIL, LOAD_FILE, SAVE_ITEM }
 import { DATA_SERVER, FILES_SERVER } from "../components/Config.js";
 import { getFilterFromParams } from "./utils";
 
-export function getData(url, params) {
+export function getData(url, reportType, params) {
+    if (reportType) {
+        url += "/" + reportType;
+    }
     const filter = getFilterFromParams(params);
     const request = axios.post(`${DATA_SERVER}/${url}`, { filter }).then((response) => response.data);
 
@@ -13,7 +16,10 @@ export function getData(url, params) {
     };
 }
 
-export function sendReportByEmail(recipient, url, params) {
+export function sendReportByEmail(recipient, url, reportType, params) {
+    if (reportType) {
+        url += "/" + reportType;
+    }
     const filter = getFilterFromParams(params);
     const request = axios
         .put(`${DATA_SERVER}/${url}`, { filter, recipient }, { timeout: 4 * 60 * 1000 })
@@ -25,7 +31,10 @@ export function sendReportByEmail(recipient, url, params) {
     };
 }
 
-export function reportData(url, params) {
+export function reportData(url, reportType, params) {
+    if (reportType) {
+        url += "/" + reportType;
+    }
     const filter = getFilterFromParams(params);
     const path = `${DATA_SERVER}/${url}?filter=${filter}`;
     window.open(path, "_blank");

@@ -6,7 +6,7 @@ import ItemEditPopup from "./ItemEditPopup";
 import Loader from "./Loader";
 import PagingTable from "./PagingTable";
 
-function TableData({ url, title, filterFields, filterProps, isEditable }) {
+function TableData({ url, title, filterFields, filterProps, isEditable, reportTypes }) {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.data.data);
     const params = data && data.params ? data.params : {};
@@ -15,9 +15,9 @@ function TableData({ url, title, filterFields, filterProps, isEditable }) {
     const [isEdit, setIsEdit] = useState(false);
     const [editData, setEditData] = useState(null);
 
-    useEffect(() => {
-        handleGetData();
-    }, [dispatch, url]);
+    // useEffect(() => {
+    //     handleGetData(reportTypes && reportTypes[0]);
+    // }, [dispatch, url]);
 
     useEffect(() => {
         if (data) {
@@ -25,16 +25,16 @@ function TableData({ url, title, filterFields, filterProps, isEditable }) {
         }
     }, [data]);
 
-    const handleGetData = (params) => {
+    const handleGetData = (reportType, params) => {
         setIsLoading(true);
-        dispatch(getData(url, params));
+        dispatch(getData(url, reportType, params));
     };
-    const handleReportData = (params) => {
-        dispatch(reportData(url, params));
+    const handleReportData = (reportType, params) => {
+        dispatch(reportData(url, reportType, params));
     };
-    const handleSendEmailData = (recipient, params) => {
+    const handleSendEmailData = (reportType, recipient, params) => {
         setIsLoading(true);
-        dispatch(sendReportByEmail(recipient, url, params))
+        dispatch(sendReportByEmail(recipient, url, reportType, params))
             .then((res) => res.payload)
             .then((res) => {
                 setIsLoading(false);
@@ -77,6 +77,7 @@ function TableData({ url, title, filterFields, filterProps, isEditable }) {
                         getData={handleGetData}
                         reportData={handleReportData}
                         sendEmailData={handleSendEmailData}
+                        reportTypes={reportTypes}
                         {...filterProps}
                     />
                     {isLoading && <Loader />}
