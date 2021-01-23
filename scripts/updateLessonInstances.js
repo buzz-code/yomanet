@@ -25,13 +25,13 @@ async function main() {
                 useFindAndModify: false,
             })
             .then(() => log("MongoDB Connected..."));
-        const users = await User.find({}).lean();
+        const users = await User.find().lean();
         for (const user of users) {
             log("start process for user:", user.name);
             try {
                 await LessonInstance.deleteMany({ user: user.name });
 
-                const data = await YemotPlayback.aggregate()
+                const listening = await YemotPlayback.aggregate()
                     .match({ user: user.name })
                     .group({
                         _id: { Folder: "$Folder", Current: "$Current", FileLength: "$FileLength" },
@@ -59,7 +59,7 @@ async function main() {
                         LessonTitle: "$LessonTitle",
                         type: "listening",
                     });
-                log(data && data[0]);
+                log(listening && listening[0]);
 
                 const conf = await YemotConfBridge.aggregate()
                     .match({ user: user.name })
@@ -109,7 +109,44 @@ async function main() {
                     });
                 log(record && record[0]);
 
-                let dataToSave = [...data, ...conf, record];
+                const listeningByDate = await YemotPlayback.aggregate()
+                    .match({ user: user.name })
+                    .group({
+                        _id: {
+                            Folder: "$Folder",
+                            EnterDate: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
+                            FileLength: "$FileLength",
+                        },
+                        count: { $sum: "1" },
+                        LongestListening: { $max: "$TimeTotal" },
+                        FirstListeningDate: { $min: "$EnterDate" },
+                        LessonTitle: { $max: "$LessonTitle" },
+                    })
+                    .sort({ "_id.FileLength": 1, count: -1 })
+                    .group({
+                        _id: {
+                            Folder: "$_id.Folder",
+                            EnterDate: "$_id.EnterDate",
+                        },
+                        FileLength: { $first: "$_id.FileLength" },
+                        LongestListening: { $max: "$LongestListening" },
+                        FirstListeningDate: { $min: "$FirstListeningDate" },
+                        LessonTitle: { $max: "$LessonTitle" },
+                    })
+                    .project({
+                        _id: 0,
+                        user: user.name,
+                        Folder: "$_id.Folder",
+                        EnterDate: "$_id.EnterDate",
+                        FileLength: "$FileLength",
+                        LongestListening: "$LongestListening",
+                        FirstListeningDate: "$FirstListeningDate",
+                        LessonTitle: "$LessonTitle",
+                        type: "listeningByDate",
+                    });
+                log(listeningByDate && listeningByDate[0]);
+
+                let dataToSave = [...listening, ...conf, ...record, ...listeningByDate];
                 if (user.minListening) {
                     dataToSave = dataToSave.filter(
                         (item) => item.FileLength > user.minListening || item.LongestListening > user.minListening
