@@ -1,7 +1,6 @@
 const queryUtil = require("../../helpers/dataUtils/queryUtil");
 const { promiseAllSerial } = require("../../helpers/utils");
-const { getSec2Min } = require("../../helpers/format");
-const { getLessonInstancesForKlassAndLesson } = require("../../helpers/dataUtils/utils");
+const { getLessonInstancesForKlassAndLesson, getHeaderTitle } = require("../../helpers/dataUtils/utils");
 const { Lesson } = require("../../models/Lesson");
 const titleUtil = require("../../helpers/dataUtils/titleUtil");
 const { YemotPlayback } = require("../../models/YemotPlayback");
@@ -103,7 +102,14 @@ module.exports = {
                 0,
                 ...[...currents].sort().map((item) => ({
                     value: lesson + "--" + item,
-                    label: getHeaderTitle(item, lessonObj, fileLengthByKey, lessonTitleByKey, firstListeningByKey),
+                    label: getHeaderTitle(
+                        item,
+                        groupField,
+                        lessonObj,
+                        fileLengthByKey,
+                        lessonTitleByKey,
+                        firstListeningByKey
+                    ),
                     format: "sec2min",
                 }))
             );
@@ -115,16 +121,6 @@ module.exports = {
         return 0;
     },
 };
-
-function getHeaderTitle(item, lessonObj, fileLengthByKey, lessonTitleByKey, firstListeningByKey) {
-    const lessonName = lessonObj ? (lessonObj.displayName || lessonObj.messageName) + " " : null;
-    if (lessonTitleByKey[item]) {
-        return `${lessonName}${lessonTitleByKey[item]} (${item}) ${firstListeningByKey[item] || ""} - ${getSec2Min(
-            fileLengthByKey[item]
-        )}`;
-    }
-    return `${lessonName}${item} ${firstListeningByKey[item] || ""} - ${getSec2Min(fileLengthByKey[item])}`;
-}
 
 const moduleMapping = {
     listening: {

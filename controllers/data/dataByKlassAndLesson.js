@@ -1,9 +1,8 @@
 const { Student } = require("../../models/Student");
 const titleUtil = require("../../helpers/dataUtils/titleUtil");
 const queryUtil = require("../../helpers/dataUtils/queryUtil");
-const { getDataById, getLessonInstancesForKlassAndLesson } = require("../../helpers/dataUtils/utils");
+const { getDataById, getLessonInstancesForKlassAndLesson, getHeaderTitle } = require("../../helpers/dataUtils/utils");
 const { getAggregateByKlassAndLesson } = require("../../helpers/dataUtils/aggregateUtil");
-const { getSec2Min } = require("../../helpers/format");
 const { YemotPlayback } = require("../../models/YemotPlayback");
 const { YemotConfBridge } = require("../../models/YemotConfBridge");
 const { YemotPlayDir } = require("../../models/YemotPlayDir");
@@ -79,7 +78,14 @@ module.exports = {
                 .sort()
                 .map((item) => ({
                     value: item,
-                    label: getHeaderTitle(item, fileLengthByKey, lessonTitleByKey, firstListeningByKey),
+                    label: getHeaderTitle(
+                        item,
+                        groupField,
+                        null,
+                        fileLengthByKey,
+                        lessonTitleByKey,
+                        firstListeningByKey
+                    ),
                     format: "sec2min",
                 })),
         ];
@@ -91,15 +97,6 @@ module.exports = {
         return await Student.countDocuments({ $and: studentQuery });
     },
 };
-
-function getHeaderTitle(item, fileLengthByKey, lessonTitleByKey, firstListeningByKey) {
-    if (lessonTitleByKey[item]) {
-        return `${lessonTitleByKey[item]} (${item}) ${firstListeningByKey[item] || ""} - ${getSec2Min(
-            fileLengthByKey[item]
-        )}`;
-    }
-    return `${item} ${firstListeningByKey[item]} - ${getSec2Min(fileLengthByKey[item])}`;
-}
 
 const moduleMapping = {
     listening: {

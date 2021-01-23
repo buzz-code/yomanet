@@ -1,6 +1,7 @@
 const { Lesson } = require("../../models/Lesson");
 const { LessonInstance } = require("../../models/LessonInstance");
 const moment = require("moment");
+const { getSec2Min } = require("../format");
 
 const groupByField = {
     current: "Current",
@@ -96,6 +97,22 @@ async function getLessonInstancesForKlassAndLesson(folder, keys, user, groupFiel
     return { fileLengthByKey, lessonTitleByKey, firstListeningByKey };
 }
 
+function getHeaderTitle(item, groupField, lessonObj, fileLengthByKey, lessonTitleByKey, firstListeningByKey) {
+    const lessonName = lessonObj ? (lessonObj.displayName || lessonObj.messageName) + " " : "";
+
+    let title = lessonName;
+    if (lessonTitleByKey[item]) {
+        if (groupField === "enterDate") {
+            title += lessonTitleByKey[item];
+        } else {
+            title += `${lessonTitleByKey[item]} (${item})`;
+        }
+    } else if (groupField !== "enterDate") {
+        title += item;
+    }
+    return title + ` ${firstListeningByKey[item] || ""} - ${getSec2Min(fileLengthByKey[item])}`;
+}
+
 module.exports = {
     getExtensions,
     getLessonByExt,
@@ -104,4 +121,5 @@ module.exports = {
     getDataById,
     getLessonInstancesForDiploma,
     getLessonInstancesForKlassAndLesson,
+    getHeaderTitle,
 };
