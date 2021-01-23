@@ -142,6 +142,11 @@ const moduleMapping = {
         title: "דוח שיעורים מוקלטים מרובה",
         groupField: "enterDate",
     },
+    listeningByDate: {
+        model: YemotPlayback,
+        title: "דוח האזנה מרובה",
+        groupField: "enterDate",
+    },
     listeningPercent: {
         model: YemotPlayback,
         title: "דוח האזנה מרובה - אחוזים",
@@ -157,6 +162,12 @@ const moduleMapping = {
     recordPercent: {
         model: YemotPlayDir,
         title: "דוח שיעורים מוקלטים מרובה - אחוזים",
+        groupField: "enterDate",
+        specialReportType: "percent",
+    },
+    listeningByDatePercent: {
+        model: YemotPlayback,
+        title: "דוח האזנה מרובה - אחוזים",
         groupField: "enterDate",
         specialReportType: "percent",
     },

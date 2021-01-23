@@ -110,4 +110,9 @@ const moduleMapping = {
         title: "תעודת שיעורים מוקלטים",
         groupField: "enterDate",
     },
+    listeningByDate: {
+        model: YemotPlayback,
+        title: "תעודת האזנה",
+        groupField: "enterDate",
+    },
 };
