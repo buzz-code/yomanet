@@ -29,8 +29,6 @@ async function main() {
         for (const user of users) {
             log("start process for user:", user.name);
             try {
-                await LessonInstance.deleteMany({ user: user.name });
-
                 const listening = await YemotPlayback.aggregate()
                     .match({ user: user.name })
                     .group({
@@ -152,6 +150,7 @@ async function main() {
                         (item) => item.FileLength > user.minListening || item.LongestListening > user.minListening
                     );
                 }
+                await LessonInstance.deleteMany({ user: user.name });
                 await LessonInstance.insertMany(dataToSave);
 
                 log("end process for user:", user.name);
