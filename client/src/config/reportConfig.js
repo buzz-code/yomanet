@@ -40,6 +40,7 @@ export default [
         reportTypes: ["listening", "conf", "record", "listeningByDate"],
         filterProps: {
             isHideEmailButton: true,
+            isHidePdfButton: true,
         },
     },
     {
