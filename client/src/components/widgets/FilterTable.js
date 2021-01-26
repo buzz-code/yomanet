@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { reportTypeMapping } from "../../config/constants";
 import { getLessonList, getKlassList, getMegamaList, getStudentList } from "../../_actions/list_actions";
 import EmailReportPopup from "./EmailReportPopup";
 import TypeAhead from "./TypeAhead";
@@ -13,11 +12,8 @@ export default function FilterTable({
     isHideEmailButton,
     isHidePdfButton,
     isHideExcelButton,
-    reportTypes = [],
 }) {
     const [isEmailReportOpen, setIsEmailReportOpen] = useState(false);
-
-    const [reportType, setReportType] = useState(reportTypes[0]);
 
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
@@ -79,19 +75,19 @@ export default function FilterTable({
             e.stopPropagation();
         }
         const dataToSubmit = getDataToSubmit();
-        getData(reportType, dataToSubmit);
+        getData(dataToSubmit);
     };
 
     const handleClear = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        getData(reportType);
+        getData();
     };
 
     const handleEmailReportClose = (isSend, recipient, format) => {
         if (isSend) {
-            sendEmailData(reportType, recipient, { ...params, format });
+            sendEmailData(recipient, { ...params, format });
         }
         setIsEmailReportOpen(false);
     };
@@ -100,45 +96,21 @@ export default function FilterTable({
         e.preventDefault();
         e.stopPropagation();
 
-        reportData(reportType, { ...params, format: "PDF" });
+        reportData({ ...params, format: "PDF" });
     };
 
     const handleExcelReport = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        reportData(reportType, { ...params, format: "EXCEL" });
+        reportData({ ...params, format: "EXCEL" });
     };
-
-    useEffect(() => {
-        handleSubmit();
-    }, [reportType]);
 
     // const handleDelete = () => {
     //     window.confirm("האם אתה בטוח שאתה רוצה למחוק?") && dispatch(deleteData(url, params));
     // };
 
     const fields = {
-        reportType: (
-            <div className="form-group row">
-                <label htmlFor="reportType" className="col-sm-2">
-                    סוג נתונים
-                </label>
-                <div className="col">
-                    <select
-                        id="reportType"
-                        name="reportType"
-                        placeholder="בחר סוג נתונים"
-                        className="form-control"
-                        value={reportType}
-                        onChange={(e) => setReportType(e.target.value)}>
-                        {reportTypes.map((item) => (
-                            <option value={item}>{reportTypeMapping[item]}</option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-        ),
         dateRange: (
             <div className="form-group row">
                 <label className="m-1 col-sm-2">תאריכים</label>
@@ -436,7 +408,6 @@ export default function FilterTable({
 
     return (
         <>
-            {reportTypes && reportTypes.length > 0 && fields.reportType}
             {filterFields.length > 0 && (
                 <form className="p-2 jumbotron container">{filterFields.map((item) => fields[item])}</form>
             )}

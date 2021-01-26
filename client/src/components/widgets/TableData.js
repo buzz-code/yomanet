@@ -5,6 +5,7 @@ import FilterTable from "./FilterTable";
 import ItemEditPopup from "./ItemEditPopup";
 import Loader from "./Loader";
 import PagingTable from "./PagingTable";
+import { reportTypeMapping } from "../../config/constants";
 
 function TableData({ url, title, filterFields, filterProps, isEditable, reportTypes }) {
     const dispatch = useDispatch();
@@ -14,10 +15,12 @@ function TableData({ url, title, filterFields, filterProps, isEditable, reportTy
     const [isLoading, setIsLoading] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [editData, setEditData] = useState(null);
+    const [reportType, setReportType] = useState(reportTypes && reportTypes[0]);
+    const [page, setPage] = useState(1);
 
-    // useEffect(() => {
-    //     handleGetData(reportTypes && reportTypes[0]);
-    // }, [dispatch, url]);
+    useEffect(() => {
+        handleGetData(params);
+    }, [dispatch, url, reportType, page]);
 
     useEffect(() => {
         if (data) {
@@ -25,14 +28,14 @@ function TableData({ url, title, filterFields, filterProps, isEditable, reportTy
         }
     }, [data]);
 
-    const handleGetData = (reportType, params) => {
+    const handleGetData = (params) => {
         setIsLoading(true);
-        dispatch(getData(url, reportType, params));
+        dispatch(getData(url, reportType, { ...params, page }));
     };
-    const handleReportData = (reportType, params) => {
+    const handleReportData = (params) => {
         dispatch(reportData(url, reportType, params));
     };
-    const handleSendEmailData = (reportType, recipient, params) => {
+    const handleSendEmailData = (recipient, params) => {
         setIsLoading(true);
         dispatch(sendReportByEmail(recipient, url, reportType, params))
             .then((res) => res.payload)
@@ -70,6 +73,24 @@ function TableData({ url, title, filterFields, filterProps, isEditable, reportTy
             <div className="main-content pt-3">
                 <h2>{title}</h2>
                 <div>
+                    {reportTypes && reportTypes.length > 0 && (
+                        <div className="form-group row">
+                            <label htmlFor="reportType" className="col-sm-2">סוג נתונים</label>
+                            <div className="col">
+                                <select
+                                    id="reportType"
+                                    name="reportType"
+                                    placeholder="בחר סוג נתונים"
+                                    className="form-control"
+                                    value={reportType}
+                                    onChange={(e) => setReportType(e.target.value)}>
+                                    {reportTypes.map((item) => (
+                                        <option value={item}>{reportTypeMapping[item]}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                    )}
                     <FilterTable
                         url={url}
                         params={params}
@@ -77,7 +98,6 @@ function TableData({ url, title, filterFields, filterProps, isEditable, reportTy
                         getData={handleGetData}
                         reportData={handleReportData}
                         sendEmailData={handleSendEmailData}
-                        reportTypes={reportTypes}
                         {...filterProps}
                     />
                     {isLoading && <Loader />}
@@ -116,7 +136,7 @@ function TableData({ url, title, filterFields, filterProps, isEditable, reportTy
                                     ))}
                                 </tbody>
                             </table>
-                            <PagingTable url={url} params={params} pageCount={data.pageCount} />
+                            <PagingTable pageCount={data.pageCount} page={page} onChange={setPage} />
                             <ItemEditPopup
                                 isOpen={isEdit}
                                 onClose={handleEditClose}

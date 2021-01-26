@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import { useDispatch } from "react-redux";
-import { getData } from "../../_actions/data_actions";
 
-export default function PagingTable({ url, params, pageCount }) {
-    const dispatch = useDispatch();
-
+export default function PagingTable({ pageCount, page, onChange }) {
     const [pages, setPages] = useState([]);
     const [customPage, setCustomPage] = useState([]);
-    const page = params.page ? Number(params.page) : 1;
 
     useEffect(() => {
         const pages = [];
@@ -49,8 +44,7 @@ export default function PagingTable({ url, params, pageCount }) {
         if (item === "..." || item === page || item > pageCount) {
             return;
         }
-        params.page = item;
-        dispatch(getData(url, params));
+        onChange(item);
     };
 
     return !pageCount ? null : (
