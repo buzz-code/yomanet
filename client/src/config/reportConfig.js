@@ -35,10 +35,6 @@ export default [
         filterFields: ["singleKlass", "singleMegama", "lessonWithAll", "singleStudent", "dateRange"],
         isAdmin: false,
         reportTypes: ["listening", "conf", "record", "listeningByDate"],
-        filterProps: {
-            isHideEmailButton: true,
-            isHidePdfButton: true,
-        },
     },
     {
         url: "listeningByKlassPerStudent",

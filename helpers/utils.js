@@ -79,47 +79,47 @@ const getReportsPercentFile = async (url, format, title, results, headers) => {
 };
 
 const getReportsDiplomaFile = async (url, format, title, results, headers) => {
-    if (format === "PDF") {
-        return getDiplomaReportObject(title, results, headers);
-    } else if (format === "EXCEL") {
-        const { listeningData, lessonInstances } = results;
-        const data = [];
-        listeningData.forEach(({ EnterId, name, klass, lessons, ...item }) => {
-            headers
-                .filter((item) => !lessons || !lessons.length || lessons.indexOf(item.value) > -1)
-                .forEach((header) => {
-                    const lessonData = lessonInstances[header.value];
-                    const stats = item[header.value] || {};
-                    const percents = lessonData.map(([key, value]) => Math.min(1, (stats[key] || 0) / value));
-                    const avgPercent = percents.length ? percents.reduce((a, b) => a + b, 0) / percents.length : 0;
-                    const score = Math.floor(avgPercent * 100);
-                    const timeTotal = Object.values(stats).reduce((a, b) => a + b, 0);
+    // if (format === "PDF") {
+    //     return getDiplomaReportObject(title, results, headers);
+    // } else if (format === "EXCEL") {
+    const { listeningData, lessonInstances } = results;
+    const data = [];
+    listeningData.forEach(({ EnterId, name, klass, lessons, ...item }) => {
+        headers
+            .filter((item) => !lessons || !lessons.length || lessons.indexOf(item.value) > -1)
+            .forEach((header) => {
+                const lessonData = lessonInstances[header.value];
+                const stats = item[header.value] || {};
+                const percents = lessonData.map(([key, value]) => Math.min(1, (stats[key] || 0) / value));
+                const avgPercent = percents.length ? percents.reduce((a, b) => a + b, 0) / percents.length : 0;
+                const score = Math.floor(avgPercent * 100);
+                const timeTotal = Object.values(stats).reduce((a, b) => a + b, 0);
 
-                    const line = {
-                        EnterId,
-                        name,
-                        klass,
-                        Folder: header.label,
-                        count: lessonData.length,
-                        timeTotal,
-                        score,
-                    };
-                    data.push(line);
-                });
-        });
+                const line = {
+                    EnterId,
+                    name,
+                    klass,
+                    Folder: header.label,
+                    count: lessonData.length,
+                    timeTotal,
+                    score,
+                };
+                data.push(line);
+            });
+    });
 
-        headers = [
-            { value: "EnterId", label: "מספר זיהוי" },
-            { value: "name", label: "שם" },
-            { value: "klass", label: "כיתה" },
-            { value: "Folder", label: "שם השיעור" },
-            { value: "count", label: "מספר שיעורים" },
-            { value: "timeTotal", label: 'סה"כ האזנה', format: "sec2min" },
-            { value: "score", label: "אחוז האזנה כולל", format: "percent" },
-        ];
+    headers = [
+        { value: "EnterId", label: "מספר זיהוי" },
+        { value: "name", label: "שם" },
+        { value: "klass", label: "כיתה" },
+        { value: "Folder", label: "שם השיעור" },
+        { value: "count", label: "מספר שיעורים" },
+        { value: "timeTotal", label: 'סה"כ האזנה', format: "sec2min" },
+        { value: "score", label: "אחוז האזנה כולל", format: "percent" },
+    ];
 
-        return getReport(url, format, title, data, headers);
-    }
+    return getReport(url, format, title, data, headers);
+    // }
 };
 
 const createGraphReport = async (res, format, title, results) => {
