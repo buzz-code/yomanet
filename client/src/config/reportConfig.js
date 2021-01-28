@@ -28,9 +28,6 @@ export default [
             "recordPercent",
             "listeningByDatePercent",
         ],
-        filterProps: {
-            isHideEmailButton: true,
-        },
     },
     {
         url: "diploma",
