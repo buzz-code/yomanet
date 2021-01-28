@@ -26,6 +26,10 @@ function FilesData({ url, title }) {
         dispatch(getFilesData(url));
     };
 
+    const updateFileData = () => {
+        dispatch(getFilesData(url, data.params));
+    };
+
     const handleItem = (item) => {
         setIsLoading(true);
 
@@ -39,8 +43,8 @@ function FilesData({ url, title }) {
                         setIsLoading(false);
                         alert(res.errorMessage);
                     } else {
-                        dispatch(getFilesData(url, data.params));
-                        setTimeout(() => dispatch(getFilesData(url, data.params)), 5000);
+                        updateFileData();
+                        setTimeout(() => updateFileData(), 5000);
                     }
                 });
         }
