@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-export default function EmailReportPopup({ isOpen, onClose }) {
+export default function EmailReportPopup({ isOpen, onClose, isHidePdfButton, isHideExcelButton }) {
     const [recipient, setRecipient] = useState("");
     const [format, setFormat] = useState("");
 
@@ -47,8 +47,8 @@ export default function EmailReportPopup({ isOpen, onClose }) {
                                 <option disabled value="">
                                     --בחר פורמט--
                                 </option>
-                                <option value="PDF">Pdf</option>
-                                <option value="EXCEL">אקסל</option>
+                                {!isHidePdfButton && <option value="PDF">Pdf</option>}
+                                {!isHideExcelButton && <option value="EXCEL">אקסל</option>}
                             </select>
                         </div>
                     </div>

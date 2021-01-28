@@ -427,7 +427,9 @@ export default function FilterTable({
                         רענן נתונים
                     </button>
                 )}
-                <EmailReportPopup isOpen={isEmailReportOpen} onClose={handleEmailReportClose} />
+                <EmailReportPopup isOpen={isEmailReportOpen} onClose={handleEmailReportClose}
+                    isHidePdfButton={isHidePdfButton}
+                    isHideExcelButton={isHideExcelButton} />
                 {!isHideEmailButton && (
                     <button
                         className="btn btn-outline-dark"
