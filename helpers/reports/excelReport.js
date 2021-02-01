@@ -19,7 +19,9 @@ const getExcelReportObject = async (title, results, headers) => {
             numFmt: colFormat[item.format],
         },
     }));
-    worksheet.getRow(1).eachCell((cell) => {
+    const headerRow = worksheet.getRow(1);
+    headerRow.height = 40;
+    headerRow.eachCell((cell) => {
         cell.fill = {
             type: "pattern",
             pattern: "solid",
@@ -29,6 +31,9 @@ const getExcelReportObject = async (title, results, headers) => {
             size: 12,
             bold: true,
             color: { argb: "ffffff" },
+        };
+        cell.alignment = {
+            wrapText: true,
         };
     });
     results.forEach((item) => {
