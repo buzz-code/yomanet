@@ -47,7 +47,7 @@ module.exports = {
     },
     data: async function (queries, page, filter, user, params) {
         const { query, studentQuery, lessons } = queries;
-        const reportType = params.type.replace("Percent", "");
+        const reportType = params.type.replace(/Percent|Grade/g, "");
         const dataPromise = lessons.map(async (item) => {
             const dataQuery = [...query, { Folder: new RegExp(`^${item.extension}$`) }];
             const filter = { lesson: [{ label: item.extension }] };
@@ -166,5 +166,29 @@ const moduleMapping = {
         title: "דוח האזנה מרובה - אחוזים",
         groupField: "enterDate",
         specialReportType: "percent",
+    },
+    listeningGrade: {
+        model: YemotPlayback,
+        title: "דוח האזנה מרובה - ציונים",
+        groupField: "current",
+        specialReportType: "grade",
+    },
+    confGrade: {
+        model: YemotConfBridge,
+        title: "דוח ועידה מרובה - ציונים",
+        groupField: "enterDate",
+        specialReportType: "grade",
+    },
+    recordGrade: {
+        model: YemotPlayDir,
+        title: "דוח שיעורים מוקלטים מרובה - ציונים",
+        groupField: "enterDate",
+        specialReportType: "grade",
+    },
+    listeningByDateGrade: {
+        model: YemotPlayback,
+        title: "דוח האזנה מרובה - ציונים",
+        groupField: "enterDate",
+        specialReportType: "grade",
     },
 };

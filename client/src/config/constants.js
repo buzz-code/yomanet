@@ -7,4 +7,8 @@ export const reportTypeMapping = {
     confPercent: "ועידה - אחוזים",
     recordPercent: "שיעורים מוקלטים - אחוזים",
     listeningByDatePercent: "האזנה לפי תאריך - אחוזים",
+    listeningGrade: "האזנה - ציונים",
+    confGrade: "ועידה - ציונים",
+    recordGrade: "שיעורים מוקלטים - ציונים",
+    listeningByDateGrade: "האזנה לפי תאריך - ציונים",
 };

@@ -33,6 +33,8 @@ const createReport = async (res, url, format, title, results, headers, specialTy
 const getReport = async (url, format, title, results, headers, specialType) => {
     if (specialType === "percent") {
         return getReportsPercentFile(url, format, title, results, headers);
+    } else if (specialType === "grade") {
+        return getReportsGradeFile(url, format, title, results, headers);
     } else if (specialType === "diploma") {
         return getReportsDiplomaFile(url, format, title, results, headers);
     } else {
@@ -77,6 +79,32 @@ const getReportsPercentFile = async (url, format, title, results, headers) => {
     headers.filter((item) => item.format === "sec2min").forEach((item) => (item.format = "percent"));
     return getReport(url, format, title, results, headers);
 };
+
+const getReportsGradeFile = async (url, format, title, results, headers) => {
+    for (const res of results) {
+        for (const key of headers) {
+            const [x, length] = key.label.split(" - ");
+            if (length) {
+                const timeParts = length.split(":").reverse().map(Number);
+                let sec = 0;
+                while (timeParts.length) {
+                    sec = sec * 60 + timeParts.pop();
+                }
+                const score = Math.floor(Math.min(1, (res[key.value] || 0) / sec) * 100);
+                res[key.value] = getLabelForScore(score);
+            }
+        }
+    }
+    headers.filter((item) => item.format === "sec2min").forEach((item) => (item.format = null));
+    return getReport(url, format, title, results, headers);
+};
+
+function getLabelForScore(score) {
+    if (score >= 80) return 'נוכחות מלאה';
+    if (score >= 60) return 'נוכחות';
+    if (score >= 20) return 'נוכחות חסרה';
+    return 'העדרות';
+}
 
 const getReportsDiplomaFile = async (url, format, title, results, headers) => {
     // if (format === "PDF") {

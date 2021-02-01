@@ -27,6 +27,10 @@ export default [
             "confPercent",
             "recordPercent",
             "listeningByDatePercent",
+            "listeningGrade",
+            "confGrade",
+            "recordGrade",
+            "listeningByDateGrade",
         ],
     },
     {
