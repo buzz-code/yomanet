@@ -30,12 +30,14 @@ async function main() {
             log("start process for user:", user.name);
             try {
                 const listening = await YemotPlayback.aggregate()
+                    .allowDiskUse(true)
                     .match({ user: user.name })
                     .group({
                         _id: { Folder: "$Folder", Current: "$Current", FileLength: "$FileLength" },
                         count: { $sum: "1" },
                         LongestListening: { $max: "$TimeTotal" },
                         FirstListeningDate: { $min: "$EnterDate" },
+                        EnterHebrewDate: { $first: { $cond: { if: { $eq: ["$EnterDate", { $min: "$EnterDate" }] }, then: "$EnterHebrewDate", else: null } } },
                         LessonTitle: { $max: "$LessonTitle" },
                     })
                     .sort({ "_id.FileLength": 1, count: -1 })
@@ -44,6 +46,7 @@ async function main() {
                         FileLength: { $first: "$_id.FileLength" },
                         LongestListening: { $max: "$LongestListening" },
                         FirstListeningDate: { $min: "$FirstListeningDate" },
+                        EnterHebrewDate: { $first: "$EnterHebrewDate" },
                         LessonTitle: { $max: "$LessonTitle" },
                     })
                     .project({
@@ -54,12 +57,14 @@ async function main() {
                         FileLength: "$FileLength",
                         LongestListening: "$LongestListening",
                         FirstListeningDate: "$FirstListeningDate",
+                        EnterHebrewDate: "$EnterHebrewDate",
                         LessonTitle: "$LessonTitle",
                         type: "listening",
                     });
                 log(listening && listening[0]);
 
                 const conf = await YemotConfBridge.aggregate()
+                    .allowDiskUse(true)
                     .match({ user: user.name })
                     .group({
                         _id: {
@@ -69,6 +74,7 @@ async function main() {
                         FileLength: { $sum: "$FileLength" },
                         LongestListening: { $max: "$TimeTotal" },
                         FirstListeningDate: { $min: "$EnterDate" },
+                        EnterHebrewDate: { $first: { $cond: { if: { $eq: ["$EnterDate", { $min: "$EnterDate" }] }, then: "$EnterHebrewDate", else: null } } },
                         LessonTitle: { $max: "$LessonTitle" },
                     })
                     .project({
@@ -79,12 +85,14 @@ async function main() {
                         FileLength: "$FileLength",
                         LongestListening: "$LongestListening",
                         FirstListeningDate: "$FirstListeningDate",
+                        EnterHebrewDate: "$EnterHebrewDate",
                         LessonTitle: "$LessonTitle",
                         type: "conf",
                     });
                 log(conf && conf[0]);
 
                 const record = await YemotPlayDir.aggregate()
+                    .allowDiskUse(true)
                     .match({ user: user.name })
                     .group({
                         _id: {
@@ -94,6 +102,7 @@ async function main() {
                         FileLength: { $max: "$FileLength" },
                         LongestListening: { $max: "$TimeTotal" },
                         FirstListeningDate: { $min: "$EnterDate" },
+                        EnterHebrewDate: { $first: { $cond: { if: { $eq: ["$EnterDate", { $min: "$EnterDate" }] }, then: "$EnterHebrewDate", else: null } } },
                     })
                     .project({
                         _id: 0,
@@ -103,11 +112,13 @@ async function main() {
                         FileLength: "$FileLength",
                         LongestListening: "$LongestListening",
                         FirstListeningDate: "$FirstListeningDate",
+                        EnterHebrewDate: "$EnterHebrewDate",
                         type: "record",
                     });
                 log(record && record[0]);
 
                 const listeningByDate = await YemotPlayback.aggregate()
+                    .allowDiskUse(true)
                     .match({ user: user.name })
                     .group({
                         _id: {
@@ -118,6 +129,7 @@ async function main() {
                         count: { $sum: "1" },
                         LongestListening: { $max: "$TimeTotal" },
                         FirstListeningDate: { $min: "$EnterDate" },
+                        EnterHebrewDate: { $first: { $cond: { if: { $eq: ["$EnterDate", { $min: "$EnterDate" }] }, then: "$EnterHebrewDate", else: null } } },
                         LessonTitle: { $max: "$LessonTitle" },
                     })
                     .sort({ "_id.FileLength": 1, count: -1 })
@@ -129,6 +141,7 @@ async function main() {
                         FileLength: { $first: "$_id.FileLength" },
                         LongestListening: { $max: "$LongestListening" },
                         FirstListeningDate: { $min: "$FirstListeningDate" },
+                        EnterHebrewDate: { $first: "$EnterHebrewDate" },
                         LessonTitle: { $max: "$LessonTitle" },
                     })
                     .project({
@@ -139,6 +152,7 @@ async function main() {
                         FileLength: "$FileLength",
                         LongestListening: "$LongestListening",
                         FirstListeningDate: "$FirstListeningDate",
+                        EnterHebrewDate: "$EnterHebrewDate",
                         LessonTitle: "$LessonTitle",
                         type: "listeningByDate",
                     });
