@@ -490,7 +490,7 @@
 // ];
 
 // MongoClient.connect(
-//     "mongodb://myUserAdmin:1@145.239.83.4:27018/admin?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false",
+//     "mongodb://myUserAdmin:1@188.34.183.27:27018/admin?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false",
 //     { useNewUrlParser: true, useUnifiedTopology: true },
 //     function (connectErr, client) {
 //         assert.equal(null, connectErr);
@@ -555,7 +555,7 @@
 // ];
 
 // MongoClient.connect(
-//     "mongodb://myUserAdmin:1@145.239.83.4:27018/admin?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false",
+//     "mongodb://myUserAdmin:1@188.34.183.27:27018/admin?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false",
 //     { useNewUrlParser: true, useUnifiedTopology: true },
 //     function (connectErr, client) {
 //         assert.equal(null, connectErr);
@@ -572,7 +572,7 @@
 
 // async function main() {
 //     await require("mongoose")
-//         .connect("mongodb://myUserAdmin:1@145.239.83.4:27018/vocal?authSource=admin", {
+//         .connect("mongodb://myUserAdmin:1@188.34.183.27:27018/vocal?authSource=admin", {
 //             useNewUrlParser: true,
 //             useUnifiedTopology: true,
 //             useCreateIndex: true,
