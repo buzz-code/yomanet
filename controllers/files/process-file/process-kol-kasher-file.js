@@ -70,9 +70,10 @@ const mapItem = ([
         return null
     }
 
+    const TimeTotal = Number(seconds);
     const EnterTime = moment.utc(enter_time, "DD/MM/YYYY HH:mm");
-    const EnterDate = EnterTime.date();
-    const ExitTime = EnterTime.add(seconds, 'seconds');
+    const EnterDate = EnterTime.startOf('day');
+    const ExitTime = EnterTime.add(TimeTotal, 'seconds');
 
     return {
         user,
@@ -82,10 +83,10 @@ const mapItem = ([
         Phone: phone,
         EnterId: tz,
         ValName: last_name + ' ' + first_name,
-        EnterDate,
-        EnterTime,
-        ExitTime,
-        TimeTotal: seconds,
+        EnterDate: EnterDate.toDate(),
+        EnterTime: EnterTime.toDate(),
+        ExitTime: ExitTime.toDate(),
+        TimeTotal,
         LessonTitle: file_name,
     };
 };
