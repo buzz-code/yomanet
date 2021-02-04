@@ -65,7 +65,7 @@ const mapItem = ([
     last_name,
     klass,
 ]) => {
-    if (folder === 'שלוחה') {
+    if (isNaN(Number(seconds))) {
         return null
     }
 
