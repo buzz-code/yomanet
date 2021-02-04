@@ -25,7 +25,7 @@ const downloadFile = async (username, password, path) => {
 
 const readFile = async (path, fileType, defaultItem, options) => {
     const rl = readline.createInterface({
-        input: fs.createReadStream(path),
+        input: fs.createReadStream(path, { encoding: 'utf-8' }),
         crlfDelay: Infinity,
     });
 
