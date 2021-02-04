@@ -7,6 +7,7 @@ const providers = {
     ["yemot"]: require("./providers/yemot"),
     ["gis"]: require("./providers/gis"),
     ["yeda"]: require("./providers/yeda"),
+    ["kol-kasher"]: require("./providers/kol-kasher"),
     [null]: require("./providers/null"),
     [undefined]: require("./providers/null"),
 };
