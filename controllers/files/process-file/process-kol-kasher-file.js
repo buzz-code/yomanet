@@ -71,8 +71,8 @@ const mapItem = ([
     }
 
     const TimeTotal = Number(seconds);
-    const EnterTime = moment.utc(enter_time, "DD/MM/YYYY HH:mm");
-    const EnterDate = EnterTime.startOf('day');
+    const EnterTime = moment.utc(enter_time, "DD/MM/YYYY HH:mm:ss");
+    const EnterDate = moment.utc(enter_time, "DD/MM/YYYY HH:mm:ss").startOf('day');
     const ExitTime = EnterTime.add(TimeTotal, 'seconds');
 
     return {
