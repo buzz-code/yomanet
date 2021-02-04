@@ -21,6 +21,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
     "express-winston": "^4.0.5",
+    "iconv-lite": "^0.6.2",
     "jade": "^1.11.0",
     "jsonwebtoken": "^8.5.1",
     "jszip": "^3.5.0",

@@ -7,6 +7,7 @@ const fs = require("fs");
 const path = require("path");
 const tmp = require("tmp");
 const moment = require("moment");
+const iconv = require("iconv-lite");
 const { getFtpClient } = require("../../../helpers/data-providers/ftp");
 
 const models = {
@@ -25,7 +26,7 @@ const downloadFile = async (username, password, path) => {
 
 const readFile = async (path, fileType, defaultItem, options) => {
     const rl = readline.createInterface({
-        input: fs.createReadStream(path, { encoding: 'utf-8' }),
+        input: fs.createReadStream(path).pipe(iconv.decodeStream("win1255")),
         crlfDelay: Infinity,
     });
 
