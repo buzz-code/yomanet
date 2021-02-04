@@ -111,17 +111,17 @@ async function uploadFile(user, fullPath, fileType) {
 
     try {
         const opts = {}; //{ session };
-        console.log("start processing gis file", defaultItem);
+        console.log("start processing kol kasher file", defaultItem);
 
         const tempPath = await downloadFile(user.providerUsername, user.providerPassword, fullPath);
         await readFile(tempPath, fileType, defaultItem, opts);
         await YemotFile.findOneAndUpdate({ user: user.name, fullPath }, { $set: { status: "נטען בהצלחה" } }, opts);
-        console.log("finish processing gis file", defaultItem);
+        console.log("finish processing kol kasher file", defaultItem);
 
         // await session.commitTransaction();
         // session.endSession();
     } catch (err) {
-        console.log("error processing gis file", defaultItem, err);
+        console.log("error processing kol kasher file", defaultItem, err);
 
         // await session.abortTransaction();
         // session.endSession();

@@ -34,7 +34,7 @@ module.exports = {
             client.close();
             return { error: false, results };
         } catch (err) {
-            console.log("gis file list error", user.name, err);
+            console.log("kol kasher file list error", user.name, err);
             return { error: true, errorMessage: "ארעה שגיאה: " + err };
         }
     },
