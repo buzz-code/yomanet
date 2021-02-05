@@ -11,7 +11,8 @@ function getQuery(user, filter, ...queryParts) {
 
 function klass({ klass }, query) {
     if (klass && klass.length)
-        query.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+        // query.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+        query.push({ fullKlassName: { $in: klass.map((item) => item.label) } });
 }
 
 function megama({ megama }, query) {
