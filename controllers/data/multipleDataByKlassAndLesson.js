@@ -30,7 +30,7 @@ module.exports = {
         const studentQuery = queryUtil.getQuery(user, filter, queryUtil.klass, queryUtil.megama, queryUtil.student);
         const lessonQuery = queryUtil.getQuery(user, filter, queryUtil.allLessons);
         if (!filter.allLessons && filter.lesson) {
-            lessonQuery.push({ extension: new RegExp(`^(${filter.lesson.map((item) => item.value).join("|")})$`) });
+            lessonQuery.push({ extension: { $in: filter.lesson.map((item) => item.value) } });
         }
         const lessons = await Lesson.find({ $and: lessonQuery }, ["extension", "messageName", "displayName"]);
 
@@ -49,7 +49,7 @@ module.exports = {
         const { query, studentQuery, lessons } = queries;
         const reportType = params.type.replace(/Percent|Grade/g, "");
         const dataPromise = lessons.map(async (item) => {
-            const dataQuery = [...query, { Folder: new RegExp(`^${item.extension}$`) }];
+            const dataQuery = [...query, { Folder: item.extension }];
             const filter = { lesson: [{ label: item.extension }] };
             return dataByKlassAndLesson.data({ query: dataQuery, studentQuery }, page, filter, user, {
                 type: reportType,
