@@ -92,7 +92,9 @@ const mapItem = ([
 };
 
 const saveAndClear = async (arr, fileType, options, defaultItem, index) => {
-    await models[fileType].insertMany(arr, options);
+    // await YemotPlayback.insertMany(arr, options);
+    console.log(arr);
+    throw 'err'
     arr.length = 0;
     console.log("save yemot file data for ", defaultItem, fileType, index);
 };
@@ -105,7 +107,7 @@ async function uploadFile(user, fullPath, fileType) {
         fullPath,
         status: "בטעינה",
     });
-    await models[fileType].deleteMany({ user: user.name, fileName: fullPath });
+    await YemotPlayback.deleteMany({ user: user.name, fileName: fullPath });
 
     // const session = await YemotFile.startSession();
     // session.startTransaction();
@@ -115,8 +117,8 @@ async function uploadFile(user, fullPath, fileType) {
         const opts = {}; //{ session };
         console.log("start processing kol kasher file", defaultItem);
 
-        const tempPath = await downloadFile(user.providerUsername, user.providerPassword, fullPath);
-        await readFile(tempPath, fileType, defaultItem, opts);
+        // const tempPath = await downloadFile(user.providerUsername, user.providerPassword, fullPath);
+        await readFile("C:/Users/Home/Downloads/דוח שיעורים נוות ישראל היסטוריה.csv", fileType, defaultItem, opts);
         await YemotFile.findOneAndUpdate({ user: user.name, fullPath }, { $set: { status: "נטען בהצלחה" } }, opts);
         console.log("finish processing kol kasher file", defaultItem);
 
@@ -133,3 +135,5 @@ async function uploadFile(user, fullPath, fileType) {
 }
 
 module.exports = { uploadFile };
+
+uploadFile({name:'nevat-3'}, 'דוח שיעורים נוות ישראל היסטוריה.csv')
