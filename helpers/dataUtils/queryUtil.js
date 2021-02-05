@@ -16,7 +16,7 @@ function klass({ klass }, query) {
 
 function megama({ megama }, query) {
     if (megama && megama.length)
-        query.push({ megama: new RegExp(`^(${megama.map((item) => item.value).join("|")})$`) });
+        query.push({ megama: { $in: megama.map((item) => item.value) } });
 }
 
 function student({ student }, query) {
@@ -25,15 +25,15 @@ function student({ student }, query) {
 
 function lesson({ lesson }, query) {
     if (lesson && lesson.length)
-        query.push({ Folder: new RegExp(`^(${lesson.map((item) => item.value).join("|")})$`) });
+        query.push({ Folder: { $in: lesson.map((item) => item.value) } });
 }
 
 function allLessons({ allLessons, klass, megama }, query) {
     if (allLessons) {
         if (klass && klass.length)
-            query.push({ megama: new RegExp(`^(${klass.map((item) => item.label).join("|")})$`) });
+            query.push({ megama: { $in: klass.map((item) => item.label) } });
         if (megama && megama.length)
-            query.push({ megama: new RegExp(`^(${megama.map((item) => item.value).join("|")})$`) });
+            query.push({ megama: { $in: megama.map((item) => item.value) } });
     }
 }
 
