@@ -11,7 +11,6 @@ function getQuery(user, filter, ...queryParts) {
 
 function klass({ klass }, query) {
     if (klass && klass.length)
-        // query.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
         query.push({ fullKlassName: { $in: klass.map((item) => item.label) } });
 }
 
@@ -50,6 +49,10 @@ function dates({ fromDate, toDate }, query) {
 function seconds({ fromSeconds, toSeconds }, query) {
     if (fromSeconds) query.push({ TimeTotal: { $gte: Number(fromSeconds) } });
     if (toSeconds) query.push({ TimeTotal: { ...query.seconds, $lte: Number(toSeconds) } });
+}
+
+function identityNumber({ identityNumber }, query) {
+    if (identityNumber) query.push({ identityNumber: new RegExp(identityNumber) });
 }
 
 async function filterStudents(query, studentQuery) {
@@ -91,6 +94,7 @@ module.exports = {
     name,
     seconds,
     dates,
+    identityNumber,
     filterStudents,
     filterLessons,
     getQueryWithStudentIds,

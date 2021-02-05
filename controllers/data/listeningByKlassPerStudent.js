@@ -11,12 +11,8 @@ module.exports = {
     title: function (filter) {
         return titleUtil.getTitle("דוח האזנה כללי", filter, titleUtil.singleKlass, titleUtil.dates);
     },
-    query: async function (body, user) {
-        const { klass } = body;
-
-        const query = queryUtil.getQuery(user);
-        if (klass && klass.length)
-            query.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
+    query: async function (filter, user) {
+        const query = queryUtil.getQuery(user, filter, queryUtil.klass);
 
         return { $and: query };
     },

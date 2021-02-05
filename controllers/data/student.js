@@ -9,14 +9,7 @@ module.exports = {
         return "נתוני תלמידים";
     },
     query: async function (filter, user) {
-        const { identityNumber, name, klass, megama } = filter;
-
-        const query = queryUtil.getQuery(user, filter, queryUtil.name);
-        if (identityNumber) query.push({ identityNumber: new RegExp(identityNumber) });
-        if (klass && klass.length)
-            query.push({ fullName: new RegExp(`^(${klass.map((item) => item.value).join("|")}).*`) });
-        if (megama && megama.length)
-            query.push({ megama: new RegExp(`^(${megama.map((item) => item.value).join("|")})$`) });
+        const query = queryUtil.getQuery(user, filter, queryUtil.name, queryUtil.identityNumber, queryUtil.klass, queryUtil.megama);
 
         return { $and: query };
     },

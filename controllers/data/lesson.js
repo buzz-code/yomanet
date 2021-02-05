@@ -15,9 +15,9 @@ module.exports = {
         if (extension) query.push({ extension: new RegExp(extension) });
         if (messageName) query.push({ messageName: new RegExp(messageName) });
         if (klass && klass.length)
-            query.push({ megama: new RegExp(`^(${klass.map((item) => item.label).join("|")})$`) });
+            query.push({ megama: { $in: klass.map((item) => item.label) } });
         if (megama && megama.length)
-            query.push({ megama: new RegExp(`^(${megama.map((item) => item.value).join("|")})$`) });
+            query.push({ megama: { $in: megama.map((item) => item.value) } });
 
         return { $and: query };
     },
