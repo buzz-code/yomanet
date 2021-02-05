@@ -46,6 +46,7 @@ module.exports = {
         const { model, groupField } = moduleMapping[params.type];
 
         const { query, students } = await queryUtil.getQueryWithStudentIds(queries, page);
+        console.log('query', query)
         const dataById = await getDataById(model, getAggregateByKlassAndLesson(query, groupField));
 
         return students.map((item) => ({
