@@ -87,7 +87,6 @@ const mapItem = ([
         EnterTime: EnterTime.toDate(),
         ExitTime: ExitTime.toDate(),
         TimeTotal,
-        LessonTitle: file_name,
     };
 };
 

@@ -81,7 +81,7 @@ async function getLessonInstancesForKlassAndLesson(folder, keys, user, groupFiel
             [groupByField[groupField]]: { $in: [...keys] },
             // type: reportType,
         },
-        [groupByField[groupField], "FileLength", "LongestListening", "LessonTitle", "EnterHebrewDate"]
+        [groupByField[groupField], "FileLength", "LongestListening", "LessonTitle", "FirstListeningDate", "EnterHebrewDate"]
     ).lean();
     const fileLengthByKey = {};
     const lessonTitleByKey = {};
@@ -90,7 +90,7 @@ async function getLessonInstancesForKlassAndLesson(folder, keys, user, groupFiel
         const itemKey = item[groupByField[groupField]];
         fileLengthByKey[itemKey] = item.FileLength || item.LongestListening;
         lessonTitleByKey[itemKey] = item.LessonTitle;
-        firstListeningByKey[itemKey] = item.EnterHebrewDate;
+        firstListeningByKey[itemKey] = item.EnterHebrewDate || item.FirstListeningDate;
     });
 
     return { fileLengthByKey, lessonTitleByKey, firstListeningByKey };
