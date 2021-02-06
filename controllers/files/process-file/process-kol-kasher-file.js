@@ -57,6 +57,7 @@ const mapItem = ([
     enter_time,
     phone,
     folder,
+    folder2,
     file_name,
     current,
     seconds,
