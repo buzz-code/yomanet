@@ -65,9 +65,9 @@ async function getLessonInstancesForDiploma(lessonIds, user, { fromDate, toDate 
     const lengthByFolderAndCurrent = {};
     lessonIds.forEach(
         (id) =>
-            (lengthByFolderAndCurrent[id] = lessonInstances
-                .filter((item) => item.Folder === id)
-                .map((item) => [item[groupByField[groupField]], item.FileLength || item.LongestListening]))
+        (lengthByFolderAndCurrent[id] = lessonInstances
+            .filter((item) => item.Folder === id)
+            .map((item) => [item[groupByField[groupField]], item.FileLength || item.LongestListening]))
     );
 
     return lengthByFolderAndCurrent;
@@ -90,7 +90,7 @@ async function getLessonInstancesForKlassAndLesson(folder, keys, user, groupFiel
         const itemKey = item[groupByField[groupField]];
         fileLengthByKey[itemKey] = item.FileLength || item.LongestListening;
         lessonTitleByKey[itemKey] = item.LessonTitle;
-        firstListeningByKey[itemKey] = item.EnterHebrewDate || item.FirstListeningDate;
+        firstListeningByKey[itemKey] = item.EnterHebrewDate || item.FirstListeningDate && moment.utc(item.FirstListeningDate).format("DD/MM/YYYY");
     });
 
     return { fileLengthByKey, lessonTitleByKey, firstListeningByKey };
