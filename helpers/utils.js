@@ -62,15 +62,16 @@ const getReportsZipFile = async (url, format, title, results, headers) => {
 };
 
 const getReportsPercentFile = async (url, format, title, results, headers) => {
-    for (const res of results) {
-        for (const key of headers) {
-            const [x, length] = key.label.split(" - ");
-            if (length) {
-                const timeParts = length.split(":").reverse().map(Number);
-                let sec = 0;
-                while (timeParts.length) {
-                    sec = sec * 60 + timeParts.pop();
-                }
+    for (const key of headers) {
+        const parts = key.label.split(" - ");
+        const length = parts.pop();
+        if (length) {
+            const timeParts = length.split(":").reverse().map(Number);
+            let sec = 0;
+            while (timeParts.length) {
+                sec = sec * 60 + timeParts.pop();
+            }
+            for (const res of results) {
                 const score = Math.floor(Math.min(1, (res[key.value] || 0) / sec) * 100);
                 res[key.value] = score;
             }
@@ -81,15 +82,16 @@ const getReportsPercentFile = async (url, format, title, results, headers) => {
 };
 
 const getReportsGradeFile = async (url, format, title, results, headers) => {
-    for (const res of results) {
-        for (const key of headers) {
-            const [x, length] = key.label.split(" - ");
-            if (length) {
-                const timeParts = length.split(":").reverse().map(Number);
-                let sec = 0;
-                while (timeParts.length) {
-                    sec = sec * 60 + timeParts.pop();
-                }
+    for (const key of headers) {
+        const parts = key.label.split(" - ");
+        const length = parts.pop();
+        if (length) {
+            const timeParts = length.split(":").reverse().map(Number);
+            let sec = 0;
+            while (timeParts.length) {
+                sec = sec * 60 + timeParts.pop();
+            }
+            for (const res of results) {
                 const score = Math.floor(Math.min(1, (res[key.value] || 0) / sec) * 100);
                 res[key.value] = getLabelForScore(score);
             }
