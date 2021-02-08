@@ -107,7 +107,7 @@ function getHeaderTitle(item, groupField, lessonObj, fileLengthByKey, lessonTitl
             title += `${lessonTitleByKey[item]} (${item})`;
         }
     } else if (groupField !== "enterDate") {
-        title += item;
+        title += ' ' + item;
     }
     return title + ` ${firstListeningByKey[item] || ""} - ${getSec2Min(fileLengthByKey[item])}`;
 }
