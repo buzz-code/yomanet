@@ -65,7 +65,7 @@ const getReportsPercentFile = async (url, format, title, results, headers) => {
     for (const key of headers) {
         const parts = key.label.split(" - ");
         const length = parts.pop();
-        if (length) {
+        if (length && length.indexOf(':') > -1) {
             const timeParts = length.split(":").reverse().map(Number);
             let sec = 0;
             while (timeParts.length) {
@@ -85,7 +85,7 @@ const getReportsGradeFile = async (url, format, title, results, headers) => {
     for (const key of headers) {
         const parts = key.label.split(" - ");
         const length = parts.pop();
-        if (length) {
+        if (length && length.indexOf(':') > -1) {
             const timeParts = length.split(":").reverse().map(Number);
             let sec = 0;
             while (timeParts.length) {
