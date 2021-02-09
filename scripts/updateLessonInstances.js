@@ -34,7 +34,7 @@ async function main() {
                     .match({ user: user.name })
                     .group({
                         _id: { Folder: "$Folder", Current: "$Current", FileLength: "$FileLength" },
-                        count: { $sum: "1" },
+                        count: { $sum: 1 },
                         LongestListening: { $max: "$TimeTotal" },
                         FirstListeningDate: { $min: "$EnterDate" },
                         EnterHebrewDate: { $first: { $cond: { if: { $eq: ["$EnterDate", { $min: "$EnterDate" }] }, then: "$EnterHebrewDate", else: null } } },
@@ -48,6 +48,7 @@ async function main() {
                         FirstListeningDate: { $min: "$FirstListeningDate" },
                         EnterHebrewDate: { $first: "$EnterHebrewDate" },
                         LessonTitle: { $max: "$LessonTitle" },
+                        count: { $sum: "$count" },
                     })
                     .project({
                         _id: 0,
@@ -59,6 +60,7 @@ async function main() {
                         FirstListeningDate: "$FirstListeningDate",
                         EnterHebrewDate: "$EnterHebrewDate",
                         LessonTitle: "$LessonTitle",
+                        Count: "$count",
                         type: "listening",
                     });
                 log(listening && listening[0]);
@@ -71,6 +73,7 @@ async function main() {
                             Folder: { $arrayElemAt: [{ $split: ["$ConfBridge", "-"] }, 1] },
                             EnterDate: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
                         },
+                        count: { $sum: 1 },
                         FileLength: { $sum: "$FileLength" },
                         LongestListening: { $max: "$TimeTotal" },
                         FirstListeningDate: { $min: "$EnterDate" },
@@ -87,6 +90,7 @@ async function main() {
                         FirstListeningDate: "$FirstListeningDate",
                         EnterHebrewDate: "$EnterHebrewDate",
                         LessonTitle: "$LessonTitle",
+                        Count: "$count",
                         type: "conf",
                     });
                 log(conf && conf[0]);
@@ -99,6 +103,7 @@ async function main() {
                             Folder: "$Folder",
                             EnterDate: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
                         },
+                        count: { $sum: 1 },
                         FileLength: { $max: "$FileLength" },
                         LongestListening: { $max: "$TimeTotal" },
                         FirstListeningDate: { $min: "$EnterDate" },
@@ -113,6 +118,7 @@ async function main() {
                         LongestListening: "$LongestListening",
                         FirstListeningDate: "$FirstListeningDate",
                         EnterHebrewDate: "$EnterHebrewDate",
+                        Count: "$count",
                         type: "record",
                     });
                 log(record && record[0]);
@@ -126,7 +132,7 @@ async function main() {
                             EnterDate: { $dateToString: { format: "%Y-%m-%d", date: "$EnterDate" } },
                             FileLength: "$FileLength",
                         },
-                        count: { $sum: "1" },
+                        count: { $sum: 1 },
                         LongestListening: { $max: "$TimeTotal" },
                         FirstListeningDate: { $min: "$EnterDate" },
                         EnterHebrewDate: { $first: { $cond: { if: { $eq: ["$EnterDate", { $min: "$EnterDate" }] }, then: "$EnterHebrewDate", else: null } } },
@@ -143,6 +149,7 @@ async function main() {
                         FirstListeningDate: { $min: "$FirstListeningDate" },
                         EnterHebrewDate: { $first: "$EnterHebrewDate" },
                         LessonTitle: { $max: "$LessonTitle" },
+                        count: { $sum: "$count" },
                     })
                     .project({
                         _id: 0,
@@ -154,16 +161,17 @@ async function main() {
                         FirstListeningDate: "$FirstListeningDate",
                         EnterHebrewDate: "$EnterHebrewDate",
                         LessonTitle: "$LessonTitle",
+                        Count: "$count",
                         type: "listeningByDate",
                     });
                 log(listeningByDate && listeningByDate[0]);
 
                 let dataToSave = [...listening, ...conf, ...record, ...listeningByDate];
-                if (user.minListening) {
-                    dataToSave = dataToSave.filter(
-                        (item) => item.FileLength > user.minListening || item.LongestListening > user.minListening
-                    );
-                }
+                dataToSave = dataToSave.filter(
+                    (item) => (!user.minListening || item.FileLength >= user.minListening || item.LongestListening >= user.minListening)
+                        && (!user.minListeners || item.Count >= user.minListeners)
+                );
+                log('length of data', listening.length + conf.length + record.length + listeningByDate.length, 'length of data to save', dataToSave.length)
                 await LessonInstance.deleteMany({ user: user.name });
                 await LessonInstance.insertMany(dataToSave);
 

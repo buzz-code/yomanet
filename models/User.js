@@ -20,6 +20,7 @@ const userSchema = mongoose.Schema({
     providerIsPrivate: { type: Boolean, default: false },
     isPaid: { type: Boolean, default: false },
     minListening: { type: Number },
+    minListeners: { type: Number },
 });
 
 userSchema.index({ email: 1 });

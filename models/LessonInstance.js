@@ -11,6 +11,7 @@ const lessonInstanceSchema = mongoose.Schema({
     EnterHebrewDate: { type: String },
     LessonTitle: { type: String },
     EnterDate: { type: String },
+    Count: { type: Number },
     type: { type: String },
 });
 
