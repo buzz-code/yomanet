@@ -222,7 +222,6 @@ const promiseAllSerial = async (promises) => {
 };
 
 module.exports = {
-    getTableCellValue,
     getTableDataResponse,
     createReport,
     createGraphReport,
