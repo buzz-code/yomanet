@@ -65,11 +65,11 @@ module.exports = {
         const lessonIds = queries.extensions
             ? queries.extensions.map((item) => item.extension)
             : new Set(
-                  Object.values(dataById).flatMap((item) =>
-                      Object.keys(item).filter((item) => item !== "name" && item !== "EnterId")
-                  )
-              );
-        const lessonInstances = await getLessonInstancesForDiploma(lessonIds, user, filter, groupField);
+                Object.values(dataById).flatMap((item) =>
+                    Object.keys(item).filter((item) => item !== "name" && item !== "EnterId")
+                )
+            );
+        const lessonInstances = await getLessonInstancesForDiploma(lessonIds, user, filter, groupField, params.type);
 
         return { listeningData, lessonInstances };
     },

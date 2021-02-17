@@ -68,7 +68,8 @@ module.exports = {
             filter.lesson[0].value,
             keys,
             user,
-            groupField
+            groupField,
+            params.type
         );
 
         const headers = [

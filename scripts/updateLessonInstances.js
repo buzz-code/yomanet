@@ -46,7 +46,7 @@ async function main() {
                         FileLength: { $first: "$_id.FileLength" },
                         LongestListening: { $max: "$LongestListening" },
                         FirstListeningDate: { $min: "$FirstListeningDate" },
-                        EnterHebrewDate: { $first: "$EnterHebrewDate" },
+                        EnterHebrewDate: { $first: { $cond: { if: { $eq: ["$FirstListeningDate", { $min: "$FirstListeningDate" }] }, then: "$EnterHebrewDate", else: null } } },
                         LessonTitle: { $max: "$LessonTitle" },
                         count: { $sum: "$count" },
                     })
@@ -147,7 +147,7 @@ async function main() {
                         FileLength: { $first: "$_id.FileLength" },
                         LongestListening: { $max: "$LongestListening" },
                         FirstListeningDate: { $min: "$FirstListeningDate" },
-                        EnterHebrewDate: { $first: "$EnterHebrewDate" },
+                        EnterHebrewDate: { $first: { $cond: { if: { $eq: ["$FirstListeningDate", { $min: "$FirstListeningDate" }] }, then: "$EnterHebrewDate", else: null } } },
                         LessonTitle: { $max: "$LessonTitle" },
                         count: { $sum: "$count" },
                     })

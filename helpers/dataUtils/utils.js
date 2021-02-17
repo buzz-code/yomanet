@@ -52,7 +52,7 @@ async function getLessonInstancesForDiploma(lessonIds, user, { fromDate, toDate 
     const query = [{ user: user.name }];
     query.push({ Folder: { $in: [...lessonIds] } });
     query.push({ $or: [{ FileLength: { $gt: 0 } }, { LongestListening: { $gt: 0 } }] });
-    // query.push({ type: reportType });
+    query.push({ type: reportType });
     if (fromDate) query.push({ FirstListeningDate: { $gte: moment.utc(fromDate).toDate() } });
     if (toDate) query.push({ FirstListeningDate: { $lte: moment.utc(toDate).toDate() } });
 
@@ -75,14 +75,15 @@ async function getLessonInstancesForDiploma(lessonIds, user, { fromDate, toDate 
 
 async function getLessonInstancesForKlassAndLesson(folder, keys, user, groupField, reportType) {
     const groups = groupField.split("_And_");
+    const reportTypes = reportType.split("_And_");
     const fileLengths = await LessonInstance.find(
         {
             user: user.name,
             Folder: folder,
             $or: groups.map(field => ({
                 [groupByField[field]]: { $in: [...keys] }
-            }))
-            // type: reportType,
+            })),
+            type: { $in: reportTypes },
         },
         [...groups.map(field => groupByField[field]), "FileLength", "LongestListening", "LessonTitle", "FirstListeningDate", "EnterHebrewDate"]
     ).lean();

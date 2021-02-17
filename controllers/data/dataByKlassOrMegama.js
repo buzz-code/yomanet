@@ -51,7 +51,7 @@ module.exports = {
         const { groupField } = moduleMapping[params.type];
         const extensionHeaders = await getExtensionHeaders(user, data);
         const lessonIds = extensionHeaders.map(item => item.value);
-        const lessonInstances = await getLessonInstancesForDiploma(lessonIds, user, {}, groupField);
+        const lessonInstances = await getLessonInstancesForDiploma(lessonIds, user, {}, groupField, params.type);
         const extensionsWithLength = extensionHeaders.map(({ value, label, ...rest }) => ({
             ...rest,
             value,

@@ -78,6 +78,7 @@ module.exports = {
     },
     headers: async function (data, { lessons, ...queries }, filter, user, params) {
         const { groupField } = moduleMapping[params.type];
+        const reportType = params.type.replace(/Percent|Grade/g, "");
         const keys = new Set(data.flatMap((item) => Object.keys(item)).filter((item) => item !== "name"));
         const lessonsAndCurrents = {};
         keys.forEach((item) => {
@@ -96,7 +97,7 @@ module.exports = {
                 fileLengthByKey,
                 lessonTitleByKey,
                 firstListeningByKey,
-            } = await getLessonInstancesForKlassAndLesson(lesson, currents, user, groupField);
+            } = await getLessonInstancesForKlassAndLesson(lesson, currents, user, groupField, reportType);
 
             const lessonObj = lessons.filter((item) => item.extension === lesson)[0];
 
