@@ -1,11 +1,12 @@
 const { Student } = require("../../models/Student");
 const titleUtil = require("../../helpers/dataUtils/titleUtil");
 const queryUtil = require("../../helpers/dataUtils/queryUtil");
-const { getExtensionHeaders, getDataById } = require("../../helpers/dataUtils/utils");
+const { getExtensionHeaders, getDataById, getLessonInstancesForDiploma } = require("../../helpers/dataUtils/utils");
 const { getAggregateByKlassOrMegama } = require("../../helpers/dataUtils/aggregateUtil");
 const { YemotPlayback } = require("../../models/YemotPlayback");
 const { YemotConfBridge } = require("../../models/YemotConfBridge");
 const { YemotPlayDir } = require("../../models/YemotPlayDir");
+const { getSec2Min } = require("../../helpers/format");
 
 module.exports = {
     url: "/dataByKlassOrMegama/:type",
@@ -46,9 +47,16 @@ module.exports = {
             ...dataById[item.identityNumber],
         }));
     },
-    headers: async function (data, query, filter, user) {
+    headers: async function (data, query, filter, user, params) {
+        const { groupField } = moduleMapping[params.type];
         const extensionHeaders = await getExtensionHeaders(user, data);
-        const headers = [{ label: "שם התלמידה", value: "name", format: "nameWOKlass" }, ...extensionHeaders];
+        const lessonIds = extensionHeaders.map(item => item.value);
+        const lessonInstances = await getLessonInstancesForDiploma(lessonIds, user, {}, groupField);
+        const extensionsWithLength = extensionHeaders.map(({ value, label }) => ({
+            value,
+            label: label + " " + getSec2Min(lessonInstances[value].map((_, len) => len).reduce((a, b) => a + b, 0))
+        }))
+        const headers = [{ label: "שם התלמידה", value: "name", format: "nameWOKlass" }, ...extensionsWithLength];
         return headers;
     },
     count: async function (queries) {
@@ -61,13 +69,16 @@ const moduleMapping = {
     listening: {
         model: YemotPlayback,
         title: "דוח האזנה",
+        groupField: "current",
     },
     conf: {
         model: YemotConfBridge,
         title: "דוח ועידה",
+        groupField: "enterDate",
     },
     record: {
         model: YemotPlayDir,
         title: "דוח שיעורים מוקלטים",
+        groupField: "enterDate",
     },
 };
