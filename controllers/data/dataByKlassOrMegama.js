@@ -52,7 +52,8 @@ module.exports = {
         const extensionHeaders = await getExtensionHeaders(user, data);
         const lessonIds = extensionHeaders.map(item => item.value);
         const lessonInstances = await getLessonInstancesForDiploma(lessonIds, user, {}, groupField);
-        const extensionsWithLength = extensionHeaders.map(({ value, label }) => ({
+        const extensionsWithLength = extensionHeaders.map(({ value, label, ...rest }) => ({
+            ...rest,
             value,
             label: label + " " + getSec2Min(lessonInstances[value].map((_, len) => len).reduce((a, b) => a + b, 0))
         }))
