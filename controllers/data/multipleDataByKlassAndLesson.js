@@ -47,15 +47,18 @@ module.exports = {
     },
     data: async function (queries, page, filter, user, params) {
         const { query, studentQuery, lessons } = queries;
-        const reportType = params.type.replace(/Percent|Grade/g, "");
-        const dataPromise = lessons.map(async (item) => {
-            const dataQuery = [...query, { Folder: item.extension }];
-            const filter = { lesson: [{ label: item.extension }] };
-            return dataByKlassAndLesson.data({ query: dataQuery, studentQuery }, page, filter, user, {
-                type: reportType,
+        const reportTypes = params.type.replace(/Percent|Grade/g, "").split("_And_");
+        const dataPromises = [];
+        reportTypes.forEach(type => {
+            lessons.forEach(async (item) => {
+                const dataQuery = [...query, { Folder: item.extension }];
+                const filter = { lesson: [{ label: item.extension }] };
+                dataPromises.push(dataByKlassAndLesson.data({ query: dataQuery, studentQuery }, page, filter, user, {
+                    type,
+                }));
             });
         });
-        const data = await promiseAllSerial(dataPromise);
+        const data = await promiseAllSerial(dataPromises);
         if (data.length === 0) {
             return [];
         }
@@ -138,6 +141,11 @@ const moduleMapping = {
         title: "דוח שיעורים מוקלטים מרובה",
         groupField: "enterDate",
     },
+    listening_And_conf: {
+        model: YemotPlayback,
+        title: "דוח משולב האזנה וועידה מרובה",
+        groupField: "current_And_enterDate",
+    },
     listeningByDate: {
         model: YemotPlayback,
         title: "דוח האזנה מרובה",
@@ -159,6 +167,12 @@ const moduleMapping = {
         model: YemotPlayDir,
         title: "דוח שיעורים מוקלטים מרובה - אחוזים",
         groupField: "enterDate",
+        specialReportType: "percent",
+    },
+    listening_And_confPercent: {
+        model: YemotPlayback,
+        title: "דוח משולב האזנה וועידה מרובה - אחוזים",
+        groupField: "current_And_enterDate",
         specialReportType: "percent",
     },
     listeningByDatePercent: {
@@ -183,6 +197,12 @@ const moduleMapping = {
         model: YemotPlayDir,
         title: "דוח שיעורים מוקלטים מרובה - ציונים",
         groupField: "enterDate",
+        specialReportType: "grade",
+    },
+    listening_And_confGrade: {
+        model: YemotPlayback,
+        title: "דוח משולב האזנה וועידה מרובה - ציונים",
+        groupField: "current_And_enterDate",
         specialReportType: "grade",
     },
     listeningByDateGrade: {

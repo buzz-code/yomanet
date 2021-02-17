@@ -74,23 +74,28 @@ async function getLessonInstancesForDiploma(lessonIds, user, { fromDate, toDate 
 }
 
 async function getLessonInstancesForKlassAndLesson(folder, keys, user, groupField, reportType) {
+    const groups = groupField.split("_And_");
     const fileLengths = await LessonInstance.find(
         {
             user: user.name,
             Folder: folder,
-            [groupByField[groupField]]: { $in: [...keys] },
+            $or: groups.map(field => ({
+                [groupByField[field]]: { $in: [...keys] }
+            }))
             // type: reportType,
         },
-        [groupByField[groupField], "FileLength", "LongestListening", "LessonTitle", "FirstListeningDate", "EnterHebrewDate"]
+        [...groups.map(field => groupByField[field]), "FileLength", "LongestListening", "LessonTitle", "FirstListeningDate", "EnterHebrewDate"]
     ).lean();
     const fileLengthByKey = {};
     const lessonTitleByKey = {};
     const firstListeningByKey = {};
-    fileLengths.forEach((item) => {
-        const itemKey = item[groupByField[groupField]];
-        fileLengthByKey[itemKey] = item.FileLength || item.LongestListening;
-        lessonTitleByKey[itemKey] = item.LessonTitle;
-        firstListeningByKey[itemKey] = item.EnterHebrewDate || item.FirstListeningDate && moment.utc(item.FirstListeningDate).format("DD/MM/YYYY");
+    groups.forEach(field => {
+        fileLengths.forEach((item) => {
+            const itemKey = item[groupByField[field]];
+            fileLengthByKey[itemKey] = item.FileLength || item.LongestListening;
+            lessonTitleByKey[itemKey] = item.LessonTitle;
+            firstListeningByKey[itemKey] = item.EnterHebrewDate || item.FirstListeningDate && moment.utc(item.FirstListeningDate).format("DD/MM/YYYY");
+        });
     });
 
     return { fileLengthByKey, lessonTitleByKey, firstListeningByKey };
