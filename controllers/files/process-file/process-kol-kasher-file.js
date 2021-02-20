@@ -60,12 +60,15 @@ const mapItem = ([
     folder2,
     file_name,
     current,
+    file_length_seconds,
+    file_length_minutes,
     seconds,
     identifier,
     tz,
     first_name,
     last_name,
     klass,
+    lesson_time,
 ]) => {
     if (isNaN(Number(seconds))) {
         return null
@@ -88,6 +91,7 @@ const mapItem = ([
         EnterTime: EnterTime.toDate(),
         ExitTime: ExitTime.toDate(),
         TimeTotal,
+        FileLength: file_length_seconds,
     };
 };
 
