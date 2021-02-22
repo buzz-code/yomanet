@@ -32,12 +32,13 @@ async function main() {
                 const listening = await YemotPlayback.aggregate()
                     .allowDiskUse(true)
                     .match({ user: user.name })
+                    .sort({ EnterDate: 1 })
                     .group({
                         _id: { Folder: "$Folder", Current: "$Current", FileLength: "$FileLength" },
                         count: { $sum: 1 },
                         LongestListening: { $max: "$TimeTotal" },
-                        FirstListeningDate: { $min: "$EnterDate" },
-                        EnterHebrewDate: { $first: { $cond: { if: { $eq: ["$EnterDate", { $min: "$EnterDate" }] }, then: "$EnterHebrewDate", else: null } } },
+                        FirstListeningDate: { $first: "$EnterDate" },
+                        EnterHebrewDate: { $first: "$EnterHebrewDate" },
                         LessonTitle: { $max: "$LessonTitle" },
                     })
                     .sort({ "_id.FileLength": 1, count: -1 })
@@ -46,7 +47,7 @@ async function main() {
                         FileLength: { $first: "$_id.FileLength" },
                         LongestListening: { $max: "$LongestListening" },
                         FirstListeningDate: { $min: "$FirstListeningDate" },
-                        EnterHebrewDate: { $first: { $cond: { if: { $eq: ["$FirstListeningDate", { $min: "$FirstListeningDate" }] }, then: "$EnterHebrewDate", else: null } } },
+                        EnterHebrewDate: { $first: "$EnterHebrewDate" },
                         LessonTitle: { $max: "$LessonTitle" },
                         count: { $sum: "$count" },
                     })
@@ -68,6 +69,7 @@ async function main() {
                 const conf = await YemotConfBridge.aggregate()
                     .allowDiskUse(true)
                     .match({ user: user.name })
+                    .sort({ EnterDate: 1 })
                     .group({
                         _id: {
                             Folder: { $arrayElemAt: [{ $split: ["$ConfBridge", "-"] }, 1] },
@@ -76,8 +78,8 @@ async function main() {
                         count: { $sum: 1 },
                         FileLength: { $sum: "$FileLength" },
                         LongestListening: { $max: "$TimeTotal" },
-                        FirstListeningDate: { $min: "$EnterDate" },
-                        EnterHebrewDate: { $first: { $cond: { if: { $eq: ["$EnterDate", { $min: "$EnterDate" }] }, then: "$EnterHebrewDate", else: null } } },
+                        FirstListeningDate: { $first: "$EnterDate" },
+                        EnterHebrewDate: { $first: "$EnterHebrewDate" },
                         LessonTitle: { $max: "$LessonTitle" },
                     })
                     .project({
@@ -98,6 +100,7 @@ async function main() {
                 const record = await YemotPlayDir.aggregate()
                     .allowDiskUse(true)
                     .match({ user: user.name })
+                    .sort({ EnterDate: 1 })
                     .group({
                         _id: {
                             Folder: "$Folder",
@@ -106,8 +109,8 @@ async function main() {
                         count: { $sum: 1 },
                         FileLength: { $max: "$FileLength" },
                         LongestListening: { $max: "$TimeTotal" },
-                        FirstListeningDate: { $min: "$EnterDate" },
-                        EnterHebrewDate: { $first: { $cond: { if: { $eq: ["$EnterDate", { $min: "$EnterDate" }] }, then: "$EnterHebrewDate", else: null } } },
+                        FirstListeningDate: { $first: "$EnterDate" },
+                        EnterHebrewDate: { $first: "$EnterHebrewDate" },
                     })
                     .project({
                         _id: 0,
@@ -126,6 +129,7 @@ async function main() {
                 const listeningByDate = await YemotPlayback.aggregate()
                     .allowDiskUse(true)
                     .match({ user: user.name })
+                    .sort({ EnterDate: 1 })
                     .group({
                         _id: {
                             Folder: "$Folder",
@@ -134,8 +138,8 @@ async function main() {
                         },
                         count: { $sum: 1 },
                         LongestListening: { $max: "$TimeTotal" },
-                        FirstListeningDate: { $min: "$EnterDate" },
-                        EnterHebrewDate: { $first: { $cond: { if: { $eq: ["$EnterDate", { $min: "$EnterDate" }] }, then: "$EnterHebrewDate", else: null } } },
+                        FirstListeningDate: { $first: "$EnterDate" },
+                        EnterHebrewDate: { $first: "$EnterHebrewDate" },
                         LessonTitle: { $max: "$LessonTitle" },
                     })
                     .sort({ "_id.FileLength": 1, count: -1 })
@@ -147,7 +151,7 @@ async function main() {
                         FileLength: { $first: "$_id.FileLength" },
                         LongestListening: { $max: "$LongestListening" },
                         FirstListeningDate: { $min: "$FirstListeningDate" },
-                        EnterHebrewDate: { $first: { $cond: { if: { $eq: ["$FirstListeningDate", { $min: "$FirstListeningDate" }] }, then: "$EnterHebrewDate", else: null } } },
+                        EnterHebrewDate: { $first: "$EnterHebrewDate" },
                         LessonTitle: { $max: "$LessonTitle" },
                         count: { $sum: "$count" },
                     })
